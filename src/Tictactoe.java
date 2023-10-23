@@ -13,12 +13,20 @@ public class Tictactoe {
     }
 
     // for getting board into ui
-    public char[][] getBoard(){
+    public char[][] getBoard() {
         return board;
     }
 
-    public char getPlayer(){
+    public char getPlayer() {
         return player;
+    }
+
+    public void chancePlayer() {
+        if (player == 'x'){
+            player = 'o';
+        } else {
+            player = 'x';
+        }
     }
 
     public boolean move(int x, int y, char player) {
@@ -150,12 +158,8 @@ public class Tictactoe {
                 printBoard();
                 System.out.printf("player %s has won", player);
             }
+            chancePlayer();
 
-            if (player == 'x'){
-                player = 'o';
-            } else {
-                player = 'x';
-            }
         }
     }
 }
