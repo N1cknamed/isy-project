@@ -1,20 +1,12 @@
 import java.util.*;
 
-public class Tictactoe {
-    private final int boardWidth;
-    private final int boardHeight;
+public class Tictactoe extends Board{
     private final char[][] board;
     private char player = 'x';
 
     public Tictactoe() {
-        this.boardWidth = 3; // this is so you can easily check if board wifth and height and if later we want to change board size
-        this.boardHeight = 3;
-        this.board = new char[boardHeight][boardWidth];
-    }
-
-    // for getting board into ui
-    public char[][] getBoard() {
-        return board;
+        super(3, 3);
+        board = super.getBoard();
     }
 
     public char getPlayer() {
@@ -38,31 +30,6 @@ public class Tictactoe {
             return true;
         }
         return false; // index is already full
-    }
-
-    public void printBoard() {
-        System.out.println("      col");
-
-        System.out.print(" |");
-        for (int i = 0; i < boardWidth; i++){
-            System.out.printf("_%s_|",i);
-        }
-
-        System.out.println();
-        for (int i = 0; i < boardHeight; i++){
-            System.out.print(i);
-            System.out.print("|");
-            for (int j = 0; j < boardHeight; j++){
-                if (board[i][j] == 0){
-                    System.out.print("   ");
-                } else {
-                    System.out.print(" "+board[i][j]+" ");
-                }
-                System.out.print("|");
-            }
-            System.out.println();
-            System.out.println(" |---|---|---|");
-        }
     }
 
     public boolean checkWin(char player) {

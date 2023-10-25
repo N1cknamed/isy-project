@@ -4,19 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ed305b3-a245-4b27-a6c9-1213ae8a5133" name="Changes" comment="added tictactoe">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22-10-2023_18_40__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22-10-2023_18_40__Changes_.xml" afterDir="false" />
+    <list default="true" id="7ed305b3-a245-4b27-a6c9-1213ae8a5133" name="Changes" comment="added change player">
+      <change afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/isy-project/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/isy-project/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/isy-project/Tictactoe.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/isy-project/Tictactoe.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Tictactoe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Tictactoe.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -44,6 +48,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;mart&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -81,7 +86,10 @@
       <workItem from="1697992704408" duration="148000" />
       <workItem from="1697993156713" duration="68000" />
       <workItem from="1698010983152" duration="90000" />
-      <workItem from="1698054517640" duration="321000" />
+      <workItem from="1698054517640" duration="553000" />
+      <workItem from="1698265194837" duration="727000" />
+      <workItem from="1698265936746" duration="1478000" />
+      <workItem from="1698268106655" duration="687000" />
     </task>
     <task id="LOCAL-00001" summary="added tictactoe">
       <option name="closed" value="true" />
@@ -99,7 +107,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697989768041</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added change player">
+      <option name="closed" value="true" />
+      <created>1698055034071</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698055034071</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -107,6 +123,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added tictactoe" />
-    <option name="LAST_COMMIT_MESSAGE" value="added tictactoe" />
+    <MESSAGE value="added change player" />
+    <option name="LAST_COMMIT_MESSAGE" value="added change player" />
   </component>
 </project>
