@@ -11,15 +11,8 @@ public class Board {
     public char[][] getBoard() {
         return board;
     }
-    public int getBoardWidth() {
-        return boardWidth;
-    }
-    public int getBoardHeight() {
-        return boardHeight;
-    }
-
     public void printBoard() {
-        System.out.println("      col");
+        System.out.println(" ".repeat((1 + boardWidth*4)/2) + "col");
 
         System.out.print(" |");
         for (int i = 0; i < boardWidth; i++){
@@ -39,7 +32,7 @@ public class Board {
                 System.out.print("|");
             }
             System.out.println();
-            System.out.println(" |---|---|---|");
+            System.out.println(" |"+ "---|".repeat(boardWidth));
         }
     }
 }

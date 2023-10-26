@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ed305b3-a245-4b27-a6c9-1213ae8a5133" name="Changes" comment="added change player">
-      <change afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/isy-project/Tictactoe.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/isy-project/Tictactoe.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Tictactoe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Tictactoe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,6 +90,7 @@
       <workItem from="1698265194837" duration="727000" />
       <workItem from="1698265936746" duration="1478000" />
       <workItem from="1698268106655" duration="687000" />
+      <workItem from="1698313044086" duration="1140000" />
     </task>
     <task id="LOCAL-00001" summary="added tictactoe">
       <option name="closed" value="true" />
