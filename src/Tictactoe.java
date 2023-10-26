@@ -3,25 +3,21 @@ import java.util.*;
 public class Tictactoe extends Board{
     private final char[][] board;
     private char player = 'x';
-
     public Tictactoe() {
         super(3, 3);
         board = super.getBoard();
     }
-
     public char getPlayer() {
         return player;
     }
-
-    public void chancePlayer() {
+    public void switchPlayer() {
         if (player == 'x'){
             player = 'o';
         } else {
             player = 'x';
         }
     }
-
-    public boolean move(int x, int y, char player) {
+    public boolean move(int x, int y) {
         if (((x < 0) || (x >= boardWidth)) || ((y < 0) || (y >= boardWidth))){  // check if x or y are out of bounds
             return false;
         }
@@ -31,7 +27,6 @@ public class Tictactoe extends Board{
         }
         return false; // index is already full
     }
-
     public boolean checkWin(char player) {
         boolean won = true;
         // row
@@ -84,7 +79,6 @@ public class Tictactoe extends Board{
         }
         return won;
     }
-
     // just to test game
     public void playGame() {
         Scanner in = new Scanner(System.in);
@@ -110,7 +104,7 @@ public class Tictactoe extends Board{
                     System.out.println("Invalid row input; retry input:");
                     continue;
                 }
-                if (!move(inrow,incol,player)){
+                if (!move(inrow,incol)){
                     System.out.println("location is already taken; retry input:");
                     continue;
                 }
@@ -125,7 +119,7 @@ public class Tictactoe extends Board{
                 printBoard();
                 System.out.printf("player %s has won", player);
             }
-            chancePlayer();
+            switchPlayer();
 
         }
     }
