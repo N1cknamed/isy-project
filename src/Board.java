@@ -19,7 +19,7 @@ public class Board {
     public boolean isBoardFull() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
-                if (board[row][col] == ' ') {
+                if (board[row][col] == 0) {
                     return false;
                 }
             }
@@ -38,7 +38,7 @@ public class Board {
         for (int i = 0; i < boardHeight; i++){
             System.out.print(i);
             System.out.print("|");
-            for (int j = 0; j < boardHeight; j++){
+            for (int j = 0; j < boardWidth; j++){
                 if (board[i][j] == 0){
                     System.out.print("   ");
                 } else {

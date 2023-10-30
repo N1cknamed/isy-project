@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ed305b3-a245-4b27-a6c9-1213ae8a5133" name="Changes" comment="added change player" />
+    <list default="true" id="7ed305b3-a245-4b27-a6c9-1213ae8a5133" name="Changes" comment="added change player">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/isy-project/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/isy-project/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/isy-project/Tictactoe.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/isy-project/Tictactoe.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,7 +102,7 @@
       <workItem from="1698323439687" duration="3751000" />
       <workItem from="1698509164471" duration="1943000" />
       <workItem from="1698604288129" duration="1907000" />
-      <workItem from="1698681327272" duration="6028000" />
+      <workItem from="1698681327272" duration="8922000" />
     </task>
     <task id="LOCAL-00001" summary="added tictactoe">
       <option name="closed" value="true" />
