@@ -1,4 +1,4 @@
-import javafx.application.Application;
+/*import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -56,10 +56,12 @@ public class Main extends Application {
         }
     }
 }
+*/
 
-/*public class Main {
+
+public class Main {
     public static void main(String[] args) {
         Tictactoe game = new Tictactoe();
         game.playGame();
     }
-}*/
+}
