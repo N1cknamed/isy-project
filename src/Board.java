@@ -2,7 +2,6 @@ public class Board {
     final int boardWidth;
     final int boardHeight;
     private final char[][] board;
-
     public Board(int boardWidth, int boardHeight) {
         this.boardWidth = boardWidth; // this is so you can easily check if board width and height and if later we want to change board size
         this.boardHeight = boardHeight;
@@ -11,7 +10,6 @@ public class Board {
     public char[][] getBoard() {
         return board;
     }
-
     public boolean isBoardFull() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {

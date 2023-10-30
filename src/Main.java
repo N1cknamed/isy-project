@@ -10,11 +10,9 @@ public class Main extends Application {
     private Tictactoe game = new Tictactoe();
     private Button[][] buttons = new Button[3][3];
     private boolean gameOver = false;
-
     public static void main(String[] args) {
         launch(args);
     }
-
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Tic-Tac-Toe");
@@ -44,7 +42,6 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
     private void handleButtonClick(int row, int col) {
         if (!gameOver && game.move(row, col)) {
             buttons[row][col].setText(String.valueOf(game.getPlayer()));
@@ -59,7 +56,6 @@ public class Main extends Application {
         }
     }
 }
-
 
 /*public class Main {
     public static void main(String[] args) {

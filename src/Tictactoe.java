@@ -27,7 +27,6 @@ public class Tictactoe extends Board{
         }
         return false; // index is already full
     }
-
     public boolean checkWin(char player) {
         boolean won = true;
         // row
