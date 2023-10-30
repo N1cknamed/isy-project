@@ -29,29 +29,36 @@ public class Tictactoe extends Board{
     }
 
     public boolean checkWin(char player) {
-        boolean won = true;
+        int[][] winningCoords = new int[boardWidth][2];
         // row
         for (int i = 0; i < boardHeight; i++) {
+            boolean won = true;
             for (int j = 0; j < boardWidth; j++){
                 if (board[i][j] != player){
                     won = false;
                     break;
+                    
                 }
+                winningCoords[i][0] = i;
+                winningCoords[i][1] = j;
             }
             if (won) {
+                for (int d = 0; d < winningCoords.length; d++) {
+                  System.out.println(winningCoords[i][0] + " " + winningCoords[i][1]);
+                }
                 return true;
             }
         }
 
         // col
-        won = true;
         for (int i = 0; i < boardWidth; i++) {
-
+            won = true;
             for (int j = 0; j < boardHeight; j++){
                 if (board[j][i] != player){
                     won = false;
                     break;
                 }
+                
             }
             if (won) {
                 return true;
@@ -59,8 +66,8 @@ public class Tictactoe extends Board{
         }
 
         // diagonal left
-        won = true;
         for ( int i = 0; i < boardHeight; i++){
+            won = true;
             if (board[i][i] != player){
                 won = false;
                 break;
@@ -71,14 +78,16 @@ public class Tictactoe extends Board{
         }
 
         // diagonal right
-        won = true;
         for ( int i = 0, j = boardHeight-1; i < boardHeight; i++, j--){
+            won = true;
             if (board[i][j] != player){
                 won = false;
                 break;
             }
         }
-        return won;
+        return true
+        // TODO
+        // return won;
     }
     // just to test game
     public void playGame() {
