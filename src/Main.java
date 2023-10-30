@@ -1,14 +1,15 @@
-/*import javafx.application.Application;
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private Tictactoe game = new Tictactoe();
-    private Button[][] buttons = new Button[3][3];
+    private final Tictactoe game = new Tictactoe();
+    private final Button[][] buttons = new Button[3][3];
     private boolean gameOver = false;
     public static void main(String[] args) {
         launch(args);
@@ -39,6 +40,7 @@ public class Main extends Application {
         messageBox.setPadding(new Insets(10, 10, 10, 10));
 
         Scene scene = new Scene(grid, 320, 320);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -47,6 +49,11 @@ public class Main extends Application {
             buttons[row][col].setText(String.valueOf(game.getPlayer()));
             if (game.checkWin(game.getPlayer())) {
                 gameOver = true;
+                for (int i = 0; i < game.winningCoords.length; i++) {
+                    int wRow = game.winningCoords[i][0];
+                    int wCol = game.winningCoords[i][1];
+                    buttons[wRow][wCol].getStyleClass().add("winning-button");
+                }
                 System.out.println("Player " + game.getPlayer() + " wins!");
             } else if (!game.isBoardFull()) {
                 gameOver = true;
@@ -56,12 +63,21 @@ public class Main extends Application {
         }
     }
 }
-*/
 
+/*
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        Tictactoe game = new Tictactoe();
-        game.playGame();
+        char[][] board = {
+                {' ', 'x', 'x'},
+                {'x', ' ', ' '},
+                {'x', ' ', ' '}
+        };
+        Tictactoe game = new Tictactoe(board, 'o');
+        System.out.println(game.checkWin('x'));
+        game.printBoard();
+        System.out.println(Arrays.deepToString(game.winningCoords));
+
     }
-}
+}*/

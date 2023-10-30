@@ -3,9 +3,16 @@ import java.util.*;
 public class Tictactoe extends Board{
     private final char[][] board;
     private char player = 'x';
+    public int[][] winningCoords;
     public Tictactoe() {
         super(3, 3);
-        board = super.getBoard();
+        this.board = super.getBoard();
+    }
+    public Tictactoe(char[][] board, char player) {
+        // make a game with existing board
+        super(board);
+        this.board = super.getBoard();
+        this.player = player;
     }
     public char getPlayer() {
         return player;
@@ -28,6 +35,7 @@ public class Tictactoe extends Board{
         return false; // index is already full
     }
     public boolean checkWin(char player) {
+        // [row, col]
         int[][] winningCoords = new int[boardWidth][2];
         // row
         for (int i = 0; i < boardHeight; i++) {
@@ -36,57 +44,67 @@ public class Tictactoe extends Board{
                 if (board[i][j] != player){
                     won = false;
                     break;
-                    
+                } else {
+                    winningCoords[j][0] = i;
+                    winningCoords[j][1] = j;
                 }
-                winningCoords[i][0] = i;
-                winningCoords[i][1] = j;
             }
             if (won) {
-                for (int d = 0; d < winningCoords.length; d++) {
-                  System.out.println(winningCoords[i][0] + " " + winningCoords[i][1]);
-                }
+                this.winningCoords = winningCoords;
                 return true;
             }
         }
 
         // col
         for (int i = 0; i < boardWidth; i++) {
-            won = true;
+            boolean won = true;
             for (int j = 0; j < boardHeight; j++){
                 if (board[j][i] != player){
                     won = false;
                     break;
+                } else {
+                    winningCoords[j][0] = j;
+                    winningCoords[j][1] = i;
                 }
                 
             }
             if (won) {
+                this.winningCoords = winningCoords;
                 return true;
             }
         }
 
         // diagonal left
+        boolean won = true;
         for ( int i = 0; i < boardHeight; i++){
-            won = true;
             if (board[i][i] != player){
                 won = false;
                 break;
+            } else {
+                winningCoords[i][0] = i;
+                winningCoords[i][1] = i;
             }
         }
         if (won) {
+            this.winningCoords = winningCoords;
             return true;
         }
 
         // diagonal right
+        won = true;
         for ( int i = 0, j = boardHeight-1; i < boardHeight; i++, j--){
-            won = true;
             if (board[i][j] != player){
                 won = false;
                 break;
+            } else {
+                winningCoords[i][0] = i;
+                winningCoords[i][1] = j;
             }
         }
-        return true
-        // TODO
-        // return won;
+        if (won){
+            this.winningCoords = winningCoords;
+        }
+        return won;
     }
     // just to test game
     public void playGame() {

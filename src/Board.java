@@ -7,6 +7,12 @@ public class Board {
         this.boardHeight = boardHeight;
         this.board = new char[boardHeight][boardWidth];
     }
+    public Board(char[][] board) {
+        // for creating a new board with existig board
+        this.boardWidth = board.length; // this is so you can easily check if board width and height and if later we want to change board size
+        this.boardHeight = board[0].length;
+        this.board = board;
+    }
     public char[][] getBoard() {
         return board;
     }
