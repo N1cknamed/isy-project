@@ -106,8 +106,66 @@ public class Tictactoe extends Board{
         }
         return won;
     }
-    // just to test game
+
     public void playGame() {
+        Scanner in = new Scanner(System.in);
+        boolean winner = false;
+        System.out.println("Tic Tac Toe");
+
+        TttAI ai = new TttAI('o', 'x');
+
+        while (!winner) {
+            printBoard();
+            if (getPlayer() == 'x') {
+                int inrow;
+                int incol;
+
+                System.out.printf("Turn for player %s\n", getPlayer());
+                try {
+                    System.out.print("Input row: ");
+                    inrow = in.nextInt();
+                    if (!(inrow >= 0 && inrow < boardHeight)) {
+                        System.out.println("Invalid row input; retry input:");
+                        continue;
+                    }
+                    System.out.print("Input col: ");
+                    incol = in.nextInt();
+                    if (!(incol >= 0 && incol < boardWidth)) {
+                        System.out.println("Invalid col input; retry input:");
+                        continue;
+                    }
+                    if (!move(inrow, incol)) {
+                        System.out.println("Location is already taken; retry input:");
+                        continue;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input; re-enter slot number:");
+                    continue;
+                }
+            } else {
+                System.out.println("AI's turn");
+                int[] aiMove = ai.findBestMove(this);
+                int aiRow = aiMove[1];
+                int aiCol = aiMove[2];
+                move(aiRow, aiCol);
+            }
+
+            if (checkWin(getPlayer())) {
+                winner = true;
+                printBoard();
+                System.out.printf("Player %s has won", getPlayer());
+            } else if (isBoardFull()) {
+                winner = true;
+                printBoard();
+                System.out.println("It's a draw!");
+            }
+
+            switchPlayer();
+        }
+    }
+
+    // just to test game
+    /*public void playGame() {
         Scanner in = new Scanner(System.in);
         boolean winner = false;
         System.out.println("tic tac toe");
@@ -149,5 +207,5 @@ public class Tictactoe extends Board{
             switchPlayer();
 
         }
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-import javafx.application.Application;
+/*import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -66,20 +66,14 @@ public class Main extends Application {
     }
 }
 
-/*
+*/
 import java.util.Arrays;
 
 public class Main {
+
     public static void main(String[] args) {
-        char[][] board = {
-                {' ', 'x', 'x'},
-                {'x', ' ', ' '},
-                {'x', ' ', ' '}
-        };
-        Tictactoe game = new Tictactoe(board, 'o');
-        System.out.println(game.checkWin('x'));
-        game.printBoard();
-        System.out.println(Arrays.deepToString(game.winningCoords));
+        Tictactoe game = new Tictactoe();
+        game.playGame();
 
     }
-}*/
+}
