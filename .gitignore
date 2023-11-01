@@ -30,7 +30,7 @@ bin/
 
 ### Intelij ###
 .xml
-.iml
+isy-project.iml
 .idea/
 libraries/
 out/
