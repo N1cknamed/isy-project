@@ -30,6 +30,7 @@ bin/
 
 ### Intelij and other folders ###
 .xml
+.iml
 .idea/
 libraries/
 out/
