@@ -1,4 +1,4 @@
-/*import javafx.application.Application;
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -66,7 +66,7 @@ public class Main extends Application {
     }
 }
 
-*/
+/*
 import java.util.Arrays;
 
 public class Main {
@@ -76,4 +76,4 @@ public class Main {
         game.playGame();
 
     }
-}
+}*/
