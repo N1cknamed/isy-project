@@ -47,7 +47,6 @@ public class Main extends Application {
     private void handleButtonClick(int row, int col) {
         if (!gameOver && game.move(row, col)) {
             buttons[row][col].setText(String.valueOf(game.getPlayer()));
-            System.out.println(game.isBoardFull());
             if (game.checkWin(game.getPlayer())) {
                 gameOver = true;
                 for (int i = 0; i < game.winningCoords.length; i++) {
