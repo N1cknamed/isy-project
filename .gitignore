@@ -28,5 +28,9 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-### Intelij ###
+### Intelij and other folders ###
 .xml
+isy-project.iml
+.idea/
+libraries/
+out/
