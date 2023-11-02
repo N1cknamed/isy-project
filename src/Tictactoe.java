@@ -101,16 +101,10 @@ public class Tictactoe extends Board{
                 winningCoords[i][1] = j;
             }
         }
-<<<<<<< HEAD
-        return true;
-        // TODO
-        // return won;
-=======
         if (won){
             this.winningCoords = winningCoords;
         }
         return won;
->>>>>>> c91f7766e6435d3c2e8cec4e2296c59ce68d8309
     }
 
     public void playGame() {
