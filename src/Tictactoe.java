@@ -85,7 +85,7 @@ public class Tictactoe extends Board{
                 break;
             }
         }
-        return true
+        return true;
         // TODO
         // return won;
     }
