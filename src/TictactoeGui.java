@@ -1,4 +1,4 @@
-/*import javafx.application.Application;
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,7 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class TictactoeGui extends Application {
     private final Tictactoe game = new Tictactoe();
     private final Button[][] buttons = new Button[3][3];
     private boolean gameOver = false;
@@ -44,46 +44,27 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    private void checkWin() {
+        if (game.checkWin(game.getPlayer())) {
+            gameOver = true;
+            for (int i = 0; i < game.winningCoords.length; i++) {
+                int wRow = game.winningCoords[i][0];
+                int wCol = game.winningCoords[i][1];
+                buttons[wRow][wCol].getStyleClass().add("winning-button");
+            }
+            System.out.println("Player " + game.getPlayer() + " wins!");
+        } else if (game.isBoardFull()) {
+            gameOver = true;
+            System.out.println("It's a draw!");
+        }
+    }
+
     private void handleButtonClick(int row, int col) {
         if (!gameOver && game.move(row, col)) {
             buttons[row][col].setText(String.valueOf(game.getPlayer()));
-            if (game.checkWin(game.getPlayer())) {
-                gameOver = true;
-                for (int i = 0; i < game.winningCoords.length; i++) {
-                    int wRow = game.winningCoords[i][0];
-                    int wCol = game.winningCoords[i][1];
-                    buttons[wRow][wCol].getStyleClass().add("winning-button");
-                }
-                System.out.println("Player " + game.getPlayer() + " wins!");
-            } else if (game.isBoardFull()) {
-                gameOver = true;
-                System.out.println("It's a draw!");
-            }
-
+            checkWin();
             game.switchPlayer();
         }
-    }
-}*/
-
-public class Main {
-    public static void main(String[] args) {
-
-        // login page
-//        Login.launch(Login.class, args);
-//        String enteredText = Login.getEnteredText();
-//        System.out.println("Entered Text: " + enteredText);
-
-        // tic tac toe gui
-//        TictactoeGui.launch(TictactoeGui.class, args);
-
-        // tic tac toe ai cli (x is player o is ai)
-//        Tictactoe game = new Tictactoe();
-//        game.playGame();
-
-        // Battleships
-        BattleShips game = new BattleShips();
-        game.printBoard();
-
-
     }
 }
