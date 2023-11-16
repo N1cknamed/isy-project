@@ -2,15 +2,18 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class TictactoeGui extends Application {
     private final Tictactoe game = new Tictactoe();
     private final Button[][] buttons = new Button[3][3];
     private boolean gameOver = false;
+    private boolean againstAI = false;
     public static void main(String[] args) {
         launch(args);
     }
@@ -39,7 +42,19 @@ public class TictactoeGui extends Application {
         HBox messageBox = new HBox();
         messageBox.setPadding(new Insets(10, 10, 10, 10));
 
-        Scene scene = new Scene(grid, 320, 320);
+        ComboBox<String> modeSelector = new ComboBox<>();
+        modeSelector.getItems().addAll("Two Players", "Against AI");
+        modeSelector.setValue("Two Players"); // Default selection
+        modeSelector.setOnAction(e -> {
+            String selectedMode = modeSelector.getValue();
+            againstAI = selectedMode.equals("Against AI");
+        });
+
+        VBox root = new VBox();
+        root.getChildren().addAll(modeSelector, grid, messageBox);
+
+        Scene scene = new Scene(root, 320, 360); // Increased height to accommodate mode selector
+
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -65,6 +80,17 @@ public class TictactoeGui extends Application {
             buttons[row][col].setText(String.valueOf(game.getPlayer()));
             checkWin();
             game.switchPlayer();
+
+            if (againstAI && !gameOver && game.getPlayer() == 'o') { // If playing against AI
+                int[] aiMove = new TttAI('o', 'x').findBestMove(game);
+                int aiRow = aiMove[1];
+                int aiCol = aiMove[2];
+                if (game.move(aiRow, aiCol)) {
+                    buttons[aiRow][aiCol].setText(String.valueOf(game.getPlayer()));
+                    checkWin();
+                    game.switchPlayer();
+                }
+            }
         }
     }
 }

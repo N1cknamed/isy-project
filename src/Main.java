@@ -6,7 +6,7 @@ public class Main {
 //        String enteredText = Login.getEnteredText();
 //        System.out.println("Entered Text: " + enteredText);
 
-        // tic tac toe gui
+        // tic tac toe gui (can choose to play against ai) TODO: reset game after switching game type
 //        TictactoeGui.launch(TictactoeGui.class, args);
 
         // tic tac toe ai cli (x is player o is ai)
@@ -14,7 +14,7 @@ public class Main {
 //        game.playGame();
 
         // Battleships
-        BattleShips game = new BattleShips();
-        game.printBoard();
+//        BattleShips game = new BattleShips();
+//        game.printBoard();
     }
 }

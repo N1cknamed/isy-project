@@ -163,49 +163,4 @@ public class Tictactoe extends Board{
             switchPlayer();
         }
     }
-
-    // just to test game
-    /*public void playGame() {
-        Scanner in = new Scanner(System.in);
-        boolean winner = false;
-        System.out.println("tic tac toe");
-
-        while (!winner) {
-            int inrow;
-            int incol;
-
-            printBoard();
-            System.out.printf("turn for player %s\n", player);
-            try {
-                System.out.print("input row: ");
-                inrow = in.nextInt();
-                if (!(inrow >= 0 && inrow < boardHeight)) {
-                    System.out.println("Invalid row input; retry input:");
-                    continue;
-                }
-                System.out.print("input col: ");
-                incol = in.nextInt();
-                if (!(incol >= 0 && incol < boardWidth)) {
-                    System.out.println("Invalid row input; retry input:");
-                    continue;
-                }
-                if (!move(inrow,incol)){
-                    System.out.println("location is already taken; retry input:");
-                    continue;
-                }
-            }
-            catch (InputMismatchException e) {
-                System.out.println(
-                        "Invalid input; re-enter slot number:");
-                continue;
-            }
-            if (checkWin(player)){
-                winner = true;
-                printBoard();
-                System.out.printf("player %s has won", player);
-            }
-            switchPlayer();
-
-        }
-    }*/
 }
