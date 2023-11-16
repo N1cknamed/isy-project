@@ -1,3 +1,7 @@
+import Server.ServerController;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -14,7 +18,20 @@ public class Main {
 //        game.playGame();
 
         // Battleships
-        BattleShips game = new BattleShips();
-        game.printBoard();
+//        BattleShips game = new BattleShips();
+//        game.printBoard();
+        ServerController x = new ServerController("localhost", 7789);
+        String message = x.getMessage();
+
+        while (true) {
+            synchronized (message) {
+                try {
+                    message.wait();
+                    System.out.println(message);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 }
