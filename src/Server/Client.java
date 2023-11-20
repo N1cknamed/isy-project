@@ -9,11 +9,11 @@ public class Client implements Runnable{
 
     String host;
     int port;
-    private String message;
+    private Message message;
     private Object waitForOut;
     private PrintWriter outStream;
 
-    public Client(String message, Object waitForOut, String host, int port) {
+    public Client(Message message, Object waitForOut, String host, int port) {
         this.host = host;
         this.port = port;
         this.message = message;
@@ -42,10 +42,10 @@ public class Client implements Runnable{
 
             String serverMessage;
             while ((serverMessage = in.readLine()) != null) {
-                System.out.println(serverMessage);
+//                System.out.println(serverMessage);
                 synchronized (message) {
                     try {
-                        message = serverMessage;
+                        message.setMessage(serverMessage);
                         message.notify();
                     } catch (Exception e) {
                         throw new RuntimeException(e);

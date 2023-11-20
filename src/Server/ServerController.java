@@ -2,13 +2,13 @@ package Server;
 
 public class ServerController {
 
-    private String message;
+    private Message message;
     private Object waitForOut;
     private Client client;
     private Sender sender;
 
     public ServerController(String host, int port) {
-        this.message = new String();
+        this.message = new Message();
         this.waitForOut = new Object();
         this.client = startClient(host, port);
         this.sender = startSender();
@@ -39,7 +39,7 @@ public class ServerController {
         return s;
     }
 
-    public String getMessage() {
+    public Message getMessage() {
         return message;
     }
 }
