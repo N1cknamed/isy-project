@@ -1,3 +1,8 @@
+import Server.Message;
+import Server.ServerController;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -16,5 +21,20 @@ public class Main {
         // Battleships
 //        BattleShips game = new BattleShips();
 //        game.printBoard();
+        
+        // server         
+        ServerController x = new ServerController("localhost", 7789);
+        Message message = x.getMessage();
+
+        while (true) {
+            synchronized (message) {
+                try {
+                    message.wait();
+                    System.out.println(message.getMessage());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 }
