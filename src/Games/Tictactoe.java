@@ -1,3 +1,7 @@
+package Games;
+
+import Ai.TttAI;
+
 import java.util.*;
 
 public class Tictactoe extends Board{

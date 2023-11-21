@@ -1,3 +1,5 @@
+package Games;
+
 public class Board {
     final int boardWidth;
     final int boardHeight;
@@ -49,5 +51,13 @@ public class Board {
             System.out.println();
             System.out.println(" |"+ "---|".repeat(boardWidth));
         }
+    }
+
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
     }
 }

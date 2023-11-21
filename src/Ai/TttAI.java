@@ -1,3 +1,7 @@
+package Ai;
+
+import Games.Tictactoe;
+
 public class TttAI {
     private char aiPlayer;
     private char opponentPlayer;
@@ -23,8 +27,8 @@ public class TttAI {
 
         int[] bestMove = {currentPlayer == aiPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE, -1, -1};
 
-        for (int row = 0; row < game.boardHeight; row++) {
-            for (int col = 0; col < game.boardWidth; col++) {
+        for (int row = 0; row < game.getBoardHeight(); row++) {
+            for (int col = 0; col < game.getBoardWidth(); col++) {
                 if (game.getBoard()[row][col] == 0) {
                     game.getBoard()[row][col] = currentPlayer;
                     int[] score = minimax(game, (currentPlayer == aiPlayer) ? opponentPlayer : aiPlayer, alpha, beta);
