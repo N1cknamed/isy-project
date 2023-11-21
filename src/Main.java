@@ -1,7 +1,10 @@
-import Server.Message;
-import Server.ServerController;
+import Gui.*;
+import Ai.*;
+import Games.*;
+import Server.*;
 
 import java.util.Scanner;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -22,19 +25,28 @@ public class Main {
 //        BattleShips game = new BattleShips();
 //        game.printBoard();
         
-        // server         
-        ServerController x = new ServerController("localhost", 7789);
-        Message message = x.getMessage();
+        // server
+        /*
+        to start the server in cmd type: java -jar newgameserver-1.0.jar
+        then get the ip and port of the server and type those in the appropriate inputs
+        */
+//        ServerController x = new ServerController("localhost", 7789);
+//        Message message = x.getMessage();
+//
+//        Scanner scanner = new Scanner(System.in);
+//
+//        while (true) {
+//            String userInput = scanner.nextLine();
+//            x.sendMessage(userInput);
+//            synchronized (message) {
+//                try {
+//                    message.wait();
+//                    System.out.println(message.getMessage());
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        }
 
-        while (true) {
-            synchronized (message) {
-                try {
-                    message.wait();
-                    System.out.println(message.getMessage());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
     }
 }
