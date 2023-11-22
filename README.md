@@ -6,4 +6,4 @@ mvn clean javafx:run
 ```
 
 ## Run configuration in IntelliJ
-Edit Configurations > + > Maven > "javafx:run"
+Edit Configurations > + > Maven > "clean javafx:run"
