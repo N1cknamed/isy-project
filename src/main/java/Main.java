@@ -30,23 +30,23 @@ public class Main {
         to start the server in cmd type: java -jar newgameserver-1.0.jar
         then get the ip and port of the server and type those in the appropriate inputs
         */
-        ServerController x = new ServerController("localhost", 7789);
-        Message message = x.getMessage();
-
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            String userInput = scanner.nextLine();
-            x.sendMessage(userInput);
-            synchronized (message) {
-                try {
-                    message.wait();
-                    System.out.println(message.getMessage());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+//        ServerController x = new ServerController("localhost", 7789);
+//        Message message = x.getMessage();
+//
+//        Scanner scanner = new Scanner(System.in);
+//
+//        while (true) {
+//            String userInput = scanner.nextLine();
+//            x.sendMessage(userInput);
+//            synchronized (message) {
+//                try {
+//                    message.wait();
+//                    System.out.println(message.getMessage());
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        }
 
     }
 }
