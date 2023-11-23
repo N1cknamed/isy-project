@@ -33,4 +33,5 @@ bin/
 isy-project.iml
 .idea/
 libraries/
+target/
 out/
