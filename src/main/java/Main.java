@@ -35,18 +35,15 @@ public class Main {
 //
 //        Scanner scanner = new Scanner(System.in);
 //
+//        new Thread(() -> {
+//            while (true) {
+//                System.out.println(message.pop());
+//            }
+//        }).start();
+//
 //        while (true) {
 //            String userInput = scanner.nextLine();
 //            x.sendMessage(userInput);
-//            synchronized (message) {
-//                try {
-//                    message.wait();
-//                    System.out.println(message.getMessage());
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
 //        }
-
     }
 }
