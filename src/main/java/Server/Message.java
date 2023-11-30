@@ -1,18 +1,28 @@
 package Server;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+
 public class Message {
 
-    private String message;
+    private BlockingQueue<String> queue = new SynchronousQueue<>();
 
-    public Message(){
-        this.message = "";
+    public Message() {
     }
 
-    public String getMessage() {
-        return message;
+    public String pop() {
+        try {
+            return queue.take();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void push(String message) {
+        try {
+            this.queue.put(message);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

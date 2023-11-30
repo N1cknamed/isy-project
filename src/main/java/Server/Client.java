@@ -42,15 +42,7 @@ public class Client implements Runnable{
 
             String serverMessage;
             while ((serverMessage = in.readLine()) != null) {
-//                System.out.println(serverMessage);
-                synchronized (message) {
-                    try {
-                        message.setMessage(serverMessage);
-                        message.notify();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+                message.push(serverMessage);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
