@@ -2,50 +2,90 @@ package Games;
 
 import Ai.TttAI;
 
+import java.io.*;
 import java.util.*;
 
-public class Tictactoe extends Board{
+public class Tictactoe extends Board {
     private final char[][] board;
     private char player = 'x';
     public int[][] winningCoords;
-    public Tictactoe() {
+
+    public boolean winner = false;
+
+    private Player player1;
+    private Player player2;
+
+
+    public Tictactoe(Player player1, Player player2) {
         super(3, 3);
         this.board = super.getBoard();
+        this.player1 = player1;
+        this.player2 = player2;
     }
-    public Tictactoe(char[][] board, char player) {
+
+    public Tictactoe(char[][] board, char player, Player player1, Player player2) {
         // make a game with existing board
         super(board);
         this.board = super.getBoard();
         this.player = player;
+        this.player1 = player1;
+        this.player2 = player2;
     }
+
+    public Tictactoe deepCopy() {
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(this);
+
+            ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+            ObjectInputStream in = new ObjectInputStream(bis);
+
+            return (Tictactoe) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public char getPlayer() {
         return player;
     }
+
     public void switchPlayer() {
-        if (player == 'x'){
+        if (player == 'x') {
             player = 'o';
         } else {
             player = 'x';
         }
     }
-    public boolean move(int x, int y) {
-        if (((x < 0) || (x >= boardWidth)) || ((y < 0) || (y >= boardWidth))){  // check if x or y are out of bounds
-            return false;
-        }
-        if (board[x][y] == 0){ // check if index is empty, idk why this works
-            board[x][y] = player;
+
+    private boolean move(int x, int y) {
+        if (((x < 0) || (x >= boardWidth)) || ((y < 0) || (y >= boardWidth))) {  // check if x or y are out of bounds
             return true;
         }
-        return false; // index is already full
+        if (board[x][y] == 0) { // check if index is empty, idk why this works
+            board[x][y] = player;
+            return false;
+        }
+        return true; // index is already full
     }
+
+    public boolean isMovePosible(int x, int y) {
+        if (((x < 0) || (x >= boardWidth)) || ((y < 0) || (y >= boardWidth))) {  // check if x or y are out of bounds
+            return false;
+        }
+        return board[x][y] == 0;// index is already full
+    }
+
     public boolean checkWin(char player) {
         // [row, col]
         int[][] winningCoords = new int[boardWidth][2];
         // row
         for (int i = 0; i < boardHeight; i++) {
             boolean won = true;
-            for (int j = 0; j < boardWidth; j++){
-                if (board[i][j] != player){
+            for (int j = 0; j < boardWidth; j++) {
+                if (board[i][j] != player) {
                     won = false;
                     break;
                 } else {
@@ -62,15 +102,15 @@ public class Tictactoe extends Board{
         // col
         for (int i = 0; i < boardWidth; i++) {
             boolean won = true;
-            for (int j = 0; j < boardHeight; j++){
-                if (board[j][i] != player){
+            for (int j = 0; j < boardHeight; j++) {
+                if (board[j][i] != player) {
                     won = false;
                     break;
                 } else {
                     winningCoords[j][0] = j;
                     winningCoords[j][1] = i;
                 }
-                
+
             }
             if (won) {
                 this.winningCoords = winningCoords;
@@ -80,8 +120,8 @@ public class Tictactoe extends Board{
 
         // diagonal left
         boolean won = true;
-        for ( int i = 0; i < boardHeight; i++){
-            if (board[i][i] != player){
+        for (int i = 0; i < boardHeight; i++) {
+            if (board[i][i] != player) {
                 won = false;
                 break;
             } else {
@@ -96,8 +136,8 @@ public class Tictactoe extends Board{
 
         // diagonal right
         won = true;
-        for ( int i = 0, j = boardHeight-1; i < boardHeight; i++, j--){
-            if (board[i][j] != player){
+        for (int i = 0, j = boardHeight - 1; i < boardHeight; i++, j--) {
+            if (board[i][j] != player) {
                 won = false;
                 break;
             } else {
@@ -105,13 +145,55 @@ public class Tictactoe extends Board{
                 winningCoords[i][1] = j;
             }
         }
-        if (won){
+        if (won) {
             this.winningCoords = winningCoords;
         }
         return won;
     }
 
+    private void updatePlayers() {
+        player1.updateBoard(this);
+        player2.updateBoard(this);
+    }
+
     public void playGame() {
+        System.out.println("Tic Tac Toe");
+
+        while (!winner) {
+            Player currentPlayer = (getPlayer() == 'x') ? player1 : player2;
+
+            updatePlayers();
+
+            int[] move = currentPlayer.makeMove(this);
+
+            int inrow = move[0];
+            int incol = move[1];
+
+            if (!((inrow >= 0 && inrow < boardHeight) && (incol >= 0 && incol < boardWidth))) {
+                System.out.println("Invalid input; retry input:");
+                continue;
+            }
+
+            if (this.move(inrow, incol)) {
+                System.out.println("Location is already taken; retry input:");
+                continue;
+            }
+
+            if (checkWin(getPlayer())) {
+                winner = true;
+                updatePlayers();
+                System.out.printf("Player %s has won", getPlayer());
+            } else if (isBoardFull()) {
+                winner = true;
+                updatePlayers();
+                System.out.println("It's a draw!");
+            }
+
+            switchPlayer();
+        }
+    }
+
+    /*public void playGame() {
         Scanner in = new Scanner(System.in);
         boolean winner = false;
         System.out.println("Tic Tac Toe");
@@ -166,5 +248,6 @@ public class Tictactoe extends Board{
 
             switchPlayer();
         }
-    }
+    }*/
+
 }

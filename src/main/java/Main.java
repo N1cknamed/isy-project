@@ -9,6 +9,24 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+
+        // Create a thread for the TictactoeGui
+        Thread tictactoeGuiThread = new Thread(() -> {
+            TictactoeGui.launch(TictactoeGui.class, args);
+        });
+
+        // Start the thread
+        tictactoeGuiThread.start();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Tictactoe game = new Tictactoe(new AIPlayer(), new GuiPlayer());
+
+        game.playGame();
+
+
         // login page
 //        Login.launch(Login.class, args);
 //        String enteredText = Login.getEnteredText();
@@ -24,7 +42,7 @@ public class Main {
         // Battleships
 //        BattleShips game = new BattleShips();
 //        game.printBoard();
-        
+
         // server
         /*
         to start the server in cmd type: java -jar newgameserver-1.0.jar

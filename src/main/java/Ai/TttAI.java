@@ -2,6 +2,8 @@ package Ai;
 
 import Games.Tictactoe;
 
+import java.awt.*;
+
 public class TttAI {
     private char aiPlayer;
     private char opponentPlayer;
@@ -13,7 +15,7 @@ public class TttAI {
 
     public int[] findBestMove(Tictactoe game) {
         int[] bestMove = minimax(game, aiPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        return bestMove;
+        return new int[] {bestMove[1], bestMove[2]};
     }
 
     private int[] minimax(Tictactoe game, char currentPlayer, int alpha, int beta) {
@@ -30,9 +32,12 @@ public class TttAI {
         for (int row = 0; row < game.getBoardHeight(); row++) {
             for (int col = 0; col < game.getBoardWidth(); col++) {
                 if (game.getBoard()[row][col] == 0) {
-                    game.getBoard()[row][col] = currentPlayer;
+                    char[][] originalBoard = game.getBoard();
+                    char[][] boardCopy = copyBoard(originalBoard);
+                    boardCopy[row][col] = currentPlayer;
+                    game.setBoard(boardCopy);
                     int[] score = minimax(game, (currentPlayer == aiPlayer) ? opponentPlayer : aiPlayer, alpha, beta);
-                    game.getBoard()[row][col] = 0;
+                    game.setBoard(originalBoard);
 
                     if (currentPlayer == aiPlayer) {
                         if (score[0] > bestMove[0]) {
@@ -58,5 +63,13 @@ public class TttAI {
         }
 
         return bestMove;
+    }
+
+    private char[][] copyBoard(char[][] board) {
+        char[][] copy = new char[board.length][];
+        for (int i = 0; i < board.length; i++) {
+            copy[i] = board[i].clone();
+        }
+        return copy;
     }
 }
