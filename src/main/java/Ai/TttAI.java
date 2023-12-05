@@ -32,12 +32,9 @@ public class TttAI {
         for (int row = 0; row < game.getBoardHeight(); row++) {
             for (int col = 0; col < game.getBoardWidth(); col++) {
                 if (game.getBoard()[row][col] == 0) {
-                    char[][] originalBoard = game.getBoard();
-                    char[][] boardCopy = copyBoard(originalBoard);
-                    boardCopy[row][col] = currentPlayer;
-                    game.setBoard(boardCopy);
+                    game.getBoard()[row][col] = currentPlayer;
                     int[] score = minimax(game, (currentPlayer == aiPlayer) ? opponentPlayer : aiPlayer, alpha, beta);
-                    game.setBoard(originalBoard);
+                    game.getBoard()[row][col] = 0;
 
                     if (currentPlayer == aiPlayer) {
                         if (score[0] > bestMove[0]) {
@@ -63,13 +60,5 @@ public class TttAI {
         }
 
         return bestMove;
-    }
-
-    private char[][] copyBoard(char[][] board) {
-        char[][] copy = new char[board.length][];
-        for (int i = 0; i < board.length; i++) {
-            copy[i] = board[i].clone();
-        }
-        return copy;
     }
 }

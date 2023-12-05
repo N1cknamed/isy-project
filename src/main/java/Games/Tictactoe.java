@@ -1,12 +1,8 @@
 package Games;
 
-import Ai.TttAI;
-
 import java.io.*;
-import java.util.*;
 
 public class Tictactoe extends Board {
-    private final char[][] board;
     private char player = 'x';
     public int[][] winningCoords;
 
@@ -18,7 +14,6 @@ public class Tictactoe extends Board {
 
     public Tictactoe(Player player1, Player player2) {
         super(3, 3);
-        this.board = super.getBoard();
         this.player1 = player1;
         this.player2 = player2;
     }
@@ -26,7 +21,6 @@ public class Tictactoe extends Board {
     public Tictactoe(char[][] board, char player, Player player1, Player player2) {
         // make a game with existing board
         super(board);
-        this.board = super.getBoard();
         this.player = player;
         this.player1 = player1;
         this.player2 = player2;
@@ -64,8 +58,8 @@ public class Tictactoe extends Board {
         if (((x < 0) || (x >= boardWidth)) || ((y < 0) || (y >= boardWidth))) {  // check if x or y are out of bounds
             return true;
         }
-        if (board[x][y] == 0) { // check if index is empty, idk why this works
-            board[x][y] = player;
+        if (getBoard()[x][y] == 0) { // check if index is empty, idk why this works
+            getBoard()[x][y] = player;
             return false;
         }
         return true; // index is already full
@@ -75,7 +69,7 @@ public class Tictactoe extends Board {
         if (((x < 0) || (x >= boardWidth)) || ((y < 0) || (y >= boardWidth))) {  // check if x or y are out of bounds
             return false;
         }
-        return board[x][y] == 0;// index is already full
+        return getBoard()[x][y] == 0;// index is already full
     }
 
     public boolean checkWin(char player) {
@@ -85,7 +79,7 @@ public class Tictactoe extends Board {
         for (int i = 0; i < boardHeight; i++) {
             boolean won = true;
             for (int j = 0; j < boardWidth; j++) {
-                if (board[i][j] != player) {
+                if (getBoard()[i][j] != player) {
                     won = false;
                     break;
                 } else {
@@ -103,7 +97,7 @@ public class Tictactoe extends Board {
         for (int i = 0; i < boardWidth; i++) {
             boolean won = true;
             for (int j = 0; j < boardHeight; j++) {
-                if (board[j][i] != player) {
+                if (getBoard()[j][i] != player) {
                     won = false;
                     break;
                 } else {
@@ -121,7 +115,7 @@ public class Tictactoe extends Board {
         // diagonal left
         boolean won = true;
         for (int i = 0; i < boardHeight; i++) {
-            if (board[i][i] != player) {
+            if (getBoard()[i][i] != player) {
                 won = false;
                 break;
             } else {
@@ -137,7 +131,7 @@ public class Tictactoe extends Board {
         // diagonal right
         won = true;
         for (int i = 0, j = boardHeight - 1; i < boardHeight; i++, j--) {
-            if (board[i][j] != player) {
+            if (getBoard()[i][j] != player) {
                 won = false;
                 break;
             } else {
