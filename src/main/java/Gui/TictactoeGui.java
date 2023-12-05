@@ -1,6 +1,5 @@
 package Gui;
 
-import Ai.TttAI;
 import Games.CliPlayer;
 import Games.GuiPlayer;
 import Games.Tictactoe;
@@ -9,7 +8,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,10 +19,9 @@ import java.util.List;
 public class TictactoeGui extends Application {
     private final Tictactoe game = new Tictactoe(new CliPlayer(), new CliPlayer());
     private static final Button[][] buttons = new Button[3][3];
-    private boolean gameOver = false;
-    private boolean againstAI = false;
 
     private static final List<GuiPlayer> players = new ArrayList<>();
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -55,6 +52,7 @@ public class TictactoeGui extends Application {
     public static void registerPlayer(GuiPlayer player) {
         players.add(player);
     }
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Tic-Tac-Toe");
@@ -93,7 +91,6 @@ public class TictactoeGui extends Application {
 
     private void checkWin() {
         if (game.checkWin(game.getPlayer())) {
-            gameOver = true;
             for (int i = 0; i < game.winningCoords.length; i++) {
                 int wRow = game.winningCoords[i][0];
                 int wCol = game.winningCoords[i][1];
@@ -101,7 +98,6 @@ public class TictactoeGui extends Application {
             }
             System.out.println("Player " + game.getPlayer() + " wins!");
         } else if (game.isBoardFull()) {
-            gameOver = true;
             System.out.println("It's a draw!");
         }
     }
@@ -110,24 +106,5 @@ public class TictactoeGui extends Application {
         for (GuiPlayer player : players) {
             if (player.getIsTurn()) player.setSelectedMove(row, col);
         }
-
-        /*
-        if (!gameOver && game.move(row, col)) {
-            buttons[row][col].setText(String.valueOf(game.getPlayer()));
-            checkWin();
-            game.switchPlayer();
-
-            if (againstAI && !gameOver && game.getPlayer() == 'o') { // If playing against AI
-                int[] aiMove = new TttAI('o', 'x').findBestMove(game);
-                int aiRow = aiMove[1];
-                int aiCol = aiMove[2];
-                if (game.move(aiRow, aiCol)) {
-                    buttons[aiRow][aiCol].setText(String.valueOf(game.getPlayer()));
-                    checkWin();
-                    game.switchPlayer();
-                }
-            }
-        }
-        */
     }
 }

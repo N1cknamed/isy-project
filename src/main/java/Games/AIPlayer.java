@@ -2,7 +2,7 @@ package Games;
 
 import Ai.TttAI;
 
-public class AIPlayer implements Player{
+public class AIPlayer implements Player {
 
     @Override
     public boolean isHuman() {
