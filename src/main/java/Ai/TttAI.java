@@ -13,7 +13,7 @@ public class TttAI {
 
     public int[] findBestMove(Tictactoe game) {
         int[] bestMove = minimax(game, aiPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        return bestMove;
+        return new int[]{bestMove[1], bestMove[2]};
     }
 
     private int[] minimax(Tictactoe game, char currentPlayer, int alpha, int beta) {

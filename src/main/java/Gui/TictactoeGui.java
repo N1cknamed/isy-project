@@ -1,25 +1,58 @@
 package Gui;
 
-import Ai.TttAI;
+import Games.CliPlayer;
+import Games.GuiPlayer;
 import Games.Tictactoe;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TictactoeGui extends Application {
-    private final Tictactoe game = new Tictactoe();
-    private final Button[][] buttons = new Button[3][3];
-    private boolean gameOver = false;
-    private boolean againstAI = false;
+    private final Tictactoe game = new Tictactoe(new CliPlayer(), new CliPlayer());
+    private static final Button[][] buttons = new Button[3][3];
+
+    private static final List<GuiPlayer> players = new ArrayList<>();
+
     public static void main(String[] args) {
         launch(args);
     }
+
+    public static void updateButtonsFromOutside(Tictactoe game) {
+        Platform.runLater(() -> {
+            updateButtons(game);
+        });
+    }
+
+    private static void updateButtons(Tictactoe game) {
+        char[][] board = game.getBoard();
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                buttons[row][col].setText(String.valueOf(board[row][col]));
+            }
+        }
+
+        if (game.winner) {
+            for (int i = 0; i < game.winningCoords.length; i++) {
+                int wRow = game.winningCoords[i][0];
+                int wCol = game.winningCoords[i][1];
+                buttons[wRow][wCol].getStyleClass().add("winning-button");
+            }
+        }
+    }
+
+    public static void registerPlayer(GuiPlayer player) {
+        players.add(player);
+    }
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Tic-Tac-Toe");
@@ -45,16 +78,9 @@ public class TictactoeGui extends Application {
         HBox messageBox = new HBox();
         messageBox.setPadding(new Insets(10, 10, 10, 10));
 
-        ComboBox<String> modeSelector = new ComboBox<>();
-        modeSelector.getItems().addAll("Two Players", "Against AI");
-        modeSelector.setValue("Two Players"); // Default selection
-        modeSelector.setOnAction(e -> {
-            String selectedMode = modeSelector.getValue();
-            againstAI = selectedMode.equals("Against AI");
-        });
 
         VBox root = new VBox();
-        root.getChildren().addAll(modeSelector, grid, messageBox);
+        root.getChildren().addAll(grid, messageBox);
 
         Scene scene = new Scene(root, 320, 360); // Increased height to accommodate mode selector
 
@@ -65,7 +91,6 @@ public class TictactoeGui extends Application {
 
     private void checkWin() {
         if (game.checkWin(game.getPlayer())) {
-            gameOver = true;
             for (int i = 0; i < game.winningCoords.length; i++) {
                 int wRow = game.winningCoords[i][0];
                 int wCol = game.winningCoords[i][1];
@@ -73,27 +98,13 @@ public class TictactoeGui extends Application {
             }
             System.out.println("Player " + game.getPlayer() + " wins!");
         } else if (game.isBoardFull()) {
-            gameOver = true;
             System.out.println("It's a draw!");
         }
     }
 
     private void handleButtonClick(int row, int col) {
-        if (!gameOver && game.move(row, col)) {
-            buttons[row][col].setText(String.valueOf(game.getPlayer()));
-            checkWin();
-            game.switchPlayer();
-
-            if (againstAI && !gameOver && game.getPlayer() == 'o') { // If playing against AI
-                int[] aiMove = new TttAI('o', 'x').findBestMove(game);
-                int aiRow = aiMove[1];
-                int aiCol = aiMove[2];
-                if (game.move(aiRow, aiCol)) {
-                    buttons[aiRow][aiCol].setText(String.valueOf(game.getPlayer()));
-                    checkWin();
-                    game.switchPlayer();
-                }
-            }
+        for (GuiPlayer player : players) {
+            if (player.getIsTurn()) player.setSelectedMove(row, col);
         }
     }
 }
