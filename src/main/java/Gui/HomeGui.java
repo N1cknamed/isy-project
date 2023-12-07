@@ -53,31 +53,25 @@ public class HomeGui extends Application {
 
     }
     public void btnStart(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         if (toggleGroup.getSelectedToggle()==null){
                 // No radio button selected, show an error or take appropriate action
                 System.out.println("Please select a radio button before starting.");
                 return;
-            }
+        }
 
         if (toggleGroup.getSelectedToggle() == tictactoe) {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 320, 300
-            );
+            TictactoeGui tictactoeGui = new TictactoeGui();
+            tictactoeGui.start(stage);
 
         } else if (toggleGroup.getSelectedToggle() == battleship) {
-            // Implement online navigation logic here
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 500, 500
-            );
-
+            BattleShipsGui battleShipsGui = new BattleShipsGui();
+            battleShipsGui.start(stage);
+}
             // Perform any initialization or configuration of the controller here if needed.
-
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            stage.setScene(scene);
             stage.show();
         }
-    }
 
     public void btnCancel(ActionEvent actionEvent){
         System.out.println("Cancel button clicked");

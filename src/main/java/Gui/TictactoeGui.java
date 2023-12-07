@@ -18,7 +18,6 @@ public class TictactoeGui extends Application {
     private final Button[][] buttons = new Button[3][3];
     private boolean gameOver = false;
     private boolean againstAI = false;
-    private VBox root;
 
     @Override
     public void start(Stage primaryStage) {
@@ -56,8 +55,8 @@ public class TictactoeGui extends Application {
         VBox root = new VBox();
         root.getChildren().addAll(modeSelector, grid, messageBox);
 
-        Scene scene = new Scene(root, 320, 360); // Increased height to accommodate mode selector
-
+//       Increased height to accommodate mode selector
+        Scene scene = new Scene(root, 335, 360);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
