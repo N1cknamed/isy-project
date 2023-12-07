@@ -16,6 +16,12 @@ public class Board {
         this.boardHeight = board[0].length;
         this.board = board;
     }
+    public void set(int x, int y, char c) {
+        this.board[y][x] = c;
+    }
+    public char get(int x, int y) {
+        return this.board[y][x];
+    }
     public char[][] getBoard() {
         return board;
     }
