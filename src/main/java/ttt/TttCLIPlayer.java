@@ -32,10 +32,10 @@ public class TttCLIPlayer implements Player {
         do {
             System.out.printf("Player %s's turn\n", symbol);
             System.out.print("Enter row (0-2): ");
-            x = scanner.nextInt();
-            System.out.print("Enter column (0-2): ");
             y = scanner.nextInt();
-        } while (game.isValidMove(new Point(x, y));
+            System.out.print("Enter column (0-2): ");
+            x = scanner.nextInt();
+        } while (!game.isValidMove(new Point(x, y)));
 
         return new Point(x, y);
     }

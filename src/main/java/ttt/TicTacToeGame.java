@@ -21,6 +21,7 @@ public class TicTacToeGame implements Game {
         this(3, 3);
     }
 
+
     @Override
     public void start(Player player1, Player player2) {
         this.player1 = player1;
@@ -37,6 +38,11 @@ public class TicTacToeGame implements Game {
         return currentPlayer == 'x' ? player1 : player2;
     }
 
+    @Override
+    public Board getBoard() {
+        return this.board;
+    }
+
     public char getCurrentPlayerSymbol() {
         return currentPlayer;
     }
@@ -51,6 +57,7 @@ public class TicTacToeGame implements Game {
         if (board.get(move.x, move.y) == 0) { // check if index is empty, idk why this works
             board.set(move.x, move.y, currentPlayer);
             currentPlayer = currentPlayer == 'x' ? 'o' : 'x';
+            System.out.println("current player:" + currentPlayer);
             return false;
         }
         return true; // index is already full
