@@ -6,7 +6,7 @@ import java.awt.*;
 
 public interface Game {
 
-    public void start(Player player1, Player player2);
+    public void start(PlayerFactory playerFactory1, PlayerFactory playerFactory2);
     public boolean hasEnded();
     public Player getCurrentPlayer();
     public Board getBoard();

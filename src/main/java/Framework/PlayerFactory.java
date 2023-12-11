@@ -2,5 +2,5 @@ package Framework;
 
 public interface PlayerFactory {
 
-    Player build();
+    Player build(char symbol);
 }

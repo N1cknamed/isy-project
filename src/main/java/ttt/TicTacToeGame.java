@@ -2,6 +2,7 @@ package ttt;
 
 import Framework.Game;
 import Framework.Player;
+import Framework.PlayerFactory;
 import Games.Board;
 
 import java.awt.*;
@@ -23,9 +24,9 @@ public class TicTacToeGame implements Game {
 
 
     @Override
-    public void start(Player player1, Player player2) {
-        this.player1 = player1;
-        this.player2 = player2;
+    public void start(PlayerFactory playerFactory1, PlayerFactory playerFactory2) {
+        this.player1 = playerFactory1.build('x');
+        this.player2 = playerFactory2.build('o');
     }
 
     @Override
@@ -57,7 +58,6 @@ public class TicTacToeGame implements Game {
         if (board.get(move.x, move.y) == 0) { // check if index is empty, idk why this works
             board.set(move.x, move.y, currentPlayer);
             currentPlayer = currentPlayer == 'x' ? 'o' : 'x';
-            System.out.println("current player:" + currentPlayer);
             return false;
         }
         return true; // index is already full

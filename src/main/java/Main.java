@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Game game = new TicTacToeGame();
-        GameController controller = new GameController(game, new TttPlayerFactory('x'), new TttPlayerFactory('o'));
+        GameController controller = new GameController(game, new TttPlayerFactory(), new TttPlayerFactory());
         controller.registerSubscriber(new TttCliSubscriber());
         controller.gameLoop();
     }

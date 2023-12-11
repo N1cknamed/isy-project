@@ -4,12 +4,8 @@ import Framework.Player;
 import Framework.PlayerFactory;
 
 public class TttPlayerFactory implements PlayerFactory {
-    private char symbol;
-    public TttPlayerFactory(char symbol) {
-        this.symbol = symbol;
-    }
     @Override
-    public Player build() {
+    public Player build(char symbol) {
         return new TttCLIPlayer(symbol);
     }
 }

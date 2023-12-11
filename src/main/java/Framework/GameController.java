@@ -16,7 +16,7 @@ public class GameController {
     }
 
     public void gameLoop() {
-        game.start(playerFactory1.build(), playerFactory2.build());
+        game.start(playerFactory1, playerFactory2);
 
         for (GameSubscriber i : subscribers) {
             i.onGameStarted(game);
