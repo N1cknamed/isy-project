@@ -21,7 +21,12 @@ public class TttCliSubscriber implements GameSubscriber {
 
     @Override
     public void onGameEnded(Game game) {
-        System.out.println("player " + game.getWinner().getSymbol() + " has won.");
+        if (game.getWinner() == null) {
+            System.out.println("Draw");
+        } else {
+            System.out.println("player " + game.getWinner().getSymbol() + " has won.");
+        }
+        
     }
 
     @Override

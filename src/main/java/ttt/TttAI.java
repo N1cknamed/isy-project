@@ -1,6 +1,6 @@
-package Ai;
+package ttt;
 
-import Games.Tictactoe;
+import Framework.Game;
 
 public class TttAI {
     private char aiPlayer;
@@ -11,28 +11,29 @@ public class TttAI {
         this.opponentPlayer = opponentPlayer;
     }
 
-    public int[] findBestMove(Tictactoe game) {
+    public int[] findBestMove(Game game) {
         int[] bestMove = minimax(game, aiPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
         return new int[]{bestMove[1], bestMove[2]};
     }
 
-    private int[] minimax(Tictactoe game, char currentPlayer, int alpha, int beta) {
-        if (game.checkWin(aiPlayer)) {
-            return new int[]{1, 0, 0};
-        } else if (game.checkWin(opponentPlayer)) {
-            return new int[]{-1, 0, 0};
-        } else if (game.isBoardFull()) {
-            return new int[]{0, 0, 0};
+    private int[] minimax(Game game, char currentPlayer, int alpha, int beta) {
+        if (game.hasEnded()) { 
+            if (game.getWinner() == null) {
+                return new int[]{0, 0, 0};
+            } else if (game.getWinner().getSymbol() == aiPlayer) {
+                return new int[]{1, 0, 0};
+            } else if (game.getWinner().getSymbol() == opponentPlayer) {
+                return new int[]{-1, 0, 0};
+            }
         }
-
         int[] bestMove = {currentPlayer == aiPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE, -1, -1};
 
-        for (int row = 0; row < game.getBoardHeight(); row++) {
-            for (int col = 0; col < game.getBoardWidth(); col++) {
-                if (game.getBoard()[row][col] == 0) {
-                    game.getBoard()[row][col] = currentPlayer;
+        for (int row = 0; row < game.getBoard().getBoardHeight(); row++) {
+            for (int col = 0; col < game.getBoard().getBoardWidth(); col++) {
+                if (game.getBoard().get(col, row) == 0) {
+                    game.getBoard().set(col, row, currentPlayer);
                     int[] score = minimax(game, (currentPlayer == aiPlayer) ? opponentPlayer : aiPlayer, alpha, beta);
-                    game.getBoard()[row][col] = 0;
+                    game.getBoard().set(col, row, (char) 0);
 
                     if (currentPlayer == aiPlayer) {
                         if (score[0] > bestMove[0]) {
