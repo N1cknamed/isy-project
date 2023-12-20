@@ -16,10 +16,10 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Game game = new TicTacToeGame();
-        GameController controller = new GameController(game, TttAIPlayer::new, new TttPlayerFactory());
-        controller.registerSubscriber(new TttCliSubscriber());
-        controller.gameLoop();
+//        Game game = new TicTacToeGame();
+//        GameController controller = new GameController(game, TttAIPlayer::new, new TttPlayerFactory());
+//        controller.registerSubscriber(new TttCliSubscriber());
+//        controller.gameLoop();
 
         // tic tac toe gui (can choose to play against ai) TODO: reset game after switching game type
 //        TictactoeGui.launch(TictactoeGui.class, args);
