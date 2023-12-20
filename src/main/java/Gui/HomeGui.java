@@ -2,14 +2,16 @@ package Gui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -24,6 +26,8 @@ public class HomeGui extends Application {
 
     @FXML
     private ToggleGroup toggleGroup;
+    @FXML
+    private ComboBox<String> modeSelector;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -53,11 +57,11 @@ public class HomeGui extends Application {
 
     }
     public void btnStart(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-        if (toggleGroup.getSelectedToggle()==null){
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        if (toggleGroup.getSelectedToggle()==null && modeSelector.getValue()==null){
                 // No radio button selected, show an error or take appropriate action
-                System.out.println("Please select a radio button before starting.");
+                System.out.println("Please select a radio button or make a choice before starting.");
                 return;
         }
 
@@ -68,10 +72,15 @@ public class HomeGui extends Application {
         } else if (toggleGroup.getSelectedToggle() == battleship) {
             BattleShipsGui battleShipsGui = new BattleShipsGui();
             battleShipsGui.start(stage);
-}
-            // Perform any initialization or configuration of the controller here if needed.
-            stage.show();
         }
+
+        stage.show();
+
+    }
+    public void modeSelector(ActionEvent actionEvent) {
+
+    }
+
 
     public void btnCancel(ActionEvent actionEvent){
         System.out.println("Cancel button clicked");
