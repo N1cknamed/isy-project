@@ -52,10 +52,6 @@ public class TictactoeGui extends Application {
     public static void registerPlayer(GuiPlayer player) {
         players.add(player);
     }
-    private final Tictactoe game = new Tictactoe();
-    private final Button[][] buttons = new Button[3][3];
-    private boolean gameOver = false;
-    private boolean againstAI = false;
 
 
     @Override
