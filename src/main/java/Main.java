@@ -4,6 +4,9 @@ import Framework.GameSubscriber;
 import Gui.*;
 import Games.*;
 import Server.*;
+import battleship.BattleshipCliSubscriber;
+import battleship.BattleshipGame;
+import battleship.BattleshipPlayerFactory;
 import ttt.TicTacToeGame;
 import ttt.TttAIPlayer;
 import ttt.TttCLIPlayer;
@@ -21,9 +24,14 @@ public class Main {
 //        controller.registerSubscriber(new TttCliSubscriber());
 //        controller.gameLoop();
 
+        Game game = new BattleshipGame();
+        GameController controller = new GameController(game, new BattleshipPlayerFactory(), new BattleshipPlayerFactory());
+        controller.registerSubscriber(new BattleshipCliSubscriber());
+        controller.gameLoop();
+
         // tic tac toe gui (can choose to play against ai) TODO: reset game after switching game type
 //        TictactoeGui.launch(TictactoeGui.class, args);
-        HomeGui.launch(HomeGui.class,args);
+//        HomeGui.launch(HomeGui.class,args);
 
 
 

@@ -12,6 +12,8 @@ public class BattleshipGame implements Game {
     private final Board board1;
     private final Board board2;
 
+    private BattleshipPlayer player1, player2;
+
     private char currentPlayer= '1';
 
     public BattleshipGame() {
@@ -21,7 +23,10 @@ public class BattleshipGame implements Game {
 
     @Override
     public void start(PlayerFactory playerFactory1, PlayerFactory playerFactory2) {
-
+        this.player1 = (BattleshipPlayer) playerFactory1.build('1');
+        this.player2 = (BattleshipPlayer) playerFactory2.build('2');
+        this.player1.placeBoats();
+        this.player2.placeBoats();
     }
 
     @Override
@@ -31,7 +36,7 @@ public class BattleshipGame implements Game {
 
     @Override
     public Player getCurrentPlayer() {
-        return null;
+        return currentPlayer == '1' ? player1 : player2;
     }
 
     @Override
