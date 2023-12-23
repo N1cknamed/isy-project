@@ -14,9 +14,8 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     private final char symbol;
     private final Scanner scanner;
     private Board board;
-
     private HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
-
+    private int boatsRemaining = 0;
     public BattleshipCliPlayer(char symbol) {
         this.symbol = symbol;
         this.scanner = new Scanner(System.in);
@@ -39,10 +38,10 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
         int x, y;
         do {
             System.out.printf("Player %s's turn\n", symbol);
-            System.out.print("Enter row (0-2): ");
-            y = scanner.nextInt();
-            System.out.print("Enter column (0-2): ");
+            System.out.print("Enter x (0-7): ");
             x = scanner.nextInt();
+            System.out.print("Enter y (0-7): ");
+            y = scanner.nextInt();
         } while (!game.isValidMove(new Point(x, y)));
 
         return new Point(x, y);
@@ -75,9 +74,9 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     public void placeBoats() {
         System.out.println("Player " + symbol + " place your boats");
         ships.put('2', 2);
-        ships.put('3', 3);
-        ships.put('4', 4);
-        ships.put('6', 6);
+        //ships.put('3', 3);
+        //ships.put('4', 4);
+        //ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             board.printBoard();
@@ -100,10 +99,12 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
                 valid = isValidMove(new Point(x, y), size, direction);
             } while (!valid);
 
+            // TODO remove code repeat
             if (direction == 0) {
-                System.out.println("Direction = 0");
+                // place boat and surround with spaces
                 for (int i = x-1; i < x + size + 1; i++) {
                     for (int j = y-1; j <= y+1; j++) {
+                        // check if in bounds
                         if (i >= 0 && i < board.getBoardWidth() && j >= 0 && j < board.getBoardHeight()) {
                             if (i >= x && i < x + size && y == j) {
                                 board.set(i, j, boatType);
@@ -126,7 +127,21 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
                     }
                 }
             }
+            boatsRemaining++;
             System.out.println(board.get(x, y));
         }
+        board.printBoard();
+        System.out.printf("Player %s has placed all their boats\n", symbol);
+    }
+
+    @Override
+    public char shoot(Point move) {
+        char result = board.get(move.x, move.y);
+        if (result == ' ' || result == 0 || result == 'm') {
+            result = 'm';
+        } else {
+            result = 'h';
+        }
+        return result;
     }
 }

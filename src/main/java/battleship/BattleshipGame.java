@@ -14,7 +14,7 @@ public class BattleshipGame implements Game {
 
     private BattleshipPlayer player1, player2;
 
-    private char currentPlayer= '1';
+    private char currentPlayer = '1';
 
     public BattleshipGame() {
         this.board1 = new Board(8, 8);
@@ -39,19 +39,41 @@ public class BattleshipGame implements Game {
         return currentPlayer == '1' ? player1 : player2;
     }
 
+    public BattleshipPlayer getOpponentPlayer() {
+        return currentPlayer == '1' ? player2 : player1;
+    }
+
     @Override
     public Board getBoard() {
-        return null;
+        return getCurrentBoard();
+    }
+
+    public Board getCurrentBoard() {
+        return currentPlayer == '1' ? board1 : board2;
     }
 
     @Override
     public boolean doMove(Point move) {
-        return false;
+        if (isValidMove(move)) {
+            char shot = getOpponentPlayer().shoot(move);
+            getCurrentBoard().set(move.x, move.y, shot);
+            if (shot == 'm') {
+                currentPlayer = currentPlayer == '1' ? '2' : '1';
+            }
+            return false;
+        } else return true;
     }
 
     @Override
     public boolean isValidMove(Point move) {
-        return false;
+        Board currentBoard = getCurrentBoard();
+        if (((move.x < 0) ||
+                (move.x >= currentBoard.getBoardWidth())) ||
+                ((move.y < 0) || (move.y >= currentBoard.getBoardWidth()))) {  // check if x or y are out of bounds
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override

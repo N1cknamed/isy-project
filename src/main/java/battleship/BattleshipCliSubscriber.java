@@ -15,6 +15,7 @@ public class BattleshipCliSubscriber implements GameSubscriber {
     @Override
     public void onGameUpdated(Game game) {
         System.out.println("game updated");
+        game.getBoard().printBoard();
     }
 
     @Override
