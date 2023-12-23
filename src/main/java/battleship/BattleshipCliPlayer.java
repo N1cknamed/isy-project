@@ -137,11 +137,20 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     @Override
     public char shoot(Point move) {
         char result = board.get(move.x, move.y);
+        char rt;
         if (result == ' ' || result == 0 || result == 'm') {
-            result = 'm';
+            rt = 'm';
         } else {
-            result = 'h';
+            rt = 'h';
+            board.set(move.x, move.y, 'x');
+            int shotsRemaining = ships.get(result);
+            shotsRemaining--;
+            ships.put(result, shotsRemaining);
+            if (shotsRemaining <= 0) {
+                boatsRemaining--;
+                rt = result;
+            }
         }
-        return result;
+        return rt;
     }
 }
