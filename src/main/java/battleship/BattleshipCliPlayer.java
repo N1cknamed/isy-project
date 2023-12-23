@@ -2,6 +2,7 @@ package battleship;
 
 import Framework.Game;
 import Framework.Player;
+import Games.Board;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -12,14 +13,14 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
 
     private final char symbol;
     private final Scanner scanner;
-    private char[][] board;
+    private Board board;
 
     private HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
 
     public BattleshipCliPlayer(char symbol) {
         this.symbol = symbol;
         this.scanner = new Scanner(System.in);
-        this.board = new char[8][8];
+        this.board = new Board(8, 8);
     }
 
 
@@ -53,7 +54,7 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
                 return false;
             }
             for (int i = move.x; i < move.x + size; i++) {
-                if (board[i][move.y] != 0) {
+                if (board.get(i,move.y) != 0) {
                     return false;
                 }
             }
@@ -62,7 +63,7 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
                 return false;
             }
             for (int i = move.y; i < move.y + size; i++) {
-                if (board[move.x][i] != 0) {
+                if (board.get(move.x, i) != 0) {
                     return false;
                 }
             }
@@ -79,15 +80,16 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
         ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
-            Character key = entry.getKey();
-            Integer value = entry.getValue();
+            board.printBoard();
+            Character boatType = entry.getKey();
+            Integer size = entry.getValue();
             int x, y, direction;
             boolean valid = true;
             do {
                 if (valid) {
-                    System.out.println("Place boat of size " + value);
+                    System.out.println("Place boat of size " + size);
                 } else {
-                    System.out.println("Invalid move, place boat of size " + value + " again");
+                    System.out.println("Invalid move, place boat of size " + size + " again");
                 }
                 System.out.println("Enter x coordinate");
                 x = scanner.nextInt();
@@ -95,8 +97,36 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
                 y = scanner.nextInt();
                 System.out.println("Enter direction (0 = horizontal, 1 = vertical)");
                 direction = scanner.nextInt();
-                valid = isValidMove(new Point(x, y), value, direction);
+                valid = isValidMove(new Point(x, y), size, direction);
             } while (!valid);
+
+            if (direction == 0) {
+                System.out.println("Direction = 0");
+                for (int i = x-1; i < x + size + 1; i++) {
+                    for (int j = y-1; j <= y+1; j++) {
+                        if (i >= 0 && i < board.getBoardWidth() && j >= 0 && j < board.getBoardHeight()) {
+                            if (i >= x && i < x + size && y == j) {
+                                board.set(i, j, boatType);
+                            } else {
+                                board.set(i, j, ' ');
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (int i = x-1; i <= x + 1; i++) {
+                    for (int j = y-1; j < y+size+1; j++) {
+                        if (i >= 0 && i < board.getBoardWidth() && j >= 0 && j < board.getBoardHeight()) {
+                            if (j >= y && j < y + size && x == i) {
+                                board.set(i, j, boatType);
+                            } else {
+                                board.set(i, j, ' ');
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.println(board.get(x, y));
         }
     }
 }
