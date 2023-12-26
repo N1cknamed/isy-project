@@ -1,12 +1,12 @@
 package ttt;
 
-import Framework.Game;
+import framework.Game;
 
-public class TttAI {
+public class TttAi {
     private char aiPlayer;
     private char opponentPlayer;
 
-    public TttAI(char aiPlayer, char opponentPlayer) {
+    public TttAi(char aiPlayer, char opponentPlayer) {
         this.aiPlayer = aiPlayer;
         this.opponentPlayer = opponentPlayer;
     }

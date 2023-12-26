@@ -1,6 +1,6 @@
-package Games;
+package games;
 
-import Gui.TictactoeGui;
+import gui.TttGui;
 
 public class GuiPlayer implements Player {
     private boolean isTurn = false;
@@ -9,7 +9,7 @@ public class GuiPlayer implements Player {
     private int selectedCol = -1;
 
     public GuiPlayer() {
-        TictactoeGui.registerPlayer(this);
+        TttGui.registerPlayer(this);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class GuiPlayer implements Player {
 
     @Override
     public void updateBoard(Tictactoe game) {
-        TictactoeGui.updateButtonsFromOutside(game);
+        TttGui.updateButtonsFromOutside(game);
     }
 
     // Method to set the selected row and column from GUI

@@ -1,24 +1,24 @@
 package ttt;
 
-import Framework.Game;
-import Framework.Player;
-import Framework.PlayerFactory;
-import Games.Board;
+import framework.Game;
+import framework.Player;
+import framework.PlayerFactory;
+import games.Board;
 
 import java.awt.*;
 
-public class TicTacToeGame implements Game {
+public class TttGame implements Game {
 
     private final Board board;
 
     private char currentPlayer = 'x';
     private Player player1, player2;
 
-    public TicTacToeGame(int width, int height) {
+    public TttGame(int width, int height) {
         this.board = new Board(width, height);
     }
 
-    public TicTacToeGame() {
+    public TttGame() {
         this(3, 3);
     }
 

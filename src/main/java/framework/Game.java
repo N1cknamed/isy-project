@@ -1,6 +1,6 @@
-package Framework;
+package framework;
 
-import Games.Board;
+import games.Board;
 
 import java.awt.*;
 

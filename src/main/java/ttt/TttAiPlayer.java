@@ -2,17 +2,17 @@ package ttt;
 
 import java.awt.Point;
 
-import Framework.Game;
-import Framework.Player;
+import framework.Game;
+import framework.Player;
 
-public class TttAIPlayer implements Player {
+public class TttAiPlayer implements Player {
 
     private final char symbol;
-    private final TttAI ai;
+    private final TttAi ai;
 
-    public TttAIPlayer(char symbol) {
+    public TttAiPlayer(char symbol) {
         this.symbol = symbol;
-        this.ai = new TttAI(symbol, symbol == 'x' ? 'o' : 'x');
+        this.ai = new TttAi(symbol, symbol == 'x' ? 'o' : 'x');
     }
 
     @Override

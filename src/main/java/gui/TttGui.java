@@ -1,8 +1,8 @@
-package Gui;
+package gui;
 
-import Games.CliPlayer;
-import Games.GuiPlayer;
-import Games.Tictactoe;
+import games.CliPlayer;
+import games.GuiPlayer;
+import games.Tictactoe;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TictactoeGui extends Application {
+public class TttGui extends Application {
     private final Tictactoe game = new Tictactoe(new CliPlayer(), new CliPlayer());
     private static final Button[][] buttons = new Button[3][3];
 

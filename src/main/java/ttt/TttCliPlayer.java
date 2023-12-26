@@ -1,16 +1,16 @@
 package ttt;
 
-import Framework.Game;
-import Framework.Player;
+import framework.Game;
+import framework.Player;
 
 import java.awt.*;
 import java.util.Scanner;
 
-public class TttCLIPlayer implements Player {
+public class TttCliPlayer implements Player {
     private final char symbol;
     private final Scanner scanner;
 
-    public TttCLIPlayer(char symbol) {
+    public TttCliPlayer(char symbol) {
         this.symbol = symbol;
         this.scanner = new Scanner(System.in);
     }

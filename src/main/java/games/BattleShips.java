@@ -1,4 +1,4 @@
-package Games;
+package games;
 
 public class BattleShips extends Board{
     private final char[][] board;
