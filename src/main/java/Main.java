@@ -12,31 +12,27 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+        // TicTacToe Cli
 //        Game game = new TicTacToeGame();
 //        GameController controller = new GameController(game, TttAIPlayer::new, new TttPlayerFactory());
 //        controller.registerSubscriber(new TttCliSubscriber());
 //        controller.gameLoop();
 
-        // tic tac toe gui (can choose to play against ai) TODO: reset game after switching game type
 
-        Game game = new TicTacToeGame();
-        GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
-        //run this in seperate thread "TictactoeGui.launch(TictactoeGui.class, args);"
-        Thread t = new Thread(() -> {
-            TictactoeGui.launch(TictactoeGui.class, args);
-        });
-        t.start();
-//        try {
-//            Thread.sleep(1000); // Main thread sleeps for 1 second
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        // TicTacToe Gui
+//        Game game = new TicTacToeGame();
+//        GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+//        Thread t = new Thread(() -> {
+//            TictactoeGui.launch(TictactoeGui.class, args);
+//        });
+//        t.start();
+//
+//        controller.registerSubscriber(new TttCliSubscriber());
+//        controller.registerSubscriber(new TttGuiSubscriber());
+//        controller.gameLoop();
 
-        controller.registerSubscriber(new TttCliSubscriber());
-        controller.registerSubscriber(new TttGuiSubscriber());
-        controller.gameLoop();
-
-//        HomeGui.launch(HomeGui.class,args);
+        // home gui
+        HomeGui.launch(HomeGui.class,args);
 
     }
 }
