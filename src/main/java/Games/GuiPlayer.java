@@ -8,10 +8,6 @@ public class GuiPlayer implements Player {
     private int selectedRow = -1;
     private int selectedCol = -1;
 
-    public GuiPlayer() {
-        TictactoeGui.registerPlayer(this);
-    }
-
     @Override
     public boolean isHuman() {
         return true;
@@ -42,7 +38,7 @@ public class GuiPlayer implements Player {
 
     @Override
     public void updateBoard(Tictactoe game) {
-        TictactoeGui.updateButtonsFromOutside(game);
+        //TictactoeGui.updateButtonsFromOutside(game);
     }
 
     // Method to set the selected row and column from GUI

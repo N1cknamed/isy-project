@@ -4,11 +4,7 @@ import Framework.GameSubscriber;
 import Gui.*;
 import Games.*;
 import Server.*;
-import ttt.TicTacToeGame;
-import ttt.TttAIPlayer;
-import ttt.TttCLIPlayer;
-import ttt.TttCliSubscriber;
-import ttt.TttPlayerFactory;
+import ttt.*;
 
 import java.util.Scanner;
 
@@ -22,10 +18,25 @@ public class Main {
 //        controller.gameLoop();
 
         // tic tac toe gui (can choose to play against ai) TODO: reset game after switching game type
-//        TictactoeGui.launch(TictactoeGui.class, args);
-        HomeGui.launch(HomeGui.class,args);
 
+        Game game = new TicTacToeGame();
+        GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+        //run this in seperate thread "TictactoeGui.launch(TictactoeGui.class, args);"
+        Thread t = new Thread(() -> {
+            TictactoeGui.launch(TictactoeGui.class, args);
+        });
+        t.start();
+//        try {
+//            Thread.sleep(1000); // Main thread sleeps for 1 second
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
+        controller.registerSubscriber(new TttCliSubscriber());
+        controller.registerSubscriber(new TttGuiSubscriber());
+        controller.gameLoop();
+
+//        HomeGui.launch(HomeGui.class,args);
 
     }
 }
