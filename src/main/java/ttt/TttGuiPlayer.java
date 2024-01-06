@@ -1,11 +1,9 @@
 package ttt;
-import Framework.Game;
-import Framework.Player;
-import Games.GuiPlayer;
-import Gui.TictactoeGui;
+import framework.Game;
+import framework.Player;
+import gui.TttGui;
 
 import java.awt.*;
-import java.util.Scanner;
 
 public class TttGuiPlayer implements Player {
     private final char symbol;
@@ -16,7 +14,7 @@ public class TttGuiPlayer implements Player {
 
     public TttGuiPlayer(char symbol) {
         this.symbol = symbol;
-        TictactoeGui.registerPlayer(this);
+        TttGui.registerPlayer(this);
     }
 
     @Override

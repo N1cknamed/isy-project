@@ -1,6 +1,6 @@
 package battleship;
 
-import Framework.Player;
+import framework.Player;
 
 import java.awt.*;
 

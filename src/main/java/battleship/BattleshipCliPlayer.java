@@ -1,8 +1,7 @@
 package battleship;
 
-import Framework.Game;
-import Framework.Player;
-import Games.Board;
+import framework.Game;
+import games.Board;
 
 import java.awt.*;
 import java.util.*;

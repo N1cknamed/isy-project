@@ -1,12 +1,10 @@
 package ttt;
 
-import Framework.Game;
-import Framework.GameSubscriber;
-import Framework.Player;
-import Games.Board;
+import framework.Game;
+import framework.GameSubscriber;
+import framework.Player;
 
 import java.awt.*;
-import java.util.concurrent.Flow;
 
 public class TttCliSubscriber implements GameSubscriber {
     @Override

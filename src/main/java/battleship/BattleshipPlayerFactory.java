@@ -1,7 +1,6 @@
 package battleship;
 
-import Framework.Player;
-import Framework.PlayerFactory;
+import framework.PlayerFactory;
 
 public class BattleshipPlayerFactory implements PlayerFactory {
     @Override
