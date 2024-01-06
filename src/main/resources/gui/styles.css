@@ -2,3 +2,7 @@
     -fx-background-color: #3498db; /* Set the background color to a specific color */
     -fx-text-fill: white;           /* Set the text color to white */
 }
+
+.game-button {
+    -fx-font-size: 50;
+}

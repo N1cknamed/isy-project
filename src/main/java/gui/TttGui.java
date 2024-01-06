@@ -82,6 +82,7 @@ public class TttGui extends Application {
             for (int col = 0; col < 3; col++) {
                 Button button = new Button();
                 button.setMinSize(100, 100);
+                button.getStyleClass().add("game-button");
                 buttons[row][col] = button;
 
                 int finalRow = row;
