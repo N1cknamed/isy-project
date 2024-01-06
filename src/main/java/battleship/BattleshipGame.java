@@ -31,7 +31,7 @@ public class BattleshipGame implements Game {
 
     @Override
     public boolean hasEnded() {
-        return false;
+        return !getOpponentPlayer().isAlive();
     }
 
     @Override
@@ -75,6 +75,6 @@ public class BattleshipGame implements Game {
 
     @Override
     public Player getWinner() {
-        return null;
+        return getCurrentPlayer();
     }
 }

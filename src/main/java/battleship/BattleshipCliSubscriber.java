@@ -20,7 +20,7 @@ public class BattleshipCliSubscriber implements GameSubscriber {
 
     @Override
     public void onGameEnded(Game game) {
-        System.out.println("game ended");
+        System.out.println("game ended, winner: " + game.getWinner().getSymbol());
     }
 
     @Override

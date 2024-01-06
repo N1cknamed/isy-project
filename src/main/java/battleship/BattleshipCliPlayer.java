@@ -29,7 +29,7 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
 
     @Override
     public char getSymbol() {
-        return 0;
+        return symbol;
     }
 
     @Override
@@ -158,5 +158,10 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
         alreadyHit.add(move);
         System.out.println("your shot was a " + rt);
         return rt;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return boatsRemaining > 0;
     }
 }
