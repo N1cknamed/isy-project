@@ -3,8 +3,7 @@ import Framework.GameController;
 import Framework.GameSubscriber;
 import Gui.*;
 import Games.*;
-import Server.*;
-<<<<<<< HEAD
+import Server.*
 import battleship.BattleshipCliSubscriber;
 import battleship.BattleshipGame;
 import battleship.BattleshipPlayerFactory;
@@ -13,9 +12,7 @@ import ttt.TttAIPlayer;
 import ttt.TttCLIPlayer;
 import ttt.TttCliSubscriber;
 import ttt.TttPlayerFactory;
-=======
 import ttt.*;
->>>>>>> develop
 
 import java.util.Scanner;
 
