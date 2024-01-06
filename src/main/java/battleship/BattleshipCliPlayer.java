@@ -5,23 +5,22 @@ import Framework.Player;
 import Games.Board;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class BattleshipCliPlayer implements BattleshipPlayer {
 
     private final char symbol;
     private final Scanner scanner;
-    private Board board;
-    private HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
+    private final Board board;
+    private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
+
+    private Set<Point> alreadyHit = new HashSet<>();
     private int boatsRemaining = 0;
     public BattleshipCliPlayer(char symbol) {
         this.symbol = symbol;
         this.scanner = new Scanner(System.in);
         this.board = new Board(8, 8);
     }
-
 
     @Override
     public boolean isHuman() {
@@ -36,12 +35,15 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     @Override
     public Point doMove(Game game) {
         int x, y;
+        boolean notFirst = false;
         do {
+            if (notFirst) System.out.println("Invalid shot choose another location");
             System.out.printf("Player %s's turn\n", symbol);
             System.out.print("Enter x (0-7): ");
             x = scanner.nextInt();
             System.out.print("Enter y (0-7): ");
             y = scanner.nextInt();
+            notFirst = true;
         } while (!game.isValidMove(new Point(x, y)));
 
         return new Point(x, y);
@@ -142,6 +144,8 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
             rt = 'm';
         } else {
             rt = 'h';
+            // TODO: maybe not hit but mis
+            if (alreadyHit.contains(move)) return 'h';
             board.set(move.x, move.y, 'x');
             int shotsRemaining = ships.get(result);
             shotsRemaining--;
@@ -151,6 +155,8 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
                 rt = result;
             }
         }
+        alreadyHit.add(move);
+        System.out.println("your shot was a " + rt);
         return rt;
     }
 }
