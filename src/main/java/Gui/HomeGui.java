@@ -1,5 +1,7 @@
 package Gui;
 
+import Framework.Game;
+import Framework.GameController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -13,9 +15,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import ttt.TttGuiPlayer;
+import ttt.TttCLIPlayer;
+
 import java.io.IOException;
 import java.net.URL;
+
 import Gui.TictactoeGui;
+import ttt.TicTacToeGame;
+import ttt.TttCliSubscriber;
+import ttt.TttGuiSubscriber;
 
 
 public class HomeGui extends Application {
@@ -56,18 +65,29 @@ public class HomeGui extends Application {
         stage.show();
 
     }
+
     public void btnStart(ActionEvent actionEvent) throws IOException {
 
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        if (toggleGroup.getSelectedToggle()==null && modeSelector.getValue()==null){
-                // No radio button selected, show an error or take appropriate action
-                System.out.println("Please select a radio button or make a choice before starting.");
-                return;
+        if (toggleGroup.getSelectedToggle() == null && modeSelector.getValue() == null) {
+            // No radio button selected, show an error or take appropriate action
+            System.out.println("Please select a radio button or make a choice before starting.");
+            return;
         }
 
         if (toggleGroup.getSelectedToggle() == tictactoe) {
+            Game game = new TicTacToeGame();
+            // TODO add player selection
+            GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+
             TictactoeGui tictactoeGui = new TictactoeGui();
             tictactoeGui.start(stage);
+            controller.registerSubscriber(new TttGuiSubscriber());
+            Thread t = new Thread(() -> {
+                controller.gameLoop();
+                // TODO return to home screen
+            });
+            t.start();
 
         } else if (toggleGroup.getSelectedToggle() == battleship) {
             BattleShipsGui battleShipsGui = new BattleShipsGui();
@@ -77,12 +97,13 @@ public class HomeGui extends Application {
         stage.show();
 
     }
+
     public void modeSelector(ActionEvent actionEvent) {
 
     }
 
 
-    public void btnCancel(ActionEvent actionEvent){
+    public void btnCancel(ActionEvent actionEvent) {
         System.out.println("Cancel button clicked");
         // Exit the application
         Platform.exit();

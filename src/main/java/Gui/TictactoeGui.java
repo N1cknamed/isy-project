@@ -1,8 +1,8 @@
 package Gui;
 
-import Games.CliPlayer;
-import Games.GuiPlayer;
-import Games.Tictactoe;
+import Framework.Game;
+import Framework.GameController;
+import Games.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -12,44 +12,60 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import ttt.TttGuiPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TictactoeGui extends Application {
-    private final Tictactoe game = new Tictactoe(new CliPlayer(), new CliPlayer());
     private static final Button[][] buttons = new Button[3][3];
-
-    private static final List<GuiPlayer> players = new ArrayList<>();
+    private static final List<TttGuiPlayer> players = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    public static void updateButtonsFromOutside(Tictactoe game) {
+    public static void updateButtonsFromOutside(Game game) {
         Platform.runLater(() -> {
             updateButtons(game);
         });
     }
 
-    private static void updateButtons(Tictactoe game) {
-        char[][] board = game.getBoard();
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                buttons[row][col].setText(String.valueOf(board[row][col]));
-            }
-        }
-
-        if (game.winner) {
-            for (int i = 0; i < game.winningCoords.length; i++) {
-                int wRow = game.winningCoords[i][0];
-                int wCol = game.winningCoords[i][1];
-                buttons[wRow][wCol].getStyleClass().add("winning-button");
-            }
-        }
+    public static void winningButtonsFromOutside(Game game) {
+        Platform.runLater(() -> {
+            winningButtons(game);
+        });
     }
 
-    public static void registerPlayer(GuiPlayer player) {
+    private static void winningButtons(Game game) {
+        Board board = game.getBoard();
+
+        //TODO: get winning coords out of game
+//        for (int i = 0; i < game.winningCoords.length; i++) {
+//            int wRow = game.winningCoords[i][0];
+//            int wCol = game.winningCoords[i][1];
+//            buttons[wRow][wCol].getStyleClass().add("winning-button");
+//        }
+    }
+
+    private static void updateButtons(Game game) {
+        Board board = game.getBoard();
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                buttons[row][col].setText(String.valueOf(board.get(col, row)));
+            }
+        }
+        //TODO: maybe make seperate function when game has ended that it runs that functon
+//        if (game.winner) {
+//            for (int i = 0; i < game.winningCoords.length; i++) {
+//                int wRow = game.winningCoords[i][0];
+//                int wCol = game.winningCoords[i][1];
+//                buttons[wRow][wCol].getStyleClass().add("winning-button");
+//            }
+//        }
+    }
+
+    public static void registerPlayer(TttGuiPlayer player) {
         players.add(player);
     }
 
@@ -90,22 +106,9 @@ public class TictactoeGui extends Application {
         primaryStage.show();
     }
 
-    private void checkWin() {
-        if (game.checkWin(game.getPlayer())) {
-            for (int i = 0; i < game.winningCoords.length; i++) {
-                int wRow = game.winningCoords[i][0];
-                int wCol = game.winningCoords[i][1];
-                buttons[wRow][wCol].getStyleClass().add("winning-button");
-            }
-            System.out.println("Player " + game.getPlayer() + " wins!");
-        } else if (game.isBoardFull()) {
-            System.out.println("It's a draw!");
-        }
-    }
-
     private void handleButtonClick(int row, int col) {
-        for (GuiPlayer player : players) {
-            if (player.getIsTurn()) player.setSelectedMove(row, col);
+        for (TttGuiPlayer player : players) {
+            player.setMove(row, col);
         }
     }
 }
