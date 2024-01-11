@@ -139,6 +139,7 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     public char shoot(Point move) {
         char result = board.get(move.x, move.y);
         char rt;
+        // TODO: remove m
         if (result == ' ' || result == 0 || result == 'm') {
             rt = 'm';
         } else {
