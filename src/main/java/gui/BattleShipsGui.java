@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+//TODO: use battleshipGame instead of BattleShips
 public class BattleShipsGui extends Application {
     private final BattleShips game = new BattleShips();
     private final Button[][] buttons = new Button[10][10];

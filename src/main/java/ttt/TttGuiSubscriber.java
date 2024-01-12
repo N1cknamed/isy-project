@@ -21,8 +21,9 @@ public class TttGuiSubscriber implements GameSubscriber {
 
     @Override
     public void onGameEnded(Game game) {
+        TttGame tttGame = (TttGame) game;
         if (game.getWinner() != null) {
-            TttGui.winningButtonsFromOutside(game);
+            TttGui.winningButtonsFromOutside((tttGame));
         }
     }
 

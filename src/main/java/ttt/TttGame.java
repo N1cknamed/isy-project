@@ -14,6 +14,11 @@ public class TttGame implements Game {
     private char currentPlayer = 'x';
     private Player player1, player2;
 
+    public static int[][] winningCoords;
+    public static int[][] getWinningCoords() {
+        return winningCoords;
+    }
+
     public TttGame(int width, int height) {
         this.board = new Board(width, height);
     }
@@ -84,8 +89,8 @@ public class TttGame implements Game {
 
     public boolean checkWin(char player) {
         // [row, col]
-//        int[][] winningCoords = new int[boardWidth][2];
-        Point winningCoords = null;
+        int[][] winningCoords = new int[board.getBoardWidth()][2];
+//        Point winningCoords = null;
         // row
         for (int y = 0; y < board.getBoardHeight(); y++) {
             boolean won = true;
@@ -93,13 +98,13 @@ public class TttGame implements Game {
                 if (board.get(x, y) != player) {
                     won = false;
                     break;
-//                } else {
-//                    winningCoords[x][0] = y;
-//                    winningCoords[x][1] = x;
+                } else {
+                    winningCoords[x][0] = y;
+                    winningCoords[x][1] = x;
                 }
             }
             if (won) {
-//                this.winningCoords = winningCoords;
+                this.winningCoords = winningCoords;
                 return true;
             }
         }
@@ -111,14 +116,14 @@ public class TttGame implements Game {
                 if (board.get(x, y) != player) {
                     won = false;
                     break;
-//                } else {
-//                    winningCoords[y][0] = y;
-//                    winningCoords[y][1] = x;
+                } else {
+                    winningCoords[y][0] = y;
+                    winningCoords[y][1] = x;
                 }
 
             }
             if (won) {
-//                this.winningCoords = winningCoords;
+                this.winningCoords = winningCoords;
                 return true;
             }
         }
@@ -129,13 +134,13 @@ public class TttGame implements Game {
             if (board.get(i, i) != player) {
                 won = false;
                 break;
-//            } else {
-//                winningCoords[i][0] = i;
-//                winningCoords[i][1] = i;
+            } else {
+                winningCoords[i][0] = i;
+                winningCoords[i][1] = i;
             }
         }
         if (won) {
-//            this.winningCoords = winningCoords;
+            this.winningCoords = winningCoords;
             return true;
         }
 
@@ -146,13 +151,13 @@ public class TttGame implements Game {
             if (board.get(j, i) != player) {
                 won = false;
                 break;
-//            } else {
-//                winningCoords[i][0] = i;
-//                winningCoords[i][1] = j;
+            } else {
+                winningCoords[i][0] = i;
+                winningCoords[i][1] = j;
             }
         }
         if (won) {
-//            this.winningCoords = winningCoords;
+            this.winningCoords = winningCoords;
             return true;
         }
 

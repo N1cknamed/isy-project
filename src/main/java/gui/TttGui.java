@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ttt.TttGuiPlayer;
+import ttt.TttGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class TttGui extends Application {
     private static final Button[][] buttons = new Button[3][3];
     private static final List<TttGuiPlayer> players = new ArrayList<>();
+    public int[][] winningCoords;
 
     public static void main(String[] args) {
         launch(args);
@@ -37,14 +39,13 @@ public class TttGui extends Application {
     }
 
     private static void winningButtons(Game game) {
-        Board board = game.getBoard();
+        int[][] winning = TttGame.getWinningCoords();
 
-        //TODO: get winning coords out of game
-//        for (int i = 0; i < game.winningCoords.length; i++) {
-//            int wRow = game.winningCoords[i][0];
-//            int wCol = game.winningCoords[i][1];
-//            buttons[wRow][wCol].getStyleClass().add("winning-button");
-//        }
+        for(int[] winningCoords: winning){
+            int wRow = winningCoords[0];
+            int wCol = winningCoords[1];
+            buttons[wRow][wCol].getStyleClass().add("winning-button");
+        }
     }
 
     private static void updateButtons(Game game) {
