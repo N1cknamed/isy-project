@@ -55,7 +55,9 @@ public class TttGui extends Application {
         Board board = game.getBoard();
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                buttons[row][col].setText(String.valueOf(board.get(col, row)));
+                if (buttons[row][col] != null) {
+                    buttons[row][col].setText(String.valueOf(board.get(col, row)));
+                }
             }
         }
         //TODO: maybe make seperate function when game has ended that it runs that functon
