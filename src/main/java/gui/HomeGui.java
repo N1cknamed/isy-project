@@ -11,10 +11,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import ttt.TttAiPlayer;
 import ttt.TttGuiPlayer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 import ttt.TttGame;
 import ttt.TttGuiSubscriber;
@@ -62,13 +64,13 @@ public class HomeGui extends Application {
     public void btnStart(ActionEvent actionEvent) throws IOException {
 
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        if (toggleGroup.getSelectedToggle() == null && modeSelector.getValue() == null) {
+        if (toggleGroup.getSelectedToggle() == null || modeSelector.getValue() == null) {
             // No radio button selected, show an error or take appropriate action
             System.out.println("Please select a radio button or make a choice before starting.");
             return;
         }
 
-        if (toggleGroup.getSelectedToggle() == tictactoe) {
+        if (toggleGroup.getSelectedToggle() == tictactoe && modeSelector.getValue().equals("PVP")) {
             Game game = new TttGame();
             // TODO add player selection
             GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
@@ -86,10 +88,25 @@ public class HomeGui extends Application {
             BattleShipsGui battleShipsGui = new BattleShipsGui();
             battleShipsGui.start(stage);
         }
+        else if (toggleGroup.getSelectedToggle() == tictactoe && modeSelector.getValue().equals("AI")) {
+            Game game = new TttGame();
+            // TODO add player selection
+            GameController controller = new GameController(game, TttAiPlayer::new, TttGuiPlayer::new);
 
-        stage.show();
+            TttGui tttGui = new TttGui();
+            tttGui.start(stage);
+            controller.registerSubscriber(new TttGuiSubscriber());
+            Thread t = new Thread(() -> {
+                controller.gameLoop();
+                // TODO return to home screen
+            });
+            t.start();
 
-    }
+
+
+            stage.show();
+
+    }}
 
     public void modeSelector(ActionEvent actionEvent) {
 

@@ -34,11 +34,14 @@ public class TttGui extends Application {
 
     public static void winningButtonsFromOutside(Game game) {
         Platform.runLater(() -> {
-            winningButtons(game);
+            winningButtons();
         });
     }
 
-    private static void winningButtons(Game game) {
+    /**
+     * winningButtons is for highlighting the winning coords in the gui
+     */
+    private static void winningButtons() {
         int[][] winning = TttGame.getWinningCoords();
 
         for(int[] winningCoords: winning){
