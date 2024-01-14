@@ -23,7 +23,7 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
 
     @Override
     public boolean isHuman() {
-        return false;
+        return true;
     }
 
     @Override
