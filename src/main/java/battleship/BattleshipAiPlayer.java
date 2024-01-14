@@ -13,7 +13,10 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
     private final char symbol;
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
-    private Set<Point> alreadyHit = new HashSet<>();
+    private final Set<Point> alreadyHit = new HashSet<>();
+
+    // for the ai
+    private BattleshipsAi ai = new BattleshipsAi();
     private int boatsRemaining = 0;
 
     public BattleshipAiPlayer(char symbol) {
@@ -52,6 +55,7 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
         //ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
+            ai.addShip(entry.getKey(), entry.getValue());
 
             for (int x = 0; x < board.getBoardWidth(); x++) {
                 for (int y = 0; y < board.getBoardHeight(); y++) {
@@ -107,7 +111,7 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
 
     @Override
     public boolean isAlive() {
-        return false;
+        return boatsRemaining > 0;
     }
 
     @Override
