@@ -3,7 +3,7 @@ package framework;
 import java.awt.*;
 
 public interface Player {
-    boolean isHuman();
+    PlayerType getPlayerType();
     public char getSymbol();
     Point doMove(Game game);
 }

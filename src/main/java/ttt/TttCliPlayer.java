@@ -2,6 +2,7 @@ package ttt;
 
 import framework.Game;
 import framework.Player;
+import framework.PlayerType;
 
 import java.awt.*;
 import java.util.Scanner;
@@ -17,8 +18,8 @@ public class TttCliPlayer implements Player {
 
 
     @Override
-    public boolean isHuman() {
-        return false;
+    public PlayerType getPlayerType() {
+        return PlayerType.CLI;
     }
 
     @Override

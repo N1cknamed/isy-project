@@ -1,6 +1,7 @@
 package battleship;
 
 import framework.Game;
+import framework.PlayerType;
 import games.Board;
 
 import java.awt.*;
@@ -22,8 +23,8 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     }
 
     @Override
-    public boolean isHuman() {
-        return false;
+    public PlayerType getPlayerType() {
+        return PlayerType.CLI;
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import framework.Game;
 import framework.Player;
+import framework.PlayerType;
 
 public class TttAiPlayer implements Player {
 
@@ -16,8 +17,8 @@ public class TttAiPlayer implements Player {
     }
 
     @Override
-    public boolean isHuman() {
-        return false;
+    public PlayerType getPlayerType() {
+        return PlayerType.AI;
     }
 
     @Override
