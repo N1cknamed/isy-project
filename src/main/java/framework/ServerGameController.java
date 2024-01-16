@@ -33,8 +33,10 @@ public class ServerGameController {
             Response response = serverController.getMessage().pop();
             switch (response.getCommand()) {
                 case MOVE:
-                    Point move = calculatePoint(response.getIntValue("MOVE"));
-                    game.getServerPlayer().setNextMove(move);
+                    if (!response.getStringValue("PLAYER").equals(teamName)) {
+                        Point move = calculatePoint(response.getIntValue("MOVE"));
+                        game.getServerPlayer().setNextMove(move);
+                    }
                     break;
                 case LOSS:
                     game.forceWin(game.getServerPlayer());
@@ -43,8 +45,10 @@ public class ServerGameController {
                     game.forceWin(game.getLocalPlayer());
                     break;
                 case YOURTURN:
-                    yourTurn.set(true);
-                    yourTurn.notify();
+                    synchronized (yourTurn) {
+                        yourTurn.set(true);
+                        yourTurn.notify();
+                    }
                     break;
                 default:
                     game.handleServerResponse(response);
@@ -105,7 +109,7 @@ public class ServerGameController {
 
             Point move = currentPlayer.doMove(game);
             if (game.doMove(move)) {
-                throw new RuntimeException("illegal move");
+                throw new RuntimeException("illegal move (" + move.toString() + ")");
             }
 
             if (currentPlayer.getPlayerType().isLocal()) {
@@ -129,8 +133,8 @@ public class ServerGameController {
     }
 
     private Point calculatePoint(int input) {
-        int x = (input - 1) % game.getBoard().getBoardWidth();
-        int y = (input - 1) / game.getBoard().getBoardWidth();
+        int x = input % game.getBoard().getBoardWidth();
+        int y = input / game.getBoard().getBoardWidth();
 
         return new Point(x, y);
     }

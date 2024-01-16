@@ -13,7 +13,8 @@ public class Main {
 //        runTttCli();
 //        runBattleshipCli();
 //        runTttGui();
-        runHomeGui();
+//        runHomeGui();
+        runServerTttCli();
     }
 
     private static void runServerTttCli() {
