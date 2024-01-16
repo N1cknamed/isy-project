@@ -1,6 +1,7 @@
 package ttt;
 
 import framework.PlayerFactoryBuilder;
+import framework.ServerPlayer;
 
 public class Ttt {
 
@@ -11,6 +12,7 @@ public class Ttt {
         return new PlayerFactoryBuilder()
                 .withCliPlayerConstructor(TttCliPlayer::new)
                 .withGuiPlayerConstructor(TttGuiPlayer::new)
-                .withAIPlayerConstructor(TttAiPlayer::new);
+                .withAIPlayerConstructor(TttAiPlayer::new)
+                .withServerPlayerConstructor(ServerPlayer::new);
     }
 }

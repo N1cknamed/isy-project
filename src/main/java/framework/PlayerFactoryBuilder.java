@@ -10,9 +10,7 @@ public class PlayerFactoryBuilder {
     private Function<Character, Player> cliPlayerConstructor;
     private Function<Character, Player> guiPlayerConstructor;
     private Function<Character, Player> aiPlayerConstructor;
-    private BiFunction<Character, ServerController, Player> serverPlayerConstructor;
-
-    private ServerController serverController;
+    private Function<Character, Player> serverPlayerConstructor;
 
     public PlayerFactoryBuilder withCliPlayerConstructor(Function<Character, Player> cliPlayerConstructor) {
         this.cliPlayerConstructor = cliPlayerConstructor;
@@ -29,14 +27,8 @@ public class PlayerFactoryBuilder {
         return this;
     }
 
-    public PlayerFactoryBuilder withServerPlayerConstructor(BiFunction<Character, ServerController, Player> serverPlayerConstructor) {
+    public PlayerFactoryBuilder withServerPlayerConstructor(Function<Character, Player> serverPlayerConstructor) {
         this.serverPlayerConstructor = serverPlayerConstructor;
-        return this;
-    }
-
-    public PlayerFactoryBuilder withServerController(ServerController serverController) {
-        this.serverController = serverController;
-
         return this;
     }
 
@@ -53,8 +45,7 @@ public class PlayerFactoryBuilder {
                 return aiPlayerConstructor::apply;
             case SERVER:
                 if (serverPlayerConstructor == null) throw new IllegalArgumentException("No constructor defined for PlayerType SERVER.");
-                if (serverController == null) throw new IllegalArgumentException("No ServerController defined for PlayerType SERVER!");
-                return c -> serverPlayerConstructor.apply(c, serverController);
+                return serverPlayerConstructor::apply;
             default:
                 throw new IllegalArgumentException("Invalid PlayerType.");
         }

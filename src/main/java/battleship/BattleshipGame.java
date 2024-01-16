@@ -5,7 +5,9 @@ import framework.Player;
 import framework.PlayerFactory;
 import games.Board;
 
-import java.awt.*;
+import java.awt.Point;
+import java.util.Collection;
+import java.util.List;
 
 public class BattleshipGame implements Game {
 
@@ -76,5 +78,10 @@ public class BattleshipGame implements Game {
     @Override
     public Player getWinner() {
         return getCurrentPlayer();
+    }
+
+    @Override
+    public Collection<Player> getAllPlayers() {
+        return List.of(player1, player2);
     }
 }
