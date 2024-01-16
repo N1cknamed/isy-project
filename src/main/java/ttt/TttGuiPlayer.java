@@ -1,6 +1,7 @@
 package ttt;
 import framework.Game;
 import framework.Player;
+import framework.PlayerType;
 import gui.TttGui;
 
 import java.awt.*;
@@ -18,8 +19,8 @@ public class TttGuiPlayer implements Player {
     }
 
     @Override
-    public boolean isHuman() {
-        return true;
+    public PlayerType getPlayerType() {
+        return PlayerType.GUI;
     }
 
     @Override
