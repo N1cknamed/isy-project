@@ -16,26 +16,22 @@ import ttt.TttGame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TttGui extends Application {
     private static final Button[][] buttons = new Button[3][3];
     private static final List<TttGuiPlayer> players = new ArrayList<>();
-    public int[][] winningCoords;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     public static void updateButtonsFromOutside(Game game) {
-        Platform.runLater(() -> {
-            updateButtons(game);
-        });
+        Platform.runLater(() -> updateButtons(game));
     }
 
-    public static void winningButtonsFromOutside(Game game) {
-        Platform.runLater(() -> {
-            winningButtons();
-        });
+    public static void winningButtonsFromOutside() {
+        Platform.runLater(TttGui::winningButtons);
     }
 
     /**
@@ -60,7 +56,7 @@ public class TttGui extends Application {
                 }
             }
         }
-        //TODO: maybe make seperate function when game has ended that it runs that functon
+        //TODO: maybe make separate function when game has ended that it runs that function
 //        if (game.winner) {
 //            for (int i = 0; i < game.winningCoords.length; i++) {
 //                int wRow = game.winningCoords[i][0];
@@ -107,14 +103,12 @@ public class TttGui extends Application {
 
 //       Increased height to accommodate mode selector
         Scene scene = new Scene(root, 335, 360);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     private void handleButtonClick(int row, int col) {
-        for (TttGuiPlayer player : players) {
-            player.setMove(row, col);
-        }
+        players.forEach(player -> TttGuiPlayer.setMove(row, col));
     }
 }
