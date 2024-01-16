@@ -42,7 +42,12 @@ public class Client implements Runnable{
 
             String serverMessage;
             while ((serverMessage = in.readLine()) != null) {
-                message.push(serverMessage);
+                if (serverMessage.contains("SVR GAME ")){
+                    Response response = MessageFilter.filterMessage(serverMessage);
+                    message.push(response);
+                } else {
+                    System.out.println(serverMessage);
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

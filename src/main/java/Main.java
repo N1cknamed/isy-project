@@ -1,10 +1,7 @@
 import battleship.BattleshipCliSubscriber;
 import battleship.BattleshipGame;
 import battleship.BattleshipPlayerFactory;
-import framework.Game;
-import framework.GameController;
-import framework.PlayerFactoryBuilder;
-import framework.PlayerType;
+import framework.*;
 import gui.HomeGui;
 import gui.TttGui;
 import server.ServerController;
@@ -19,11 +16,25 @@ public class Main {
         runHomeGui();
     }
 
+    private static void runServerTttCli() {
+        // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
+        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
+
+        // Change the player types according to what the user wants (GUI buttons)
+        PlayerType playerType = PlayerType.CLI;
+
+        // Build the game classes and use the player types to create PlayerFactory objects
+        ServerGame game = new TttServerGame();
+        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, "wouter", playerFactoryBuilder.build(playerType));
+        controller.registerSubscriber(new TttCliSubscriber());
+
+        // Start the game
+        controller.gameLoop();
+    }
+
     private static void runTttCli() {
         // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
-        ServerController serverController = null;
-        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder()
-                .withServerController(serverController);
+        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
 
         // Change the player types according to what the user wants (GUI buttons)
         PlayerType player1Type = PlayerType.AI;

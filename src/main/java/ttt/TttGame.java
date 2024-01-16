@@ -6,6 +6,9 @@ import framework.PlayerFactory;
 import games.Board;
 
 import java.awt.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 public class TttGame implements Game {
 
@@ -85,6 +88,11 @@ public class TttGame implements Game {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Collection<Player> getAllPlayers() {
+        return List.of(player1, player2);
     }
 
     public boolean checkWin(char player) {
