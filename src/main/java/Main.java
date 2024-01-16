@@ -14,7 +14,9 @@ public class Main {
 //        runBattleshipCli();
 //        runTttGui();
 //        runHomeGui();
-        runServerTttCli();
+
+//        runServerTttCli();
+        runServerTttGui();
     }
 
     private static void runServerTttCli() {
@@ -60,6 +62,22 @@ public class Main {
     private static void runTttGui() {
         Game game = new TttGame();
         GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+        Thread t = new Thread(() -> {
+            TttGui.launch(TttGui.class);
+        });
+        t.start();
+
+        controller.registerSubscriber(new TttCliSubscriber());
+        controller.registerSubscriber(new TttGuiSubscriber());
+        controller.gameLoop();
+    }
+
+    private static void runServerTttGui() {
+        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
+        PlayerType playerType = PlayerType.GUI;
+
+        ServerGame game = new TttServerGame();
+        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, "wouter", playerFactoryBuilder.build(playerType));
         Thread t = new Thread(() -> {
             TttGui.launch(TttGui.class);
         });
