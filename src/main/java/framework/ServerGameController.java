@@ -44,6 +44,9 @@ public class ServerGameController {
                 case WIN:
                     game.forceWin(game.getLocalPlayer());
                     break;
+                case DRAW:
+                    game.forceWin(null);
+                    break;
                 case YOURTURN:
                     synchronized (yourTurn) {
                         yourTurn.set(true);

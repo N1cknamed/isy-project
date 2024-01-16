@@ -5,5 +5,6 @@ public enum Command {
     MOVE,
     YOURTURN,
     WIN,
-    LOSS
+    LOSS,
+    DRAW;
 }

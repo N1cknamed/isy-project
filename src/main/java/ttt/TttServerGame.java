@@ -7,7 +7,8 @@ import server.Response;
 
 public class TttServerGame extends TttGame implements ServerGame {
 
-    private Player forcedWinner = null;
+    private boolean hasEnded = false;
+    private Player winner = null;
 
     @Override
     public String getGameType() {
@@ -16,17 +17,18 @@ public class TttServerGame extends TttGame implements ServerGame {
 
     @Override
     public boolean hasEnded() {
-        return forcedWinner != null;
+        return hasEnded;
     }
 
     @Override
     public void forceWin(Player winner) {
-        forcedWinner = getLocalPlayer();
+        this.winner = winner;
+        hasEnded = true;
     }
 
     @Override
     public Player getWinner() {
-        return forcedWinner;
+        return winner;
     }
 
     @Override
