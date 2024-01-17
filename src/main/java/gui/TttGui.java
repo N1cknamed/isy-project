@@ -38,13 +38,13 @@ public class TttGui extends Application {
      * winningButtons is for highlighting the winning coords in the gui
      */
     private static void winningButtons() {
-        int[][] winning = TttGame.getWinningCoords();
-
-        for(int[] winningCoords: winning){
-            int wRow = winningCoords[0];
-            int wCol = winningCoords[1];
-            buttons[wRow][wCol].getStyleClass().add("winning-button");
-        }
+//        int[][] winning = TttGame.getWinningCoords();
+//
+//        for(int[] winningCoords: winning){
+//            int wRow = winningCoords[0];
+//            int wCol = winningCoords[1];
+//            buttons[wRow][wCol].getStyleClass().add("winning-button");
+//        }
     }
 
     private static void updateButtons(Game game) {

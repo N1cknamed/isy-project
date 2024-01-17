@@ -150,13 +150,15 @@ public class ServerGameController {
         new Thread(this::serverLoop).start();
 
         while (true) {
-            Response matchResponse;
-            try {
-                System.out.println("Waiting for MATCH response");
-                matchResponse = matchResponseQueue.take();
-                System.out.println("Received MATCH response");
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            Response matchResponse = null;
+            while (matchResponse == null) {
+                try {
+                    System.out.println("Waiting for MATCH response");
+                    matchResponse = matchResponseQueue.take();
+                    System.out.println("Received MATCH response");
+                } catch (InterruptedException e) {
+                    System.out.println("Ignoring interrupt exception while waiting for MATCH response.");
+                }
             }
 
             game = gameSupplier.get();
