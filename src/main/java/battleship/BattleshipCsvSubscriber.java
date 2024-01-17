@@ -1,5 +1,6 @@
 package battleship;
 
+import framework.Board;
 import framework.Game;
 import framework.GameSubscriber;
 import framework.Player;
@@ -23,8 +24,8 @@ public class BattleshipCsvSubscriber implements GameSubscriber {
 
     @Override
     public void onGameEnded(Game game) {
-
-
+        Board board = game.getBoard();
+        board.printBoard();
     }
 
     @Override
