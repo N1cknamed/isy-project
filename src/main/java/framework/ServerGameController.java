@@ -59,11 +59,13 @@ public class ServerGameController {
         }
     }
 
-    public void gameLoop() {
+    private void login() {
         serverController = new ServerController(host, port);
 
         serverController.sendMessage("login " + teamName);
+    }
 
+    private void playGame() {
         // Wait until we are challenged
         Response matchResponse = null;
         while (matchResponse == null ||
@@ -128,6 +130,15 @@ public class ServerGameController {
 
         for (GameSubscriber i : subscribers) {
             i.onGameEnded(game);
+        }
+    }
+
+    public void gameLoop() {
+        login();
+
+        while (true) {
+            playGame();
+            System.out.println("Restarting game (waiting for match)");
         }
     }
 
