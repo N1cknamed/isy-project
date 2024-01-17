@@ -12,7 +12,13 @@ public class TttAi {
     }
 
     public int[] findBestMove(Game game) {
-        int[] bestMove = minimax(game, aiPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        if (!(game instanceof TttGame)) {
+            throw new IllegalStateException();
+        }
+
+        TttGame copy = ((TttGame) game).copy();
+
+        int[] bestMove = minimax(copy, aiPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
         return new int[]{bestMove[1], bestMove[2]};
     }
 

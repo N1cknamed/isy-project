@@ -8,7 +8,8 @@ import ttt.*;
 
 
 public class Main {
-    private static final String TEAM_NAME = "groep2";
+    private static final String TEAM_NAME = "wouter";
+    private static final PlayerType LOCAL_PLAYER = PlayerType.GUI;
 
     public static void main(String[] args) {
 //        runTttCli();
@@ -24,12 +25,8 @@ public class Main {
         // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
 
-        // Change the player types according to what the user wants (GUI buttons)
-        PlayerType playerType = PlayerType.CLI;
-
         // Build the game classes and use the player types to create PlayerFactory objects
-        ServerGame game = new TttServerGame();
-        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER));
         controller.registerSubscriber(new TttCliSubscriber());
 
         // Start the game
@@ -75,10 +72,8 @@ public class Main {
 
     private static void runServerTttGui() {
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
-        PlayerType playerType = PlayerType.GUI;
 
-        ServerGame game = new TttServerGame();
-        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER));
         Thread t = new Thread(() -> {
             TttGui.launch(TttGui.class);
         });

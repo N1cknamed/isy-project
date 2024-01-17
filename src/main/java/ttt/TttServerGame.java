@@ -17,7 +17,7 @@ public class TttServerGame extends TttGame implements ServerGame {
 
     @Override
     public boolean hasEnded() {
-        return hasEnded || super.hasEnded();
+        return hasEnded;
     }
 
     @Override
@@ -28,11 +28,7 @@ public class TttServerGame extends TttGame implements ServerGame {
 
     @Override
     public Player getWinner() {
-        if (winner == null) {
-            return super.getWinner();
-        } else {
-            return winner;
-        }
+        return winner;
     }
 
     @Override
