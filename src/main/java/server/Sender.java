@@ -16,6 +16,7 @@ public class Sender implements Runnable{
     }
 
     public void sendMessage(String message) {
+        System.out.println("SENDING TO SERVER: " + message);
         out.println(message);
     }
 }

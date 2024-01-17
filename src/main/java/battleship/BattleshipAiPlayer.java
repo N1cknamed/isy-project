@@ -1,7 +1,8 @@
 package battleship;
 
 import framework.Game;
-import games.Board;
+import framework.Board;
+import framework.PlayerType;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -56,6 +57,7 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             ai.addShip(entry.getKey(), entry.getValue());
+            boolean placed = false;
 
             for (int x = 0; x < board.getBoardWidth(); x++) {
                 for (int y = 0; y < board.getBoardHeight(); y++) {
@@ -74,9 +76,11 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
                                 }
                             }
                         }
+                        placed = true;
                         break;
                     }
                 }
+                if (placed) break;
             }
 
             boatsRemaining++;
@@ -113,8 +117,8 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
     }
 
     @Override
-    public boolean isHuman() {
-        return false;
+    public PlayerType getPlayerType() {
+        return null;
     }
 
     @Override

@@ -1,8 +1,7 @@
 package framework;
 
-import games.Board;
-
 import java.awt.*;
+import java.util.Collection;
 
 public interface Game {
 
@@ -17,5 +16,7 @@ public interface Game {
     public boolean doMove(Point move);
     public boolean isValidMove(Point move);
     public Player getWinner();
+
+    public Collection<Player> getAllPlayers();
 
 }

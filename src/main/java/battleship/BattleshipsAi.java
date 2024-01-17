@@ -1,11 +1,11 @@
 package battleship;
 
 import framework.Game;
-import games.Board;
-
+import framework.Board;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
+
 
 public class BattleshipsAi {
     private final Board board;

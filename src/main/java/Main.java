@@ -1,41 +1,97 @@
-import battleship.BattleshipAiPlayer;
-import framework.Game;
-import framework.GameController;
-import gui.*;
 import battleship.BattleshipCliSubscriber;
 import battleship.BattleshipGame;
 import battleship.BattleshipPlayerFactory;
+import battleship.BattleshipAiPlayer;
+import framework.*;
+import gui.HomeGui;
+import gui.TttGui;
 import ttt.*;
 
 
 public class Main {
+    private static final String TEAM_NAME = "groep2";
+
     public static void main(String[] args) {
+//        runTttCli();
+        runBattleshipCli();
+//        runTttGui();
+//        runHomeGui();
 
-        // TicTacToe Cli
-//        Game game = new TttGame();
-//        GameController controller = new GameController(game, TttAiPlayer::new, new TttPlayerFactory());
-//        controller.registerSubscriber(new TttCliSubscriber());
-//        controller.gameLoop();
+//        runServerTttCli();
+//        runServerTttGui();
+    }
 
+    private static void runServerTttCli() {
+        // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
+        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
+
+        // Change the player types according to what the user wants (GUI buttons)
+        PlayerType playerType = PlayerType.CLI;
+
+        // Build the game classes and use the player types to create PlayerFactory objects
+        ServerGame game = new TttServerGame();
+        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
+        controller.registerSubscriber(new TttCliSubscriber());
+
+        // Start the game
+        controller.gameLoop();
+    }
+
+    private static void runTttCli() {
+        // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
+        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
+
+        // Change the player types according to what the user wants (GUI buttons)
+        PlayerType player1Type = PlayerType.AI;
+        PlayerType player2Type = PlayerType.CLI;
+
+        // Build the game classes and use the player types to create PlayerFactory objects
+        Game game = new TttGame();
+        GameController controller = new GameController(game, playerFactoryBuilder.build(player1Type), playerFactoryBuilder.build(player2Type));
+        controller.registerSubscriber(new TttCliSubscriber());
+
+        // Start the game
+        controller.gameLoop();
+    }
+
+    private static void runBattleshipCli() {
         Game game = new BattleshipGame();
-        GameController controller = new GameController(game, BattleshipAiPlayer::new, new BattleshipPlayerFactory());
+        GameController controller = new GameController(game, BattleshipAiPlayer::new, BattleshipAiPlayer::new);
+//        GameController controller = new GameController(game, BattleshipAiPlayer::new, new BattleshipPlayerFactory());
         controller.registerSubscriber(new BattleshipCliSubscriber());
         controller.gameLoop();
+    }
 
-        // tic tac toe gui (can choose to play against ai) TODO: reset game after switching game type
-//        Game game = new TttGame();
-//        GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
-//        Thread t = new Thread(() -> {
-//            TttGui.launch(TttGui.class, args);
-//        });
-//        t.start();
-//
-//        controller.registerSubscriber(new TttCliSubscriber());
-//        controller.registerSubscriber(new TttGuiSubscriber());
-//        controller.gameLoop();
+    private static void runTttGui() {
+        Game game = new TttGame();
+        GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+        Thread t = new Thread(() -> {
+            TttGui.launch(TttGui.class);
+        });
+        t.start();
 
-        // home gui
-        HomeGui.launch(HomeGui.class,args);
+        controller.registerSubscriber(new TttCliSubscriber());
+        controller.registerSubscriber(new TttGuiSubscriber());
+        controller.gameLoop();
+    }
 
+    private static void runServerTttGui() {
+        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
+        PlayerType playerType = PlayerType.GUI;
+
+        ServerGame game = new TttServerGame();
+        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
+        Thread t = new Thread(() -> {
+            TttGui.launch(TttGui.class);
+        });
+        t.start();
+
+        controller.registerSubscriber(new TttCliSubscriber());
+        controller.registerSubscriber(new TttGuiSubscriber());
+        controller.gameLoop();
+    }
+
+    private static void runHomeGui() {
+        HomeGui.launch(HomeGui.class);
     }
 }

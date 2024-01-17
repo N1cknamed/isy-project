@@ -6,7 +6,8 @@ import framework.Player;
 
 import java.awt.*;
 
-public class BattleshipCliSubscriber implements GameSubscriber {
+public class
+BattleshipCliSubscriber implements GameSubscriber {
     @Override
     public void onGameStarted(Game game) {
         System.out.println("game started");

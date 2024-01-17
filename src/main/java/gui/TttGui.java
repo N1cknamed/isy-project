@@ -1,7 +1,7 @@
 package gui;
 
+import framework.Board;
 import framework.Game;
-import games.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -12,9 +12,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ttt.TttGuiPlayer;
+import ttt.TttGame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TttGui extends Application {
     private static final Button[][] buttons = new Button[3][3];
@@ -25,36 +27,36 @@ public class TttGui extends Application {
     }
 
     public static void updateButtonsFromOutside(Game game) {
-        Platform.runLater(() -> {
-            updateButtons(game);
-        });
+        Platform.runLater(() -> updateButtons(game));
     }
 
-    public static void winningButtonsFromOutside(Game game) {
-        Platform.runLater(() -> {
-            winningButtons(game);
-        });
+    public static void winningButtonsFromOutside() {
+        Platform.runLater(TttGui::winningButtons);
     }
 
-    private static void winningButtons(Game game) {
-        Board board = game.getBoard();
+    /**
+     * winningButtons is for highlighting the winning coords in the gui
+     */
+    private static void winningButtons() {
+        int[][] winning = TttGame.getWinningCoords();
 
-        //TODO: get winning coords out of game
-//        for (int i = 0; i < game.winningCoords.length; i++) {
-//            int wRow = game.winningCoords[i][0];
-//            int wCol = game.winningCoords[i][1];
-//            buttons[wRow][wCol].getStyleClass().add("winning-button");
-//        }
+        for(int[] winningCoords: winning){
+            int wRow = winningCoords[0];
+            int wCol = winningCoords[1];
+            buttons[wRow][wCol].getStyleClass().add("winning-button");
+        }
     }
 
     private static void updateButtons(Game game) {
         Board board = game.getBoard();
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                buttons[row][col].setText(String.valueOf(board.get(col, row)));
+                if (buttons[row][col] != null) {
+                    buttons[row][col].setText(String.valueOf(board.get(col, row)));
+                }
             }
         }
-        //TODO: maybe make seperate function when game has ended that it runs that functon
+        //TODO: maybe make separate function when game has ended that it runs that function
 //        if (game.winner) {
 //            for (int i = 0; i < game.winningCoords.length; i++) {
 //                int wRow = game.winningCoords[i][0];
@@ -101,14 +103,12 @@ public class TttGui extends Application {
 
 //       Increased height to accommodate mode selector
         Scene scene = new Scene(root, 335, 360);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     private void handleButtonClick(int row, int col) {
-        for (TttGuiPlayer player : players) {
-            player.setMove(row, col);
-        }
+        players.forEach(player -> TttGuiPlayer.setMove(row, col));
     }
 }
