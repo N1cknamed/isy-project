@@ -24,7 +24,7 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
         this.board = new Board(8, 8);
     }
 
-    private boolean isValidMove(Point move, int size, int direction) {
+    private boolean isValidBoatPlacement(Point move, int size, int direction) {
         if (direction == 0) {
             if (move.x + size > 8) {
                 return false;
@@ -59,7 +59,7 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
 
             for (int x = 0; x < board.getBoardWidth(); x++) {
                 for (int y = 0; y < board.getBoardHeight(); y++) {
-                    if (isValidMove(new Point(x, y), entry.getValue(), 0)) {
+                    if (isValidBoatPlacement(new Point(x, y), entry.getValue(), 0)) {
                         int size = entry.getValue();
                         char boatType = entry.getKey();
                         for (int i = x-1; i < x + size + 1; i++) {
