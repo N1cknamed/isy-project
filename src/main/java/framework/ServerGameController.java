@@ -39,6 +39,7 @@ public class ServerGameController {
             Response response = serverController.getMessage().pop();
             switch (response.getCommand()) {
                 case MATCH:
+                    createGame(response);
                     try {
                         matchResponseQueue.put(response);
                     } catch (InterruptedException e) {
@@ -81,8 +82,16 @@ public class ServerGameController {
         }
     }
 
-    private void playGame(String opponentName, String playerToMove) {
-        gameThread = Thread.currentThread();
+    private void createGame(Response matchResponse) {
+        game = gameSupplier.get();
+        String serverGameType = matchResponse.getStringValue("GAMETYPE");
+        if (!serverGameType.equals(game.getGameType())) {
+            game = null;
+            throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + game.getGameType() + "'. Ignoring MATCH response.");
+        }
+
+        String opponentName = matchResponse.getStringValue("OPPONENT");
+        String playerToMove = matchResponse.getStringValue("PLAYERTOMOVE");
 
         System.out.println("opponentName = " + opponentName);
 
@@ -98,7 +107,10 @@ public class ServerGameController {
         for (GameSubscriber i : subscribers) {
             i.onGameStarted(game);
         }
+    }
 
+    private void playGame() {
+        gameThread = Thread.currentThread();
         while (!game.hasEnded()) {
             Player currentPlayer = game.getCurrentPlayer();
 
@@ -150,26 +162,14 @@ public class ServerGameController {
         new Thread(this::serverLoop).start();
 
         while (true) {
-            Response matchResponse = null;
-            while (matchResponse == null) {
-                try {
-                    System.out.println("Waiting for MATCH response");
-                    matchResponse = matchResponseQueue.take();
-                    System.out.println("Received MATCH response");
-                } catch (InterruptedException e) {
-                    System.out.println("Ignoring interrupt exception while waiting for MATCH response.");
-                }
-            }
-
-            game = gameSupplier.get();
-            String serverGameType = matchResponse.getStringValue("GAMETYPE");
-            if (!serverGameType.equals(game.getGameType())) {
-                System.out.println("Received game type '" + serverGameType + "' but expected '" + game.getGameType() + "'. Ignoring MATCH response.");
-                game = null;
+            try {
+                matchResponseQueue.take();
+            } catch (InterruptedException e) {
+                System.out.println("Ignoring interrupt exception while waiting for MATCH response.");
                 continue;
             }
 
-            playGame(matchResponse.getStringValue("OPPONENT"), matchResponse.getStringValue("PLAYERTOMOVE"));
+            playGame();
             System.out.println("Restarting game (waiting for match)");
         }
     }
