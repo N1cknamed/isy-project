@@ -74,11 +74,9 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
                                 }
                             }
                         }
-                        boatsRemaining++;
                         break;
                     }
                 }
-                if (boatsRemaining > 0) break;
             }
 
             boatsRemaining++;
@@ -126,6 +124,6 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
 
     @Override
     public Point doMove(Game game) {
-        return null;
+        return ai.getMove(game);
     }
 }

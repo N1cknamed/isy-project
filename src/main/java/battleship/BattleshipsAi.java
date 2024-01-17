@@ -1,8 +1,11 @@
 package battleship;
 
+import framework.Game;
 import games.Board;
 
+import java.awt.*;
 import java.util.HashMap;
+import java.util.Random;
 
 public class BattleshipsAi {
     private final Board board;
@@ -48,5 +51,17 @@ public class BattleshipsAi {
         }
 
         return heatMap;
+    }
+
+    public Point getMove(Game game) {
+        Point move;
+        Random random = new Random();
+        do {
+            // random move
+            move = new Point(random.nextInt(board.getBoardWidth()), random.nextInt(board.getBoardHeight()));
+            System.out.println("AI move: " + move);
+        } while (!game.isValidMove(move));
+
+        return move;
     }
 }

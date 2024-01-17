@@ -68,6 +68,7 @@ public class BattleshipGame implements Game {
     public boolean isValidMove(Point move) {
         Board currentBoard = getCurrentBoard();
         // check if x or y are out of bounds
+
         return ((move.x >= 0) &&
                 (move.x < currentBoard.getBoardWidth())) &&
                 ((move.y >= 0) && (move.y < currentBoard.getBoardWidth()));
