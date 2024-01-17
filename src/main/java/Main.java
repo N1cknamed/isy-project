@@ -8,7 +8,7 @@ import ttt.*;
 
 
 public class Main {
-    private static final String TEAM_NAME = "wouter";
+    private static final String TEAM_NAME = "groep2";
 
     public static void main(String[] args) {
 //        runTttCli();
