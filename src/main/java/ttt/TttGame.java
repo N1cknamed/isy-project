@@ -3,12 +3,11 @@ package ttt;
 import framework.Game;
 import framework.Player;
 import framework.PlayerFactory;
-import games.Board;
+import framework.Board;
 
 import java.awt.*;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class TttGame implements Game {
 
