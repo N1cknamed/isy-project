@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Random;
 
 
-public class BattleshipsAi {
+public class BattleshipsRandom {
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
 
-    public BattleshipsAi() {
+    public BattleshipsRandom() {
         this.board = new Board(8, 8);
     }
 

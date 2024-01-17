@@ -1,7 +1,4 @@
-import battleship.BattleshipCliSubscriber;
-import battleship.BattleshipGame;
-import battleship.BattleshipPlayerFactory;
-import battleship.BattleshipAiPlayer;
+import battleship.*;
 import framework.*;
 import gui.HomeGui;
 import gui.TttGui;
@@ -13,12 +10,12 @@ public class Main {
 
     public static void main(String[] args) {
 //        runTttCli();
-        runBattleshipCli();
+//        runBattleshipCli();
 //        runTttGui();
 //        runHomeGui();
 
 //        runServerTttCli();
-//        runServerTttGui();
+        runServerTttGui();
     }
 
     private static void runServerTttCli() {
@@ -49,6 +46,8 @@ public class Main {
         Game game = new TttGame();
         GameController controller = new GameController(game, playerFactoryBuilder.build(player1Type), playerFactoryBuilder.build(player2Type));
         controller.registerSubscriber(new TttCliSubscriber());
+        GameSubscriber battleshipCsvSubscriber = new BattleshipCsvSubscriber();
+        controller.registerSubscriber(battleshipCsvSubscriber);
 
         // Start the game
         controller.gameLoop();
@@ -56,7 +55,7 @@ public class Main {
 
     private static void runBattleshipCli() {
         Game game = new BattleshipGame();
-        GameController controller = new GameController(game, BattleshipAiPlayer::new, BattleshipAiPlayer::new);
+        GameController controller = new GameController(game, BattleshipAiPlayer::new, BattleshippBoatPlacementPlayer::new);
 //        GameController controller = new GameController(game, BattleshipAiPlayer::new, new BattleshipPlayerFactory());
         controller.registerSubscriber(new BattleshipCliSubscriber());
         controller.gameLoop();
