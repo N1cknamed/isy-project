@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TttGame implements Game {
 
-    private final Board board;
+    private Board board;
 
     private char currentPlayer = 'x';
     private Player player1, player2;
@@ -27,6 +27,16 @@ public class TttGame implements Game {
 
     public TttGame() {
         this(3, 3);
+    }
+
+    public TttGame copy() {
+        TttGame copy = new TttGame();
+        copy.board = board.copy();
+        copy.currentPlayer = currentPlayer;
+        copy.player1 = player1;
+        copy.player2 = player2;
+
+        return copy;
     }
 
 
