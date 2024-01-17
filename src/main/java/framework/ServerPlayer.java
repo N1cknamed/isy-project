@@ -25,12 +25,8 @@ public class ServerPlayer implements Player {
     }
 
     @Override
-    public Point doMove(Game game) {
-        try {
-            return nextMoveQueue.take();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public Point doMove(Game game) throws InterruptedException {
+        return nextMoveQueue.take();
     }
 
     public void setNextMove(Point nextMove) {

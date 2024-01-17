@@ -6,22 +6,28 @@ import server.ServerController;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+import java.util.function.Supplier;
 
 public class ServerGameController {
     private final ArrayList<GameSubscriber> subscribers = new ArrayList<>();
-    private final ServerGame game;
+    private final Supplier<ServerGame> gameSupplier;
     private final String host;
     private final int port;
     private final String teamName;
     private final PlayerFactory playerFactory;
 
     private ServerController serverController;
+    private ServerGame game;
 
-    private final AtomicBoolean yourTurn = new AtomicBoolean();
+    private final BlockingQueue<Response> yourTurnQueue = new SynchronousQueue<>();
+    private final BlockingQueue<Response> matchResponseQueue = new SynchronousQueue<>();
 
-    public ServerGameController(ServerGame game, String host, int port, String teamName, PlayerFactory playerFactory) {
-        this.game = game;
+    private Thread gameThread;
+
+    public ServerGameController(Supplier<ServerGame> gameSupplier, String host, int port, String teamName, PlayerFactory playerFactory) {
+        this.gameSupplier = gameSupplier;
         this.host = host;
         this.port = port;
         this.teamName = teamName;
@@ -32,40 +38,53 @@ public class ServerGameController {
         while (true) {
             Response response = serverController.getMessage().pop();
             switch (response.getCommand()) {
+                case MATCH:
+                    try {
+                        matchResponseQueue.put(response);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case YOURTURN:
+                    assertGameStarted();
+                    try {
+                        yourTurnQueue.put(response);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
                 case MOVE:
+                    assertGameStarted();
                     if (!response.getStringValue("PLAYER").equals(teamName)) {
                         Point move = calculatePoint(response.getIntValue("MOVE"));
                         game.getServerPlayer().setNextMove(move);
                     }
                     break;
                 case LOSS:
+                    assertGameStarted();
                     game.forceWin(game.getServerPlayer());
+                    gameThread.interrupt();
                     break;
                 case WIN:
+                    assertGameStarted();
                     game.forceWin(game.getLocalPlayer());
+                    gameThread.interrupt();
                     break;
                 case DRAW:
+                    assertGameStarted();
                     game.forceWin(null);
-                    break;
-                case YOURTURN:
-                    synchronized (yourTurn) {
-                        yourTurn.set(true);
-                        yourTurn.notify();
-                    }
+                    gameThread.interrupt();
                     break;
                 default:
+                    assertGameStarted();
                     game.handleServerResponse(response);
             }
         }
     }
 
-    private void login() {
-        serverController = new ServerController(host, port);
+    private void playGame(String opponentName, String playerToMove) {
+        gameThread = Thread.currentThread();
 
-        serverController.sendMessage("login " + teamName);
-    }
-
-    private void playGame() {
         // Wait until we are challenged
         Response matchResponse = null;
         while (matchResponse == null ||
@@ -73,9 +92,6 @@ public class ServerGameController {
                 !matchResponse.getStringValue("GAMETYPE").equals(game.getGameType())) {
             matchResponse = serverController.getMessage().pop();
         }
-
-        String opponentName = matchResponse.getStringValue("OPPONENT");
-        String playerToMove = matchResponse.getStringValue("PLAYERTOMOVE");
 
         System.out.println("opponentName = " + opponentName);
 
@@ -92,27 +108,30 @@ public class ServerGameController {
             i.onGameStarted(game);
         }
 
-        new Thread(this::serverLoop).start();
-
         while (!game.hasEnded()) {
             Player currentPlayer = game.getCurrentPlayer();
 
             if (currentPlayer.getPlayerType().isLocal()) {
                 System.out.println("Waiting until it's our turn");
                 // Wait until it's our turn
-                synchronized (yourTurn) {
-                    while (!yourTurn.get()) {
-                        try {
-                            yourTurn.wait();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+                try {
+                    yourTurnQueue.take();
+                } catch (InterruptedException e) {
+                    System.out.println("Received an interrupt while waiting for our turn. Exiting game loop.");
+                    break;
                 }
+
                 System.out.println("It's our turn!");
             }
 
-            Point move = currentPlayer.doMove(game);
+            Point move;
+            try {
+                move = currentPlayer.doMove(game);
+            } catch (InterruptedException e) {
+                System.out.println("Received an interrupt while waiting for player's move. Exiting game loop.");
+                break;
+            }
+
             if (game.doMove(move)) {
                 throw new RuntimeException("illegal move (" + move.toString() + ")");
             }
@@ -134,10 +153,28 @@ public class ServerGameController {
     }
 
     public void gameLoop() {
-        login();
+        serverController = new ServerController(host, port);
+
+        serverController.sendMessage("login " + teamName);
+        new Thread(this::serverLoop).start();
 
         while (true) {
-            playGame();
+            Response matchResponse;
+            try {
+                matchResponse = matchResponseQueue.take();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            game = gameSupplier.get();
+            String serverGameType = matchResponse.getStringValue("GAMETYPE");
+            if (!serverGameType.equals(game.getGameType())) {
+                System.out.println("Received game type '" + serverGameType + "' but expected '" + game.getGameType() + "'. Ignoring MATCH response.");
+                game = null;
+                continue;
+            }
+
+            playGame(matchResponse.getStringValue("OPPONENT"), matchResponse.getStringValue("PLAYERTOMOVE"));
             System.out.println("Restarting game (waiting for match)");
         }
     }
@@ -151,5 +188,11 @@ public class ServerGameController {
         int y = input / game.getBoard().getBoardWidth();
 
         return new Point(x, y);
+    }
+
+    private void assertGameStarted() {
+        if (game == null) {
+            throw new IllegalStateException("Expected game to be running, but no game object found.");
+        }
     }
 }

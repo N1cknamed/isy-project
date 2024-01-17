@@ -8,7 +8,7 @@ import ttt.*;
 
 
 public class Main {
-    private static final String TEAM_NAME = "groep2";
+    private static final String TEAM_NAME = "wouter";
 
     public static void main(String[] args) {
 //        runTttCli();
@@ -28,8 +28,7 @@ public class Main {
         PlayerType playerType = PlayerType.CLI;
 
         // Build the game classes and use the player types to create PlayerFactory objects
-        ServerGame game = new TttServerGame();
-        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
         controller.registerSubscriber(new TttCliSubscriber());
 
         // Start the game
@@ -77,8 +76,7 @@ public class Main {
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
         PlayerType playerType = PlayerType.GUI;
 
-        ServerGame game = new TttServerGame();
-        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
         Thread t = new Thread(() -> {
             TttGui.launch(TttGui.class);
         });
