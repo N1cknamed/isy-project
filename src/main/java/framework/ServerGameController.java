@@ -46,7 +46,6 @@ public class ServerGameController {
                     }
                     break;
                 case YOURTURN:
-                    assertGameStarted();
                     try {
                         yourTurnQueue.put(response);
                     } catch (InterruptedException e) {
@@ -84,14 +83,6 @@ public class ServerGameController {
 
     private void playGame(String opponentName, String playerToMove) {
         gameThread = Thread.currentThread();
-
-        // Wait until we are challenged
-        Response matchResponse = null;
-        while (matchResponse == null ||
-                matchResponse.getCommand() != Command.MATCH ||
-                !matchResponse.getStringValue("GAMETYPE").equals(game.getGameType())) {
-            matchResponse = serverController.getMessage().pop();
-        }
 
         System.out.println("opponentName = " + opponentName);
 
@@ -161,7 +152,9 @@ public class ServerGameController {
         while (true) {
             Response matchResponse;
             try {
+                System.out.println("Waiting for MATCH response");
                 matchResponse = matchResponseQueue.take();
+                System.out.println("Received MATCH response");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
