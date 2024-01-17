@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -45,6 +46,7 @@ public class TttGui extends Application {
             int wCol = winningCoords[1];
             buttons[wRow][wCol].getStyleClass().add("winning-button");
         }
+        showGameOverAlert();
     }
 
     private static void updateButtons(Game game) {
@@ -56,6 +58,7 @@ public class TttGui extends Application {
                 }
             }
         }
+
         //TODO: maybe make separate function when game has ended that it runs that function
 //        if (game.winner) {
 //            for (int i = 0; i < game.winningCoords.length; i++) {
@@ -64,6 +67,18 @@ public class TttGui extends Application {
 //                buttons[wRow][wCol].getStyleClass().add("winning-button");
 //            }
 //        }
+
+        //TODO: maybe make seperate function when game has ended that it runs that functon
+        if (board.isBoardFull()){
+            System.out.println("The Game is over! " + board.isBoardFull());
+            showGameOverAlert();}
+    }
+    private static void showGameOverAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
+        alert.setHeaderText(null);
+        alert.setContentText("The Game is over!");
+        alert.showAndWait();
     }
 
     public static void registerPlayer(TttGuiPlayer player) {
