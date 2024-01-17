@@ -46,7 +46,7 @@ public class TttGui extends Application {
 //            int wCol = winningCoords[1];
 //            buttons[wRow][wCol].getStyleClass().add("winning-button");
 //        }
-//        showGameOverAlert();
+        showGameOverAlert();
     }
 
     private static void updateButtons(Game game) {
@@ -71,7 +71,8 @@ public class TttGui extends Application {
         //TODO: maybe make seperate function when game has ended that it runs that functon
         if (board.isBoardFull()){
             System.out.println("The Game is over! " + board.isBoardFull());
-            showGameOverAlert();}
+            showGameOverAlert();
+        }
     }
     private static void showGameOverAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
