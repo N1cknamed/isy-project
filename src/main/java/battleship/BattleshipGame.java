@@ -3,7 +3,7 @@ package battleship;
 import framework.Game;
 import framework.Player;
 import framework.PlayerFactory;
-import games.Board;
+import framework.Board;
 
 import java.awt.Point;
 import java.util.Collection;

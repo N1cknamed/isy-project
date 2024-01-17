@@ -1,7 +1,7 @@
 package gui;
 
+import framework.Board;
 import framework.Game;
-import games.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;

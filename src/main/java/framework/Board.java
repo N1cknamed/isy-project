@@ -1,4 +1,4 @@
-package games;
+package framework;
 
 public class Board {
     final int boardWidth;

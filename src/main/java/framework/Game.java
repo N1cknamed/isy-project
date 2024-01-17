@@ -1,7 +1,5 @@
 package framework;
 
-import games.Board;
-
 import java.awt.*;
 import java.util.Collection;
 
