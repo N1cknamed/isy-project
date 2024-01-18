@@ -18,7 +18,11 @@ public class MessageFilter {
     }
 
     private static Command getCommandType(String rawCommand) {
-        return Command.valueOf(rawCommand);
+        try{
+            return Command.valueOf(rawCommand);
+        }catch (IllegalArgumentException e) {
+            return Command.UNKNOWN_COMMAND;
+        }
     }
 
     private static JSONObject decodeJson(String rawContent) {

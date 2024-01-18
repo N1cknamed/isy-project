@@ -1,10 +1,10 @@
-package framework;
+package framework.server;
 
+import framework.Game;
+import framework.Player;
 import server.Response;
 
 public interface ServerGame extends Game {
-
-    String getGameType();
 
     void forceWin(Player winner);
 
