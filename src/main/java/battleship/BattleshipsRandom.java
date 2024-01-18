@@ -3,65 +3,112 @@ package battleship;
 import framework.Game;
 import framework.Board;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 
 public class BattleshipsRandom {
-    private final Board board;
-    private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
 
-    public BattleshipsRandom() {
-        this.board = new Board(8, 8);
-    }
+    Boolean foundShip = false;
+    Point lastSHot = new Point(-1,-1);
+    ArrayList<Point> lastHits = new ArrayList<>();
 
-    public void addShip(char symbol, int size) {
-        ships.put(symbol, size);
-    }
+    Board localBoard = new Board(8,8);
 
-    public int[][] getHeatMap() {
-        int[][] heatMap = new int[board.getBoardWidth()][board.getBoardHeight()];
 
-        for (int x = 0; x < board.getBoardWidth(); x++) {
-            for (int y = 0; y < board.getBoardHeight(); y++) {
-                heatMap[x][y] = 0;
+
+    public Point getMove(Game game) {
+        Board board = game.getBoard();
+        Point move;
+
+        if (board.get(lastSHot) == 'h') {
+            localBoard.set(lastSHot, 'x');
+            lastHits.add(lastSHot);
+            foundShip = true;
+        } else if (Character.isDigit(board.get(lastSHot))) {
+            for (int i = 0; i < lastHits.size(); i++) {
+                Point p = lastHits.get(i);
+                localBoard.set(p, 'x');
+                localBoard.set(p.x-1, p.y, 'x');
+                localBoard.set(p.x+1, p.y, 'x');
+                localBoard.set(p.x, p.y+1, 'x');
+                localBoard.set(p.x, p.y-1, 'x');
             }
+            lastHits.clear();
+            foundShip = false;
         }
 
-        for (int x = 0; x < board.getBoardWidth(); x++) {
-            for (int y = 0; y < board.getBoardHeight(); y++) {
-                if (board.get(x, y) == 'm') {
-                    heatMap[x][y] = -1;
-                } else if (board.get(x, y) == 'h') {
-                    heatMap[x][y] = -1;
-                    if (x > 0 && heatMap[x - 1][y] != -1) {
-                        heatMap[x - 1][y]++;
-                    }
-                    if (x < board.getBoardWidth() - 1 && heatMap[x + 1][y] != -1) {
-                        heatMap[x + 1][y]++;
-                    }
-                    if (y > 0 && heatMap[x][y - 1] != -1) {
-                        heatMap[x][y - 1]++;
-                    }
-                    if (y < board.getBoardHeight() - 1 && heatMap[x][y + 1] != -1) {
-                        heatMap[x][y + 1]++;
+        if (foundShip) {
+            if (lastHits.size() == 1){
+                move = new Point(lastHits.get(0).x + 1, lastHits.get(0).y);
+                if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
+                    lastSHot = move;
+                    localBoard.set(move, 's');
+                    return move;
+                }
+                move = new Point(lastHits.get(0).x - 1, lastHits.get(0).y);
+                if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
+                    lastSHot = move;
+                    localBoard.set(move, 's');
+                    return move;
+                }
+                move = new Point(lastHits.get(0).x, lastHits.get(0).y + 1);
+                if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
+                    lastSHot = move;
+                    localBoard.set(move, 's');
+                    return move;
+                }
+                move = new Point(lastHits.get(0).x, lastHits.get(0).y - 1);
+                if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
+                    lastSHot = move;
+                    localBoard.set(move, 's');
+                    return move;
+                }
+            } else {
+                int direction = lastHits.get(0).x == lastHits.get(1).x ? 1 : 0;
+                for (int i = 0; i < lastHits.size(); i++) {
+                    if (direction == 0) {
+                        move = new Point(lastHits.get(i).x + 1, lastHits.get(i).y);
+                        if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
+                            lastSHot = move;
+                            localBoard.set(move, 's');
+                            return move;
+                        }
+                        move = new Point(lastHits.get(i).x - 1, lastHits.get(i).y);
+                        if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
+                            lastSHot = move;
+                            localBoard.set(move, 's');
+                            return move;
+                        }
+                    } else {
+                        move = new Point(lastHits.get(i).x, lastHits.get(i).y + 1);
+                        if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
+                            lastSHot = move;
+                            localBoard.set(move, 's');
+                            return move;
+                        }
+                        move = new Point(lastHits.get(i).x, lastHits.get(i).y - 1);
+                        if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
+                            lastSHot = move;
+                            localBoard.set(move, 's');
+                            return move;
+                        }
                     }
                 }
             }
         }
 
-        return heatMap;
-    }
 
-    public Point getMove(Game game) {
-        Point move;
+
         Random random = new Random();
         do {
             // random move
             move = new Point(random.nextInt(board.getBoardWidth()), random.nextInt(board.getBoardHeight()));
-            System.out.println("AI move: " + move);
-        } while (!game.isValidMove(move));
+        } while (!game.isValidMove(move) && localBoard.get(move) != 0);
 
+        lastSHot = move;
+        localBoard.set(move, 's');
         return move;
     }
 }

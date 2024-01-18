@@ -77,9 +77,9 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     public void placeBoats() {
         System.out.println("Player " + symbol + " place your boats");
         ships.put('2', 2);
-        //ships.put('3', 3);
-        //ships.put('4', 4);
-        //ships.put('6', 6);
+//        ships.put('3', 3);
+//        ships.put('4', 4);
+//        ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             board.printBoard();
@@ -105,29 +105,40 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
             // TODO remove code repeat
             if (direction == 0) {
                 // place boat and surround with spaces
-                for (int i = x-1; i < x + size + 1; i++) {
-                    for (int j = y-1; j <= y+1; j++) {
-                        // check if in bounds
-                        if (i >= 0 && i < board.getBoardWidth() && j >= 0 && j < board.getBoardHeight()) {
-                            if (i >= x && i < x + size && y == j) {
-                                board.set(i, j, boatType);
-                            } else {
-                                board.set(i, j, ' ');
-                            }
-                        }
+                for (int i = x; i < x + size; i++) {
+                    board.set(i, y, boatType);
+                    //if suroungding 4 spaces are 0 place a ' '
+                    if (board.get(i-1, y) == 0) {
+                        board.set(i-1, y, ' ');
                     }
+                    if (board.get(i+1, y) == 0) {
+                        board.set(i+1, y, ' ');
+                    }
+                    if (board.get(i, y+1) == 0) {
+                        board.set(i, y+1, ' ');
+                    }
+                    if (board.get(i, y-1) == 0) {
+                        board.set(i, y-1, ' ');
+                    }
+
                 }
             } else {
-                for (int i = x-1; i <= x + 1; i++) {
-                    for (int j = y-1; j < y+size+1; j++) {
-                        if (i >= 0 && i < board.getBoardWidth() && j >= 0 && j < board.getBoardHeight()) {
-                            if (j >= y && j < y + size && x == i) {
-                                board.set(i, j, boatType);
-                            } else {
-                                board.set(i, j, ' ');
-                            }
-                        }
+                for (int i = y; i < y + size; i++) {
+                    board.set(x, i, boatType);
+                    //if suroungding 4 spaces are 0 place a ' '
+                    if (board.get(x-1, i) == 0) {
+                        board.set(x-1, i, ' ');
                     }
+                    if (board.get(x+1, i) == 0) {
+                        board.set(x+1, i, ' ');
+                    }
+                    if (board.get(x, i+1) == 0) {
+                        board.set(x, i+1, ' ');
+                    }
+                    if (board.get(x, i-1) == 0) {
+                        board.set(x, i-1, ' ');
+                    }
+
                 }
             }
             boatsRemaining++;

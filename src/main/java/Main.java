@@ -11,11 +11,12 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
+        runBattleshipCsv();
 //        runTttGui();
 //        runHomeGui();
 
 //        runServerTttCli();
-        runServerTttGui();
+//        runServerTttGui();
     }
 
     private static void runServerTttCli() {
@@ -55,10 +56,22 @@ public class Main {
 
     private static void runBattleshipCli() {
         Game game = new BattleshipGame();
-        GameController controller = new GameController(game, BattleshipAiPlayer::new, BattleshippBoatPlacementPlayer::new);
+        GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshippBoatPlacementPlayer::new);
 //        GameController controller = new GameController(game, BattleshipAiPlayer::new, new BattleshipPlayerFactory());
         controller.registerSubscriber(new BattleshipCliSubscriber());
         controller.gameLoop();
+    }
+
+    private static void runBattleshipCsv() {
+        for (int i = 0; i < 1000; i++) {
+            Game game = new BattleshipGame();
+            GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshippBoatPlacementPlayer::new);
+//            GameController controller = new GameController(game, BattleshipRandomPlayer::new, new BattleshipPlayerFactory());
+            GameSubscriber csv = new BattleshipCsvSubscriber();
+            controller.registerSubscriber(csv);
+//            controller.registerSubscriber(new BattleshipCliSubscriber());
+            controller.gameLoop();
+        }
     }
 
     private static void runTttGui() {

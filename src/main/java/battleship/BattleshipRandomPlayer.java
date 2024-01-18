@@ -10,18 +10,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class BattleshipAiPlayer implements BattleshipPlayer{
+public class BattleshipRandomPlayer implements BattleshipPlayer{
     private final char symbol;
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
     private final Set<Point> alreadyHit = new HashSet<>();
 
     // for the ai
-    private BattleshipsRandom ai = new BattleshipsRandom();
+    private BattleshipsRandom algoithm = new BattleshipsRandom();
     private int boatsRemaining = 0;
 
-    public BattleshipAiPlayer(char symbol) {
-        this.symbol = symbol;
+    public BattleshipRandomPlayer(char symbol) {
+        this.symbol = 'r';
         this.board = new Board(8, 8);
     }
 
@@ -51,12 +51,11 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
     @Override
     public void placeBoats() {
         ships.put('2', 2);
-        //ships.put('3', 3);
+        ships.put('3', 3);
         //ships.put('4', 4);
         //ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
-            ai.addShip(entry.getKey(), entry.getValue());
             boolean placed = false;
 
             for (int x = 0; x < board.getBoardWidth(); x++) {
@@ -85,7 +84,7 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
 
             boatsRemaining++;
         }
-        board.printBoard();
+//        board.printBoard();
     }
 
     @Override
@@ -128,6 +127,6 @@ public class BattleshipAiPlayer implements BattleshipPlayer{
 
     @Override
     public Point doMove(Game game) {
-        return ai.getMove(game);
+        return algoithm.getMove(game);
     }
 }

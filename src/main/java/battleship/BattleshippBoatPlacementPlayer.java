@@ -17,11 +17,10 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
     private final Set<Point> alreadyHit = new HashSet<>();
 
     // for the ai
-    private BattleshipsRandom ai = new BattleshipsRandom();
     private int boatsRemaining = 0;
 
     public BattleshippBoatPlacementPlayer(char symbol) {
-        this.symbol = symbol;
+        this.symbol = 's';
         this.board = new Board(8, 8);
     }
 
@@ -56,7 +55,6 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
         //ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
-            ai.addShip(entry.getKey(), entry.getValue());
             boolean placed = false;
 
             for (int x = 0; x < board.getBoardWidth(); x++) {
@@ -85,7 +83,7 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
 
             boatsRemaining++;
         }
-        board.printBoard();
+//        board.printBoard();
     }
 
     @Override
