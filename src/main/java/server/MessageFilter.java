@@ -21,6 +21,7 @@ public class MessageFilter {
         try{
             return Command.valueOf(rawCommand);
         }catch (IllegalArgumentException e) {
+            System.out.println("WARNING: Translating unknown raw command '" + rawCommand + "' to UNKNOWN_COMMAND.");
             return Command.UNKNOWN_COMMAND;
         }
     }

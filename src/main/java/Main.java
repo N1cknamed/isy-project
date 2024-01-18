@@ -83,6 +83,21 @@ public class Main {
         });
         t.start();
 
+        // Handle challenge requests
+        controller.setServerChallengeHandler(challenge -> {
+            System.out.println("WE RECEIVED A CHALLENGE BY " + challenge.getChallenger());
+
+            // TODO Open GUI popup or something to accept/decline the challenge
+            boolean accept = false;
+
+            if (accept) {
+                challenge.accept();
+            }
+        });
+
+        // Send challenges
+        // controller.challengePlayer("albert");
+
         controller.registerSubscriber(new TttCliSubscriber());
         controller.registerSubscriber(new TttGuiSubscriber());
         controller.gameLoop();
