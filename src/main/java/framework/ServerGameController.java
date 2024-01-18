@@ -86,8 +86,9 @@ public class ServerGameController {
         game = gameSupplier.get();
         String serverGameType = matchResponse.getStringValue("GAMETYPE");
         if (!serverGameType.equals(game.getGameType())) {
+            String expectedGameType = game.getGameType();
             game = null;
-            throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + game.getGameType() + "'. Ignoring MATCH response.");
+            throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + expectedGameType + "'. Ignoring MATCH response.");
         }
 
         String opponentName = matchResponse.getStringValue("OPPONENT");
