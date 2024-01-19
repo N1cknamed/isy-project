@@ -10,11 +10,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ServerGameController {
     private final ArrayList<GameSubscriber> subscribers = new ArrayList<>();
-    private final Supplier<ServerGame> gameSupplier;
+    private final Function<ServerGameController, ServerGame> gameSupplier;
     private final String gameType;
     private final String host;
     private final int port;
@@ -31,7 +32,7 @@ public class ServerGameController {
 
     private ServerChallengeHandler serverChallengeHandler;
 
-    public ServerGameController(Supplier<ServerGame> gameSupplier, String gameType, String host, int port, String teamName, PlayerFactory playerFactory) {
+    public ServerGameController(Function<ServerGameController, ServerGame> gameSupplier, String gameType, String host, int port, String teamName, PlayerFactory playerFactory) {
         this.gameSupplier = gameSupplier;
         this.gameType = gameType;
         this.host = host;
@@ -112,7 +113,7 @@ public class ServerGameController {
             throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + gameType + "'. Ignoring MATCH response.");
         }
 
-        game = gameSupplier.get();
+        game = gameSupplier.apply(this);
 
         String opponentName = matchResponse.getStringValue("OPPONENT");
         String playerToMove = matchResponse.getStringValue("PLAYERTOMOVE");
@@ -164,7 +165,7 @@ public class ServerGameController {
             }
 
             if (currentPlayer.getPlayerType().isLocal()) {
-                int moveIndex = move.y * game.getBoard().getBoardWidth() + move.x;
+                int moveIndex = pointToIndex(move);
                 serverController.sendMessage("MOVE " + moveIndex);
             }
 
@@ -225,5 +226,13 @@ public class ServerGameController {
         if (game == null) {
             throw new IllegalStateException("Expected game to be running, but no game object found.");
         }
+    }
+
+    public int pointToIndex(Point cord) {
+        return cord.y * game.getBoard().getBoardWidth() + cord.x;
+    }
+
+    public ServerController getServerController() {
+        return serverController;
     }
 }

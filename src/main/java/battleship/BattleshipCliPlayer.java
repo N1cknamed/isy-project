@@ -74,12 +74,14 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
 
     }
     @Override
-    public void placeBoats() {
+    public Collection<Boat> placeBoats() {
         System.out.println("Player " + symbol + " place your boats");
         ships.put('2', 2);
 //        ships.put('3', 3);
 //        ships.put('4', 4);
 //        ships.put('6', 6);
+
+        ArrayList<Boat> boats = new ArrayList<>();
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             board.printBoard();
@@ -101,6 +103,9 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
                 direction = scanner.nextInt();
                 valid = isValidMove(new Point(x, y), size, direction);
             } while (!valid);
+
+            Boat boat = new Boat(new Point(x, y), direction, size);
+            boats.add(boat);
 
             // TODO remove code repeat
             if (direction == 0) {
@@ -146,6 +151,7 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
         }
         board.printBoard();
         System.out.printf("Player %s has placed all their boats\n", symbol);
+        return boats;
     }
 
     @Override

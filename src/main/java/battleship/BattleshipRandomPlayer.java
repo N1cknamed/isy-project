@@ -5,10 +5,7 @@ import framework.Board;
 import framework.PlayerType;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BattleshipRandomPlayer implements BattleshipPlayer{
     private final char symbol;
@@ -49,19 +46,23 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
     }
 
     @Override
-    public void placeBoats() {
+    public Collection<Boat> placeBoats() {
         ships.put('2', 2);
         ships.put('3', 3);
         //ships.put('4', 4);
         //ships.put('6', 6);
+
+        ArrayList<Boat> boats = new ArrayList<>();
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             boolean placed = false;
 
             for (int x = 0; x < board.getBoardWidth(); x++) {
                 for (int y = 0; y < board.getBoardHeight(); y++) {
-                    if (isValidBoatPlacement(new Point(x, y), entry.getValue(), 0)) {
-                        int size = entry.getValue();
+                    Point cords = new Point(x, y);
+                    int size = entry.getValue();
+                    int direction = 0;
+                    if (isValidBoatPlacement(cords, size, direction)) {
                         char boatType = entry.getKey();
                         for (int i = x-1; i < x + size + 1; i++) {
                             for (int j = y-1; j <= y+1; j++) {
@@ -76,6 +77,8 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
                             }
                         }
                         placed = true;
+                        Boat boat = new Boat(cords, direction, size);
+                        boats.add(boat);
                         break;
                     }
                 }
@@ -85,6 +88,7 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
             boatsRemaining++;
         }
 //        board.printBoard();
+        return boats;
     }
 
     @Override

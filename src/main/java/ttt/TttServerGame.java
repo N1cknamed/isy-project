@@ -2,13 +2,19 @@ package ttt;
 
 import framework.Player;
 import framework.server.ServerGame;
+import framework.server.ServerGameController;
 import framework.server.ServerPlayer;
 import server.Response;
+import server.ServerController;
 
 public class TttServerGame extends TttGame implements ServerGame {
 
     private boolean hasEnded = false;
     private Player winner = null;
+
+    public TttServerGame(ServerGameController connection) {
+        super();
+    }
 
     @Override
     public boolean hasEnded() {
