@@ -1,5 +1,7 @@
 package framework;
 
+import java.awt.*;
+
 public class Board {
     final int boardWidth;
     final int boardHeight;
@@ -29,10 +31,22 @@ public class Board {
     }
 
     public void set(int x, int y, char c) {
+        if (x < 0 || x >= boardWidth || y < 0 || y >= boardHeight) {
+            return;
+        }
         this.board[y][x] = c;
     }
+    public void set(Point p, char c) {
+        set(p.x, p.y, c);
+    }
     public char get(int x, int y) {
+        if (x < 0 || x >= boardWidth || y < 0 || y >= boardHeight) {
+            return 0;
+        }
         return this.board[y][x];
+    }
+    public char get(Point p) {
+        return get(p.x, p.y);
     }
     public char[][] getBoard() {
         return board;

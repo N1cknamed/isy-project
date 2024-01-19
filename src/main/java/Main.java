@@ -1,11 +1,6 @@
-import battleship.BattleshipCliSubscriber;
-import battleship.BattleshipGame;
-import battleship.BattleshipPlayerFactory;
-import framework.Game;
-import framework.GameController;
-import framework.PlayerFactoryBuilder;
-import framework.PlayerType;
-import framework.server.ServerGameController;
+import battleship.*;
+import framework.*;
+import framework.server.*;
 import gui.HomeGui;
 import gui.TttGui;
 import ttt.*;
@@ -18,6 +13,7 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
+//        runBattleshipCsv();
 //        runTttGui();
 //        runHomeGui();
 
@@ -49,6 +45,8 @@ public class Main {
         Game game = new TttGame();
         GameController controller = new GameController(game, playerFactoryBuilder.build(player1Type), playerFactoryBuilder.build(player2Type));
         controller.registerSubscriber(new TttCliSubscriber());
+        GameSubscriber battleshipCsvSubscriber = new BattleshipCsvSubscriber();
+        controller.registerSubscriber(battleshipCsvSubscriber);
 
         // Start the game
         controller.gameLoop();
@@ -56,9 +54,22 @@ public class Main {
 
     private static void runBattleshipCli() {
         Game game = new BattleshipGame();
-        GameController controller = new GameController(game, new BattleshipPlayerFactory(), new BattleshipPlayerFactory());
+        GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshippBoatPlacementPlayer::new);
+//        GameController controller = new GameController(game, BattleshipAiPlayer::new, new BattleshipPlayerFactory());
         controller.registerSubscriber(new BattleshipCliSubscriber());
         controller.gameLoop();
+    }
+
+    private static void runBattleshipCsv() {
+        for (int i = 0; i < 1000; i++) {
+            Game game = new BattleshipGame();
+            GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshippBoatPlacementPlayer::new);
+//            GameController controller = new GameController(game, BattleshipRandomPlayer::new, new BattleshipPlayerFactory());
+            GameSubscriber csv = new BattleshipCsvSubscriber();
+            controller.registerSubscriber(csv);
+//            controller.registerSubscriber(new BattleshipCliSubscriber());
+            controller.gameLoop();
+        }
     }
 
     private static void runTttGui() {
