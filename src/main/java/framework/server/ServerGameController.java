@@ -1,6 +1,8 @@
-package framework;
+package framework.server;
 
-import server.Command;
+import framework.GameSubscriber;
+import framework.Player;
+import framework.PlayerFactory;
 import server.Response;
 import server.ServerController;
 
@@ -13,6 +15,7 @@ import java.util.function.Supplier;
 public class ServerGameController {
     private final ArrayList<GameSubscriber> subscribers = new ArrayList<>();
     private final Supplier<ServerGame> gameSupplier;
+    private final String gameType;
     private final String host;
     private final int port;
     private final String teamName;
@@ -26,8 +29,11 @@ public class ServerGameController {
 
     private Thread gameThread;
 
-    public ServerGameController(Supplier<ServerGame> gameSupplier, String host, int port, String teamName, PlayerFactory playerFactory) {
+    private ServerChallengeHandler serverChallengeHandler;
+
+    public ServerGameController(Supplier<ServerGame> gameSupplier, String gameType, String host, int port, String teamName, PlayerFactory playerFactory) {
         this.gameSupplier = gameSupplier;
+        this.gameType = gameType;
         this.host = host;
         this.port = port;
         this.teamName = teamName;
@@ -38,6 +44,24 @@ public class ServerGameController {
         while (true) {
             Response response = serverController.getMessage().pop();
             switch (response.getCommand()) {
+                case CHALLENGE:
+                    String challenger = response.getStringValue("CHALLENGER");
+                    String challengeGameType = response.getStringValue("GAMETYPE");
+                    int challengeNumber = response.getIntValue("CHALLENGENUMBER");
+
+                    if (serverChallengeHandler == null) {
+                        System.out.println("Ignoring challenge by " + challenger + ": no challenge handler registered.");
+                    } else if (!challengeGameType.equals(gameType)) {
+                        System.out.println("Ignoring challenge by " + challenger + ": game type mismatch.");
+                    } else {
+                        serverChallengeHandler.handleChallengeReceived(new ServerChallenge(
+                                challenger,
+                                challengeGameType,
+                                challengeNumber,
+                                this::acceptChallenge
+                        ));
+                    }
+                    break;
                 case MATCH:
                     createGame(response);
                     try {
@@ -83,13 +107,12 @@ public class ServerGameController {
     }
 
     private void createGame(Response matchResponse) {
-        game = gameSupplier.get();
         String serverGameType = matchResponse.getStringValue("GAMETYPE");
-        if (!serverGameType.equals(game.getGameType())) {
-            String expectedGameType = game.getGameType();
-            game = null;
-            throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + expectedGameType + "'. Ignoring MATCH response.");
+        if (!serverGameType.equals(gameType)) {
+            throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + gameType + "'. Ignoring MATCH response.");
         }
+
+        game = gameSupplier.get();
 
         String opponentName = matchResponse.getStringValue("OPPONENT");
         String playerToMove = matchResponse.getStringValue("PLAYERTOMOVE");
@@ -177,6 +200,18 @@ public class ServerGameController {
 
     public void registerSubscriber(GameSubscriber subscriber) {
         subscribers.add(subscriber);
+    }
+
+    public void setServerChallengeHandler(ServerChallengeHandler serverChallengeHandler) {
+        this.serverChallengeHandler = serverChallengeHandler;
+    }
+
+    public void challengePlayer(String playerName) {
+        serverController.sendMessage("challenge \"" + playerName + "\" \"" + gameType + "\"");
+    }
+
+    public void acceptChallenge(ServerChallenge challenge) {
+        serverController.sendMessage("challenge accept " + challenge.getChallengeNumber());
     }
 
     private Point calculatePoint(int input) {

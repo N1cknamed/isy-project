@@ -1,5 +1,6 @@
 import battleship.*;
 import framework.*;
+import framework.server.*;
 import gui.HomeGui;
 import gui.TttGui;
 import ttt.*;
@@ -12,12 +13,12 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
-        runBattleshipCsv();
+//        runBattleshipCsv();
 //        runTttGui();
 //        runHomeGui();
 
 //        runServerTttCli();
-//        runServerTttGui();
+        runServerTttGui();
     }
 
     private static void runServerTttCli() {
@@ -25,7 +26,7 @@ public class Main {
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
 
         // Build the game classes and use the player types to create PlayerFactory objects
-        ServerGameController controller = new ServerGameController(TttServerGame::new, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER));
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER));
         controller.registerSubscriber(new TttCliSubscriber());
 
         // Start the game
@@ -87,11 +88,26 @@ public class Main {
     private static void runServerTttGui() {
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
 
-        ServerGameController controller = new ServerGameController(TttServerGame::new, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER));
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER));
         Thread t = new Thread(() -> {
             TttGui.launch(TttGui.class);
         });
         t.start();
+
+        // Handle challenge requests
+        controller.setServerChallengeHandler(challenge -> {
+            System.out.println("WE RECEIVED A CHALLENGE BY " + challenge.getChallenger());
+
+            // TODO Open GUI popup or something to accept/decline the challenge
+            boolean accept = false;
+
+            if (accept) {
+                challenge.accept();
+            }
+        });
+
+        // Send challenges
+        // controller.challengePlayer("albert");
 
         controller.registerSubscriber(new TttCliSubscriber());
         controller.registerSubscriber(new TttGuiSubscriber());

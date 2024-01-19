@@ -1,4 +1,8 @@
-package framework;
+package framework.server;
+
+import framework.Game;
+import framework.Player;
+import framework.PlayerType;
 
 import java.awt.*;
 import java.util.concurrent.BlockingQueue;

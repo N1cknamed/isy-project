@@ -1,7 +1,7 @@
 package ttt;
 
 import framework.PlayerFactoryBuilder;
-import framework.ServerPlayer;
+import framework.server.ServerPlayer;
 
 public class Ttt {
 
