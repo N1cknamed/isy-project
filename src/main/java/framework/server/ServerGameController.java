@@ -20,25 +20,23 @@ public class ServerGameController {
     private final String host;
     private final int port;
     private final String teamName;
-    private final PlayerFactory playerFactory;
-
+    private final PlayerFactory localPlayerFactory;
+    private final PlayerFactory serverPlayerFactory;
     private ServerController serverController;
     private ServerGame game;
-
     private final BlockingQueue<Response> yourTurnQueue = new SynchronousQueue<>();
     private final BlockingQueue<Response> matchResponseQueue = new SynchronousQueue<>();
-
     private Thread gameThread;
-
     private ServerChallengeHandler serverChallengeHandler;
 
-    public ServerGameController(Function<ServerGameController, ServerGame> gameSupplier, String gameType, String host, int port, String teamName, PlayerFactory playerFactory) {
+    public ServerGameController(Function<ServerGameController, ServerGame> gameSupplier, String gameType, String host, int port, String teamName, PlayerFactory playerFactory, PlayerFactory serverPlayerFactory) {
         this.gameSupplier = gameSupplier;
         this.gameType = gameType;
         this.host = host;
         this.port = port;
         this.teamName = teamName;
-        this.playerFactory = playerFactory;
+        this.localPlayerFactory = playerFactory;
+        this.serverPlayerFactory = serverPlayerFactory;
     }
 
     private void serverLoop() {
@@ -123,10 +121,10 @@ public class ServerGameController {
         // Check who is starting
         if (playerToMove.equals(opponentName)) {
             System.out.println("Opponent is starting");
-            game.start(ServerPlayer::new, playerFactory);
+            game.start(serverPlayerFactory, localPlayerFactory);
         } else {
             System.out.println("We are starting");
-            game.start(playerFactory, ServerPlayer::new);
+            game.start(localPlayerFactory, serverPlayerFactory);
         }
 
         for (GameSubscriber i : subscribers) {
