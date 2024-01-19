@@ -33,23 +33,6 @@ public class TttServerGame extends TttGame implements ServerGame {
     }
 
     @Override
-    public Player getLocalPlayer() {
-        return getAllPlayers().stream()
-                .filter(p -> p.getPlayerType().isLocal())
-                .findAny()
-                .orElseThrow();
-    }
-
-    @Override
-    public ServerPlayer getServerPlayer() {
-        return getAllPlayers().stream()
-                .filter(p -> !p.getPlayerType().isLocal())
-                .map(p -> (ServerPlayer) p)
-                .findAny()
-                .orElseThrow();
-    }
-
-    @Override
     public void handleServerResponse(Response response) {
         System.out.println("Received and ignoring an unhandled server response (" + response.getCommand() + ")");
     }

@@ -12,6 +12,7 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
     private final Set<Point> alreadyHit = new HashSet<>();
+    private Collection<Boat> boats = new ArrayList<>();
 
     // for the ai
     private BattleshipsRandom algoithm = new BattleshipsRandom();
@@ -46,13 +47,11 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
     }
 
     @Override
-    public Collection<Boat> placeBoats() {
+    public void placeBoats() {
         ships.put('2', 2);
         ships.put('3', 3);
-        //ships.put('4', 4);
-        //ships.put('6', 6);
-
-        ArrayList<Boat> boats = new ArrayList<>();
+        ships.put('4', 4);
+        ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             boolean placed = false;
@@ -88,7 +87,6 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
             boatsRemaining++;
         }
 //        board.printBoard();
-        return boats;
     }
 
     @Override
@@ -117,6 +115,11 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
     @Override
     public boolean isAlive() {
         return boatsRemaining > 0;
+    }
+
+    @Override
+    public Collection<Boat> getPlacedBoats() {
+        return boats;
     }
 
     @Override

@@ -16,6 +16,8 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
 
     private Set<Point> alreadyHit = new HashSet<>();
     private int boatsRemaining = 0;
+    private final Collection<Boat> boats = new ArrayList<>();
+
     public BattleshipCliPlayer(char symbol) {
         this.symbol = symbol;
         this.scanner = new Scanner(System.in);
@@ -74,14 +76,12 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
 
     }
     @Override
-    public Collection<Boat> placeBoats() {
+    public void placeBoats() {
         System.out.println("Player " + symbol + " place your boats");
         ships.put('2', 2);
-//        ships.put('3', 3);
-//        ships.put('4', 4);
-//        ships.put('6', 6);
-
-        ArrayList<Boat> boats = new ArrayList<>();
+        ships.put('3', 3);
+        ships.put('4', 4);
+        ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             board.printBoard();
@@ -151,7 +151,6 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
         }
         board.printBoard();
         System.out.printf("Player %s has placed all their boats\n", symbol);
-        return boats;
     }
 
     @Override
@@ -182,5 +181,10 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     @Override
     public boolean isAlive() {
         return boatsRemaining > 0;
+    }
+
+    @Override
+    public Collection<Boat> getPlacedBoats() {
+        return boats;
     }
 }
