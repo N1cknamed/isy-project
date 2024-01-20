@@ -1,5 +1,7 @@
 package battleship;
 
+import battleship.ai.BattleshipAi;
+import battleship.ai.BattleshipSequentialAi;
 import framework.Game;
 import framework.Board;
 import framework.PlayerType;
@@ -15,7 +17,7 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
     private Collection<Boat> boats = new ArrayList<>();
 
     // for the ai
-    private BattleshipsRandom algoithm = new BattleshipsRandom();
+    private BattleshipAi algorithm = new BattleshipSequentialAi();
     private int boatsRemaining = 0;
 
     public BattleshipRandomPlayer(char symbol) {
@@ -134,6 +136,6 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
 
     @Override
     public Point doMove(Game game) {
-        return algoithm.getMove(game);
+        return algorithm.getMove(game);
     }
 }

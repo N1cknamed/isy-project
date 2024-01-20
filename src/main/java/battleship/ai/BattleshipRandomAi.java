@@ -1,14 +1,13 @@
-package battleship;
+package battleship.ai;
 
 import framework.Game;
 import framework.Board;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 
-public class BattleshipsRandom {
+public class BattleshipRandomAi implements BattleshipAi {
 
     Boolean foundShip = false;
     Point lastSHot = new Point(-1,-1);
@@ -17,7 +16,7 @@ public class BattleshipsRandom {
     Board localBoard = new Board(8,8);
 
 
-
+    @Override
     public Point getMove(Game game) {
         Board board = game.getBoard();
         Point move;
