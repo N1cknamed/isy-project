@@ -34,7 +34,7 @@ public class BattleshipGame implements Game {
 
     @Override
     public boolean hasEnded() {
-        return !getCurrentPlayer().isAlive();
+        return !player1.isAlive() || !player2.isAlive();
     }
 
     @Override
