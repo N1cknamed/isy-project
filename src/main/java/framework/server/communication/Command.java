@@ -1,4 +1,4 @@
-package server;
+package framework.server.communication;
 
 public enum Command {
     UNKNOWN_COMMAND,

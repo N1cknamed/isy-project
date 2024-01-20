@@ -1,4 +1,4 @@
-package server;
+package framework.server.communication;
 
 import java.io.PrintWriter;
 

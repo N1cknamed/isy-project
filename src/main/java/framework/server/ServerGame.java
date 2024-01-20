@@ -2,7 +2,7 @@ package framework.server;
 
 import framework.Game;
 import framework.Player;
-import server.Response;
+import framework.server.communication.Response;
 
 public interface ServerGame extends Game {
 

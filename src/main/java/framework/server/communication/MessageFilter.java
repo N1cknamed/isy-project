@@ -1,4 +1,4 @@
-package server;
+package framework.server.communication;
 
 import org.json.JSONException;
 import org.json.JSONObject;

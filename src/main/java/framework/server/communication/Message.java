@@ -1,9 +1,7 @@
-package server;
+package framework.server.communication;
 
-import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
 
 public class Message {
 

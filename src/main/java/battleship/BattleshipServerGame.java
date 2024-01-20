@@ -5,8 +5,8 @@ import battleship.players.BattleshipServerPlayer;
 import framework.Player;
 import framework.server.ServerGame;
 import framework.server.ServerGameController;
-import server.Command;
-import server.Response;
+import framework.server.communication.Command;
+import framework.server.communication.Response;
 
 public class BattleshipServerGame extends BattleshipGame implements ServerGame {
 

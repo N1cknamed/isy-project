@@ -3,8 +3,8 @@ package framework.server;
 import framework.GameSubscriber;
 import framework.Player;
 import framework.PlayerFactory;
-import server.Response;
-import server.ServerController;
+import framework.server.communication.Response;
+import framework.server.communication.ServerController;
 
 import java.awt.*;
 import java.util.ArrayList;

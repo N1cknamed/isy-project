@@ -3,7 +3,7 @@ package ttt;
 import framework.Player;
 import framework.server.ServerGame;
 import framework.server.ServerGameController;
-import server.Response;
+import framework.server.communication.Response;
 
 public class TttServerGame extends TttGame implements ServerGame {
 
