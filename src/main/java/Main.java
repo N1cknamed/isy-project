@@ -9,6 +9,8 @@ import ttt.*;
 public class Main {
     private static final String TEAM_NAME = "robbie";
     private static final PlayerType LOCAL_PLAYER = PlayerType.GUI;
+    private static final String SERVER_HOST = "home.woutergritter.me";
+    private static final int SERVER_PORT = 7789;
 
     public static void main(String[] args) {
 //        runTttCli();
@@ -26,7 +28,7 @@ public class Main {
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
 
         // Build the game classes and use the player types to create PlayerFactory objects
-        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER), ServerPlayer::new);
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", SERVER_HOST, SERVER_PORT, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER), ServerPlayer::new);
         controller.registerSubscriber(new TttCliSubscriber());
 
         // Start the game
@@ -38,7 +40,7 @@ public class Main {
 //        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
 
         // Build the game classes and use the player types to create PlayerFactory objects
-        ServerGameController controller = new ServerGameController(BattleshipServerGame::new, "Battleship", "home.woutergritter.me", 7789, TEAM_NAME, BattleshipRandomPlayer::new, BattleshipServerPlayer::new);
+        ServerGameController controller = new ServerGameController(BattleshipServerGame::new, "Battleship", SERVER_HOST, SERVER_PORT, TEAM_NAME, BattleshipRandomPlayer::new, BattleshipServerPlayer::new);
         controller.registerSubscriber(new BattleshipCliSubscriber());
 
         // Start the game
@@ -100,7 +102,7 @@ public class Main {
     private static void runServerTttGui() {
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
 
-        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER), ServerPlayer::new);
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", SERVER_HOST, SERVER_PORT, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER), ServerPlayer::new);
         Thread t = new Thread(() -> {
             TttGui.launch(TttGui.class);
         });
