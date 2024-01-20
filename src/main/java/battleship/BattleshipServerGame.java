@@ -19,22 +19,6 @@ public class BattleshipServerGame extends BattleshipGame implements ServerGame {
     }
 
     @Override
-    public void start(PlayerFactory playerFactory1, PlayerFactory playerFactory2) {
-        super.start(playerFactory1, playerFactory2);
-        BattleshipPlayer localPlayer = (BattleshipPlayer) getLocalPlayer();
-        for (Boat boat : localPlayer.getPlacedBoats()) {
-            int startIndex = controller.pointToIndex(boat.getStartCord());
-            int endIndex = controller.pointToIndex(boat.getEndCords());
-            controller.getServerController().sendMessage("place " + startIndex + " " + endIndex);
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    @Override
     public void forceWin(Player winner) {
         this.winner = winner;
         hasEnded = true;
@@ -43,6 +27,35 @@ public class BattleshipServerGame extends BattleshipGame implements ServerGame {
     @Override
     public void handleServerResponse(Response response) {
 
+    }
+
+    boolean localPlayerFirstMove = true;
+    boolean serverPlayerFirstMove = true;
+    @Override
+    public boolean prePlayerMove(Player player) {
+        if (player.getPlayerType().isLocal()) {
+            if (localPlayerFirstMove) {
+                BattleshipPlayer localPlayer = (BattleshipPlayer) player;
+                for (Boat boat : localPlayer.getPlacedBoats()) {
+                    int startIndex = controller.pointToIndex(boat.getStartCord());
+                    int endIndex = controller.pointToIndex(boat.getEndCords());
+                    controller.getServerController().sendMessage("place " + startIndex + " " + endIndex);
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                localPlayerFirstMove = false;
+                return false;
+            }
+        } else {
+            if (serverPlayerFirstMove) {
+                serverPlayerFirstMove = false;
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

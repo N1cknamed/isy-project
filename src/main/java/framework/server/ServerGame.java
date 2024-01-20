@@ -24,4 +24,6 @@ public interface ServerGame extends Game {
     }
 
     void handleServerResponse(Response response);
+
+    boolean prePlayerMove(Player player);
 }

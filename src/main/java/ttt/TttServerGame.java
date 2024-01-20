@@ -36,4 +36,9 @@ public class TttServerGame extends TttGame implements ServerGame {
     public void handleServerResponse(Response response) {
         System.out.println("Received and ignoring an unhandled server response (" + response.getCommand() + ")");
     }
+
+    @Override
+    public boolean prePlayerMove(Player player) {
+        return true;
+    }
 }

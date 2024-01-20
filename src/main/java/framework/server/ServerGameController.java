@@ -150,26 +150,32 @@ public class ServerGameController {
                 System.out.println("It's our turn!");
             }
 
-            Point move;
-            try {
-                move = currentPlayer.doMove(game);
-            } catch (InterruptedException e) {
-                System.out.println("Received an interrupt while waiting for player's move. Exiting game loop.");
-                break;
-            }
+            boolean doMove = game.prePlayerMove(currentPlayer);
+            if (doMove) {
+                Point move;
+                try {
+                    move = currentPlayer.doMove(game);
+                } catch (InterruptedException e) {
+                    System.out.println("Received an interrupt while waiting for player's move. Exiting game loop.");
+                    break;
+                }
 
-            if (game.doMove(move)) {
-                throw new RuntimeException("illegal move (" + move.toString() + ")");
-            }
+                if (game.doMove(move)) {
+                    throw new RuntimeException("illegal move (" + move.toString() + ")");
+                }
 
-            if (currentPlayer.getPlayerType().isLocal()) {
-                int moveIndex = pointToIndex(move);
-                serverController.sendMessage("MOVE " + moveIndex);
+                if (currentPlayer.getPlayerType().isLocal()) {
+                    int moveIndex = pointToIndex(move);
+                    serverController.sendMessage("MOVE " + moveIndex);
+                }
+                for (GameSubscriber i : subscribers) {
+                    i.onPlayerMove(currentPlayer, move);
+                }
             }
+            game.nextPlayer();
 
             for (GameSubscriber i : subscribers) {
                 i.onGameUpdated(game);
-                i.onPlayerMove(currentPlayer, move);
             }
         }
 
