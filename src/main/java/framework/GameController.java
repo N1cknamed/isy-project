@@ -41,6 +41,7 @@ public class GameController {
                 i.onGameUpdated(game);
                 i.onPlayerMove(currentPlayer, move);
             }
+            game.nextPlayer();
         }
 
         for (GameSubscriber i : subscribers) {

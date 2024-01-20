@@ -1,5 +1,7 @@
 package battleship;
 
+import battleship.players.BattleshipPlayer;
+import battleship.players.BattleshipServerPlayer;
 import framework.Player;
 import framework.server.ServerGame;
 import framework.server.ServerGameController;
@@ -71,6 +73,11 @@ public class BattleshipServerGame extends BattleshipGame implements ServerGame {
     @Override
     public Player getWinner() {
         return winner;
+    }
+
+    @Override
+    public Player getLoser() {
+        return getAllPlayers().stream().filter(p -> p != winner).findFirst().orElseThrow();
     }
 
     @Override

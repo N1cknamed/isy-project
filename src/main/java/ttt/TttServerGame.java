@@ -31,6 +31,11 @@ public class TttServerGame extends TttGame implements ServerGame {
     }
 
     @Override
+    public Player getLoser() {
+        return getAllPlayers().stream().filter(p -> p != winner).findFirst().orElseThrow();
+    }
+
+    @Override
     public void handleServerResponse(Response response) {
     }
 

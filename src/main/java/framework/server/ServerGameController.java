@@ -178,11 +178,10 @@ public class ServerGameController {
                     i.onPlayerMove(currentPlayer, move);
                 }
             }
-            game.nextPlayer();
-
             for (GameSubscriber i : subscribers) {
                 i.onGameUpdated(game);
             }
+            game.nextPlayer();
         }
 
         for (GameSubscriber i : subscribers) {

@@ -1,5 +1,6 @@
 package battleship;
 
+import battleship.players.BattleshipPlayer;
 import framework.Game;
 import framework.Player;
 import framework.PlayerFactory;
@@ -33,11 +34,11 @@ public class BattleshipGame implements Game {
 
     @Override
     public boolean hasEnded() {
-        return !getOpponentPlayer().isAlive();
+        return !player1.isAlive() || !player2.isAlive();
     }
 
     @Override
-    public Player getCurrentPlayer() {
+    public BattleshipPlayer getCurrentPlayer() {
         return currentPlayer == '1' ? player1 : player2;
     }
 
@@ -52,6 +53,10 @@ public class BattleshipGame implements Game {
 
     public Board getCurrentBoard() {
         return currentPlayer == '1' ? board1 : board2;
+    }
+
+    public Board getOpponentBoard() {
+        return currentPlayer == '2' ? board1 : board2;
     }
 
     @Override
@@ -81,7 +86,19 @@ public class BattleshipGame implements Game {
 
     @Override
     public Player getWinner() {
-        return getCurrentPlayer();
+        return getAllPlayers().stream()
+                .map(p -> (BattleshipPlayer) p)
+                .filter(BattleshipPlayer::isAlive)
+                .findFirst().orElseThrow();
+    }
+
+    @Override
+    public Player getLoser() {
+        BattleshipPlayer winner = (BattleshipPlayer) getWinner();
+        return getAllPlayers().stream()
+                .map(p -> (BattleshipPlayer) p)
+                .filter(p -> p != winner)
+                .findFirst().orElseThrow();
     }
 
     @Override

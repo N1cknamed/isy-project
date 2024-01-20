@@ -1,22 +1,17 @@
 package framework;
 
-public enum PlayerType {
+public class PlayerType {
 
-    CLI(true, true),
-    GUI(true, true),
-    AI(false, true),
-    SERVER(false, false);
-
-    private final boolean isHuman;
+    private final String name;
     private final boolean isLocal;
 
-    PlayerType(boolean isHuman, boolean isLocal) {
-        this.isHuman = isHuman;
+    public PlayerType(String name, boolean isLocal) {
+        this.name = name;
         this.isLocal = isLocal;
     }
 
-    public boolean isHuman() {
-        return isHuman;
+    public String getName() {
+        return name;
     }
 
     public boolean isLocal() {
