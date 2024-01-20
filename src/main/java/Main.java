@@ -64,7 +64,7 @@ public class Main {
                 SERVER_HOST,
                 SERVER_PORT,
                 TEAM_NAME,
-                new BattleshipPlayerFactory(BattleshipPlayerType.AI_OPTIMIZED_RANDOM),
+                new BattleshipPlayerFactory(BattleshipPlayerType.AI_OPTIMIZED_CHECKERBOARD_RANDOM),
                 new BattleshipPlayerFactory(BattleshipPlayerType.SERVER)
         );
         controller.registerSubscriber(new BattleshipCliSubscriber());
