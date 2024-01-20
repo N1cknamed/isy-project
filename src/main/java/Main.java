@@ -4,6 +4,7 @@ import battleship.players.BattleshipRandomPlayer;
 import battleship.subscribers.BattleshipCliSubscriber;
 import battleship.subscribers.BattleshipCsvSubscriber;
 import framework.*;
+import framework.server.*;
 import gui.HomeGui;
 import gui.TttGui;
 import ttt.*;
@@ -13,29 +14,26 @@ import ttt.players.TttGuiPlayer;
 
 
 public class Main {
-    private static final String TEAM_NAME = "groep2";
+    private static final String TEAM_NAME = "wouter";
+    private static final PlayerType LOCAL_PLAYER = PlayerType.GUI;
 
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
-        runBattleshipCsv();
+//        runBattleshipCsv();
 //        runTttGui();
 //        runHomeGui();
 
 //        runServerTttCli();
-//        runServerTttGui();
+        runServerTttGui();
     }
 
     private static void runServerTttCli() {
         // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
 
-        // Change the player types according to what the user wants (GUI buttons)
-        PlayerType playerType = PlayerType.CLI;
-
         // Build the game classes and use the player types to create PlayerFactory objects
-        ServerGame game = new TttServerGame();
-        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER));
         controller.registerSubscriber(new TttCliSubscriber());
 
         // Start the game
@@ -98,14 +96,27 @@ public class Main {
 
     private static void runServerTttGui() {
         PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
-        PlayerType playerType = PlayerType.GUI;
 
-        ServerGame game = new TttServerGame();
-        ServerGameController controller = new ServerGameController(game, "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(playerType));
+        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", "192.168.137.1", 7789, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER));
         Thread t = new Thread(() -> {
             TttGui.launch(TttGui.class);
         });
         t.start();
+
+        // Handle challenge requests
+        controller.setServerChallengeHandler(challenge -> {
+            System.out.println("WE RECEIVED A CHALLENGE BY " + challenge.getChallenger());
+
+            // TODO Open GUI popup or something to accept/decline the challenge
+            boolean accept = false;
+
+            if (accept) {
+                challenge.accept();
+            }
+        });
+
+        // Send challenges
+        // controller.challengePlayer("albert");
 
         controller.registerSubscriber(new TttCliSubscriber());
         controller.registerSubscriber(new TttGuiSubscriber());

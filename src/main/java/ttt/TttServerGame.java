@@ -1,8 +1,8 @@
 package ttt;
 
 import framework.Player;
-import framework.ServerGame;
-import framework.ServerPlayer;
+import framework.server.ServerGame;
+import framework.server.ServerPlayer;
 import server.Response;
 
 public class TttServerGame extends TttGame implements ServerGame {
@@ -11,13 +11,8 @@ public class TttServerGame extends TttGame implements ServerGame {
     private Player winner = null;
 
     @Override
-    public String getGameType() {
-        return "Tic-tac-toe";
-    }
-
-    @Override
     public boolean hasEnded() {
-        return hasEnded || super.hasEnded();
+        return hasEnded;
     }
 
     @Override
@@ -28,11 +23,7 @@ public class TttServerGame extends TttGame implements ServerGame {
 
     @Override
     public Player getWinner() {
-        if (winner == null) {
-            return super.getWinner();
-        } else {
-            return winner;
-        }
+        return winner;
     }
 
     @Override

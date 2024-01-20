@@ -24,7 +24,12 @@ public class GameController {
 
         while(!game.hasEnded()){
             Player currentPlayer = game.getCurrentPlayer();
-            Point move = currentPlayer.doMove(game);
+            Point move;
+            try {
+                move = currentPlayer.doMove(game);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             if(game.doMove(move)){
                 throw new RuntimeException("illegal move");
             }

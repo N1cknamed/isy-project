@@ -1,7 +1,7 @@
 package ttt;
 
 import framework.PlayerFactoryBuilder;
-import framework.ServerPlayer;
+import framework.server.ServerPlayer;
 import ttt.players.TttAiPlayer;
 import ttt.players.TttCliPlayer;
 import ttt.players.TttGuiPlayer;

@@ -18,6 +18,18 @@ public class Board {
         this.boardHeight = board[0].length;
         this.board = board;
     }
+
+    public Board copy() {
+        Board copy = new Board(boardWidth, boardHeight);
+        for (int y = 0; y < boardHeight; y++) {
+            for (int x = 0; x < boardWidth; x++) {
+                copy.set(x, y, this.get(x, y));
+            }
+        }
+
+        return copy;
+    }
+
     public void set(int x, int y, char c) {
         if (x < 0 || x >= boardWidth || y < 0 || y >= boardHeight) {
             return;
