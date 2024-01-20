@@ -27,8 +27,8 @@ public class BattleshipAIPlayer implements BattleshipPlayer {
     public BattleshipAIPlayer(char symbol, BattleshipPlayerType playerType) {
         this.symbol = symbol;
         this.playerType = playerType;
-        this.placementStrategy = playerType.getPlacementStrategy();
-        this.shootingAi = playerType.getShootingAi();
+        this.placementStrategy = playerType.createPlacementStrategy();
+        this.shootingAi = playerType.createShootingAi();
 
         this.board = new Board(8, 8);
     }
@@ -116,7 +116,7 @@ public class BattleshipAIPlayer implements BattleshipPlayer {
             }
             boatsRemaining++;
         }
-        board.printBoard();
+//        board.printBoard();
     }
 
     @Override

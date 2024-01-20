@@ -86,8 +86,6 @@ public class Main {
                 new TttPlayerFactory(player2Type)
         );
         controller.registerSubscriber(new TttCliSubscriber());
-        GameSubscriber battleshipCsvSubscriber = new BattleshipCsvSubscriber();
-        controller.registerSubscriber(battleshipCsvSubscriber);
 
         // Start the game
         controller.gameLoop();
@@ -107,19 +105,28 @@ public class Main {
     private static void runBattleshipCsv() {
         Scanner scanner = new Scanner(System.in);
 
+        System.out.print("CSV file name: ");
+        String csvFileName = scanner.nextLine();
+
         System.out.println("Available player types:");
-        for (BattleshipPlayerType type : BattleshipPlayerType.values()) {
+        int counter = 0;
+        for (BattleshipPlayerType type : BattleshipPlayerType.getPlayerTypes()) {
+            System.out.print(counter++);
             System.out.println(" - " + type);
         }
 
+        BattleshipPlayerType[] playerTypes = BattleshipPlayerType.getPlayerTypes();
+
         System.out.print("Player 1 type: ");
-        BattleshipPlayerType player1Type = BattleshipPlayerType.valueOf(scanner.nextLine());
+        BattleshipPlayerType player1Type = playerTypes[scanner.nextInt()];
 
         System.out.print("Player 2 type: ");
-        BattleshipPlayerType player2Type = BattleshipPlayerType.valueOf(scanner.nextLine());
+        BattleshipPlayerType player2Type = playerTypes[scanner.nextInt()];
 
         System.out.print("Number of runs: ");
         int runs = scanner.nextInt();
+
+        GameSubscriber csv = new BattleshipCsvSubscriber(csvFileName);
 
         for (int i = 0; i < runs; i++) {
             Game game = new BattleshipGame();
@@ -128,9 +135,7 @@ public class Main {
                     new BattleshipPlayerFactory(player1Type),
                     new BattleshipPlayerFactory(player2Type)
             );
-//            GameSubscriber csv = new BattleshipCsvSubscriber();
-//            controller.registerSubscriber(csv);
-            controller.registerSubscriber(new BattleshipCliSubscriber());
+            controller.registerSubscriber(csv);
             controller.gameLoop();
         }
     }

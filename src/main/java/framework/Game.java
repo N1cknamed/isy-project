@@ -14,6 +14,7 @@ public interface Game {
     public void nextPlayer();
     public boolean isValidMove(Point move);
     public Player getWinner();
+    public Player getLoser();
 
     public Collection<Player> getAllPlayers();
 

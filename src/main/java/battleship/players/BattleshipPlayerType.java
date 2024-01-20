@@ -8,27 +8,29 @@ import battleship.shootingAi.BattleshipShootingAi;
 import battleship.shootingAi.BattleshipTrueRandomShootingAi;
 import framework.PlayerType;
 
+import java.util.function.Supplier;
+
 public class BattleshipPlayerType extends PlayerType {
 
     public static BattleshipPlayerType AI_SEQUENTIAL = new BattleshipPlayerType(
             "AI_SEQUENTIAL",
             true,
-            new BattleshipCornersPlacementStrategy(),
-            new BattleshipSequentialShootingAi()
+            BattleshipCornersPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
     );
 
     public static BattleshipPlayerType AI_TRUE_RANDOM = new BattleshipPlayerType(
             "AI_TRUE_RANDOM",
             true,
-            new BattleshipCornersPlacementStrategy(),
-            new BattleshipTrueRandomShootingAi()
+            BattleshipCornersPlacementStrategy::new,
+            BattleshipTrueRandomShootingAi::new
     );
 
     public static BattleshipPlayerType AI_OPTIMIZED_RANDOM = new BattleshipPlayerType(
             "AI_OPTIMIZED_RANDOM",
             true,
-            new BattleshipCornersPlacementStrategy(),
-            new BattleshipOptimizedRandomShootingAi()
+            BattleshipCornersPlacementStrategy::new,
+            BattleshipOptimizedRandomShootingAi::new
     );
 
     public static BattleshipPlayerType CLI = new BattleshipPlayerType(
@@ -41,10 +43,12 @@ public class BattleshipPlayerType extends PlayerType {
     public static BattleshipPlayerType SERVER = new BattleshipPlayerType("SERVER", false);
 
 
-    private final BattleshipPlacementStrategy placementStrategy;
-    private final BattleshipShootingAi shootingAi;
+    private final Supplier<BattleshipPlacementStrategy> placementStrategy;
+    private final Supplier<BattleshipShootingAi> shootingAi;
 
-    public BattleshipPlayerType(String name, boolean isLocal, BattleshipPlacementStrategy placementStrategy, BattleshipShootingAi shootingAi) {
+    public BattleshipPlayerType(String name, boolean isLocal,
+                                Supplier<BattleshipPlacementStrategy> placementStrategy,
+                                Supplier<BattleshipShootingAi> shootingAi) {
         super(name, isLocal);
 
         this.placementStrategy = placementStrategy;
@@ -55,18 +59,43 @@ public class BattleshipPlayerType extends PlayerType {
         this(name, isLocal, null, null);
     }
 
-    public BattleshipPlacementStrategy getPlacementStrategy() {
+    public BattleshipPlacementStrategy createPlacementStrategy() {
         if (placementStrategy == null) {
             throw new IllegalStateException();
         }
-        return placementStrategy;
+        return placementStrategy.get();
     }
 
-    public BattleshipShootingAi getShootingAi() {
+    public BattleshipShootingAi createShootingAi() {
         if (shootingAi == null) {
             throw new IllegalStateException();
         }
 
-        return shootingAi;
+        return shootingAi.get();
+    }
+
+    public static BattleshipPlayerType[] getPlayerTypes() {
+        return new BattleshipPlayerType[] {
+                AI_SEQUENTIAL,
+                AI_TRUE_RANDOM,
+                AI_OPTIMIZED_RANDOM,
+                CLI,
+                GUI,
+                SERVER
+        };
+    }
+
+    public static BattleshipPlayerType getPlayerTypeByName(String name) {
+        for (BattleshipPlayerType playerType : getPlayerTypes()) {
+            if (playerType.getName().equals(name)) {
+                return playerType;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

@@ -76,6 +76,11 @@ public class BattleshipServerGame extends BattleshipGame implements ServerGame {
     }
 
     @Override
+    public Player getLoser() {
+        return getAllPlayers().stream().filter(p -> p != winner).findFirst().orElseThrow();
+    }
+
+    @Override
     public boolean hasEnded() {
         return hasEnded;
     }

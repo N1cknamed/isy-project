@@ -99,6 +99,17 @@ public class TttGame implements Game {
     }
 
     @Override
+    public Player getLoser() {
+        if (checkWin('o')) {
+            return player1;
+        } else if (checkWin('x')) {
+            return player2;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public Collection<Player> getAllPlayers() {
         return List.of(player1, player2);
     }
