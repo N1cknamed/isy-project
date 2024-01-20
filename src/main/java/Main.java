@@ -7,7 +7,7 @@ import ttt.*;
 
 
 public class Main {
-    private static final String TEAM_NAME = "albert";
+    private static final String TEAM_NAME = "robbie";
     private static final PlayerType LOCAL_PLAYER = PlayerType.GUI;
 
     public static void main(String[] args) {

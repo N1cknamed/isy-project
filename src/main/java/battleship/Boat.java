@@ -20,9 +20,9 @@ public class Boat {
     public Point getEndCords() {
         Point endCord;
         if (direction == 0) {
-            endCord = new Point(startCord.x+length, startCord.y);
+            endCord = new Point(startCord.x+length-1, startCord.y);
         } else {
-            endCord = new Point(startCord.x, startCord.y+length);
+            endCord = new Point(startCord.x, startCord.y+length-1);
         }
         return endCord;
     }
