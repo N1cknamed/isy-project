@@ -3,9 +3,7 @@ package ttt;
 import framework.Player;
 import framework.server.ServerGame;
 import framework.server.ServerGameController;
-import framework.server.ServerPlayer;
 import server.Response;
-import server.ServerController;
 
 public class TttServerGame extends TttGame implements ServerGame {
 
@@ -34,7 +32,6 @@ public class TttServerGame extends TttGame implements ServerGame {
 
     @Override
     public void handleServerResponse(Response response) {
-        System.out.println("Received and ignoring an unhandled server response (" + response.getCommand() + ")");
     }
 
     @Override

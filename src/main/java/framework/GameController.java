@@ -30,9 +30,12 @@ public class GameController {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            if(game.doMove(move)){
-                throw new RuntimeException("illegal move");
+
+            if (!game.isValidMove(move)) {
+                throw new RuntimeException("illegal move (" + move + ")");
             }
+
+            game.doMove(move);
 
             for (GameSubscriber i : subscribers) {
                 i.onGameUpdated(game);
