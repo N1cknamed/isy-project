@@ -20,7 +20,7 @@ public class TttGuiPlayer implements Player {
 
     @Override
     public PlayerType getPlayerType() {
-        return PlayerType.GUI;
+        return TttPlayerType.GUI;
     }
 
     @Override

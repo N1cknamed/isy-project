@@ -2,6 +2,7 @@ package battleship.players;
 
 import battleship.Boat;
 import battleship.players.BattleshipPlayer;
+import framework.PlayerType;
 import framework.server.ServerPlayer;
 
 import java.awt.*;
@@ -16,6 +17,11 @@ public class BattleshipServerPlayer extends ServerPlayer implements BattleshipPl
 
     public BattleshipServerPlayer(char symbol) {
         super(symbol);
+    }
+
+    @Override
+    public PlayerType getPlayerType() {
+        return BattleshipPlayerType.SERVER;
     }
 
     @Override

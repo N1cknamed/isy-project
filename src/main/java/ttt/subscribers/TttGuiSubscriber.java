@@ -1,33 +1,35 @@
-package ttt.Subscribers;
+package ttt.subscribers;
 
 import framework.Game;
 import framework.GameSubscriber;
 import framework.Player;
+import gui.TttGui;
+import ttt.TttGame;
 
 import java.awt.*;
 
-public class TttCliSubscriber implements GameSubscriber {
+public class TttGuiSubscriber implements GameSubscriber {
+
     @Override
     public void onGameStarted(Game game) {
-        game.getBoard().printBoard();
+        TttGui.updateButtonsFromOutside(game);
     }
 
     @Override
     public void onGameUpdated(Game game) {
-        game.getBoard().printBoard();
+        TttGui.updateButtonsFromOutside(game);
     }
 
     @Override
     public void onGameEnded(Game game) {
-        if (game.getWinner() == null) {
-            System.out.println("Draw");
-        } else {
-            System.out.println("player " + game.getWinner().getSymbol() + " has won.");
+        TttGame tttGame = (TttGame) game;
+        if (game.getWinner() != null) {
+            TttGui.winningButtonsFromOutside();
         }
-        
     }
 
     @Override
     public void onPlayerMove(Player player, Point move) {
+
     }
 }

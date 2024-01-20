@@ -1,20 +1,20 @@
-package battleship.ai;
+package battleship.shootingAi;
 
 import framework.Game;
 import framework.Board;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class BattleshipRandomAi implements BattleshipAi {
+public class BattleshipOptimizedRandomShootingAi implements BattleshipShootingAi {
 
     Boolean foundShip = false;
     Point lastShot = new Point(-1,-1);
     ArrayList<Point> lastHits = new ArrayList<>();
 
     Board localBoard = new Board(8,8);
-
 
     @Override
     public Point getMove(Game game) {

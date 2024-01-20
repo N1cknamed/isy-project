@@ -1,4 +1,4 @@
-package battleship.ai;
+package battleship.shootingAi;
 
 import framework.Game;
 
@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BattleshipTrueRandomAi implements BattleshipAi {
+public class BattleshipTrueRandomShootingAi implements BattleshipShootingAi {
 
     private List<Point> pointPool = null;
 

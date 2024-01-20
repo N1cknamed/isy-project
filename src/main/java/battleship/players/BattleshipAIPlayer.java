@@ -1,30 +1,38 @@
 package battleship.players;
 
 import battleship.Boat;
-import battleship.shipPlacements.Corners;
-import battleship.shipPlacements.PlacementStrategy;
+import battleship.placementsStrategy.BattleshipPlacementStrategy;
+import battleship.shootingAi.BattleshipShootingAi;
 import framework.Board;
 import framework.Game;
 import framework.PlayerType;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
-public class BattleshipBoatPlacementPlayer implements BattleshipPlayer {
+public class BattleshipAIPlayer implements BattleshipPlayer {
+
     private final char symbol;
+    private final BattleshipPlayerType playerType;
+    private final BattleshipPlacementStrategy placementStrategy;
+    private final BattleshipShootingAi shootingAi;
+
     private final Board board;
+    private final Collection<Boat> placedBoats = new ArrayList<>();
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
-    private final Set<Point> alreadyHit = new HashSet<>();
-
-    private Collection<Boat> boats = new ArrayList<>();
-
-    // for the ai
     private int boatsRemaining = 0;
 
-    public BattleshipBoatPlacementPlayer(char symbol) {
-        this.symbol = 's';
+    public BattleshipAIPlayer(char symbol, BattleshipPlayerType playerType) {
+        this.symbol = symbol;
+        this.playerType = playerType;
+        this.placementStrategy = playerType.getPlacementStrategy();
+        this.shootingAi = playerType.getShootingAi();
+
         this.board = new Board(8, 8);
     }
+
 
     private boolean isValidBoatPlacement(Point move, int size, int direction) {
         if (direction == 0) {
@@ -50,10 +58,9 @@ public class BattleshipBoatPlacementPlayer implements BattleshipPlayer {
     }
 
     @Override
-    public void placeBoats() throws RuntimeException {
-        PlacementStrategy strategy = new Corners();
-        ArrayList<Boat> shipsLocations = strategy.getShips();
-        boats.addAll(shipsLocations);
+    public void placeBoats() {
+        ArrayList<Boat> shipsLocations = placementStrategy.getShips();
+        placedBoats.addAll(shipsLocations);
 
         for (Boat ship : shipsLocations) {
             Point location = ship.getStartCord();
@@ -61,7 +68,9 @@ public class BattleshipBoatPlacementPlayer implements BattleshipPlayer {
             int size = ship.getLength();
             char boatType = (char) (ship.getLength() + '0');
 
-            if (!isValidBoatPlacement(location, size, direction)) throw new RuntimeException("Invalid Boatlocation");
+            if (!isValidBoatPlacement(location, size, direction)) {
+                throw new IllegalStateException("Invalid Boatlocation");
+            }
 
             ships.put(boatType, ship.getLength());
 
@@ -111,15 +120,20 @@ public class BattleshipBoatPlacementPlayer implements BattleshipPlayer {
     }
 
     @Override
+    public Point doMove(Game game) throws InterruptedException {
+        return shootingAi.getMove(game);
+    }
+
+    @Override
     public char shoot(Point move) {
         char result = board.get(move.x, move.y);
-        char rt;
+
         if (result == ' ' || result == 0 || result == 'm') {
-            rt = 'm';
+            return 'm';
+        } else if (result == 'x') {
+            throw new IllegalStateException("Shot twice");
         } else {
-            rt = 'h';
-            // TODO: maybe not hit but mis
-            if (alreadyHit.contains(move)) return 'h';
+            char rt = 'h';
             board.set(move.x, move.y, 'x');
             int shotsRemaining = ships.get(result);
             shotsRemaining--;
@@ -128,9 +142,9 @@ public class BattleshipBoatPlacementPlayer implements BattleshipPlayer {
                 boatsRemaining--;
                 rt = result;
             }
+
+            return rt;
         }
-        alreadyHit.add(move);
-        return rt;
     }
 
     @Override
@@ -139,21 +153,17 @@ public class BattleshipBoatPlacementPlayer implements BattleshipPlayer {
     }
 
     @Override
+    public Collection<Boat> getPlacedBoats() {
+        return placedBoats;
+    }
+
+    @Override
     public PlayerType getPlayerType() {
-        return PlayerType.AI;
+        return playerType;
     }
 
     @Override
     public char getSymbol() {
         return symbol;
-    }
-
-    @Override
-    public Point doMove(Game game) {
-        return new Point(7, 7);
-    }
-    @Override
-    public Collection<Boat> getPlacedBoats() {
-        return boats;
     }
 }

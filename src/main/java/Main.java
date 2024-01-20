@@ -1,22 +1,21 @@
 import battleship.BattleshipGame;
-import battleship.BattleshipPlayerFactory;
 import battleship.BattleshipServerGame;
-import battleship.players.BattleshipBoatPlacementPlayer;
-import battleship.players.BattleshipRandomPlayer;
-import battleship.players.BattleshipServerPlayer;
+import battleship.players.BattleshipPlayerFactory;
+import battleship.players.BattleshipPlayerType;
 import battleship.subscribers.BattleshipCliSubscriber;
 import battleship.subscribers.BattleshipCsvSubscriber;
-import framework.*;
+import framework.Game;
+import framework.GameController;
+import framework.GameSubscriber;
 import framework.server.ServerGameController;
-import framework.server.ServerPlayer;
 import gui.HomeGui;
 import gui.TttGui;
-import ttt.Subscribers.TttCliSubscriber;
-import ttt.Subscribers.TttGuiSubscriber;
-import ttt.Ttt;
 import ttt.TttGame;
 import ttt.TttServerGame;
-import ttt.players.TttGuiPlayer;
+import ttt.players.TttPlayerFactory;
+import ttt.players.TttPlayerType;
+import ttt.subscribers.TttCliSubscriber;
+import ttt.subscribers.TttGuiSubscriber;
 
 import java.io.*;
 import java.util.Scanner;
@@ -25,7 +24,6 @@ import java.util.Scanner;
 public class Main {
 
     private static final String TEAM_NAME = readTeamName(new File("teamname.txt"));
-    private static final PlayerType LOCAL_PLAYER = PlayerType.GUI;
     private static final String SERVER_HOST = "home.woutergritter.me";
     private static final int SERVER_PORT = 7789;
 
@@ -36,28 +34,39 @@ public class Main {
 //        runTttGui();
 //        runHomeGui();
 
-//        runServerTttCli();
-//        runServerBattleshipCli();
+//        runServerTtt();
+//        runServerBattleship();
     }
 
-    private static void runServerTttCli() {
-        // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
-        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
-
+    private static void runServerTtt() {
         // Build the game classes and use the player types to create PlayerFactory objects
-        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", SERVER_HOST, SERVER_PORT, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER), ServerPlayer::new);
+        ServerGameController controller = new ServerGameController(
+                TttServerGame::new,
+                "Tic-tac-toe",
+                SERVER_HOST,
+                SERVER_PORT,
+                TEAM_NAME,
+                new TttPlayerFactory(TttPlayerType.AI),
+                new TttPlayerFactory(TttPlayerType.SERVER)
+        );
+
         controller.registerSubscriber(new TttCliSubscriber());
 
         // Start the game
         controller.gameLoop();
     }
 
-    private static void runServerBattleshipCli() {
-        // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
-//        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
-
+    private static void runServerBattleship() {
         // Build the game classes and use the player types to create PlayerFactory objects
-        ServerGameController controller = new ServerGameController(BattleshipServerGame::new, "Battleship", SERVER_HOST, SERVER_PORT, TEAM_NAME, BattleshipRandomPlayer::new, BattleshipServerPlayer::new);
+        ServerGameController controller = new ServerGameController(
+                BattleshipServerGame::new,
+                "Battleship",
+                SERVER_HOST,
+                SERVER_PORT,
+                TEAM_NAME,
+                new BattleshipPlayerFactory(BattleshipPlayerType.AI_OPTIMIZED_RANDOM),
+                new BattleshipPlayerFactory(BattleshipPlayerType.SERVER)
+        );
         controller.registerSubscriber(new BattleshipCliSubscriber());
 
         // Start the game
@@ -65,16 +74,17 @@ public class Main {
     }
 
     private static void runTttCli() {
-        // Create a PlayerFactoryBuilder when we're starting the application and have a ServerController
-        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
-
         // Change the player types according to what the user wants (GUI buttons)
-        PlayerType player1Type = PlayerType.AI;
-        PlayerType player2Type = PlayerType.CLI;
+        TttPlayerType player1Type = TttPlayerType.AI;
+        TttPlayerType player2Type = TttPlayerType.CLI;
 
         // Build the game classes and use the player types to create PlayerFactory objects
         Game game = new TttGame();
-        GameController controller = new GameController(game, playerFactoryBuilder.build(player1Type), playerFactoryBuilder.build(player2Type));
+        GameController controller = new GameController(
+                game,
+                new TttPlayerFactory(player1Type),
+                new TttPlayerFactory(player2Type)
+        );
         controller.registerSubscriber(new TttCliSubscriber());
         GameSubscriber battleshipCsvSubscriber = new BattleshipCsvSubscriber();
         controller.registerSubscriber(battleshipCsvSubscriber);
@@ -85,22 +95,39 @@ public class Main {
 
     private static void runBattleshipCli() {
         Game game = new BattleshipGame();
-        GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshipBoatPlacementPlayer::new);
-//        GameController controller = new GameController(game, BattleshipAiPlayer::new, new BattleshipPlayerFactory());
+        GameController controller = new GameController(
+                game,
+                new BattleshipPlayerFactory(BattleshipPlayerType.CLI),
+                new BattleshipPlayerFactory(BattleshipPlayerType.AI_OPTIMIZED_RANDOM)
+        );
         controller.registerSubscriber(new BattleshipCliSubscriber());
         controller.gameLoop();
     }
 
     private static void runBattleshipCsv() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("How many runs?");
+
+        System.out.println("Available player types:");
+        for (BattleshipPlayerType type : BattleshipPlayerType.values()) {
+            System.out.println(" - " + type);
+        }
+
+        System.out.print("Player 1 type: ");
+        BattleshipPlayerType player1Type = BattleshipPlayerType.valueOf(scanner.nextLine());
+
+        System.out.print("Player 2 type: ");
+        BattleshipPlayerType player2Type = BattleshipPlayerType.valueOf(scanner.nextLine());
+
+        System.out.print("Number of runs: ");
         int runs = scanner.nextInt();
 
         for (int i = 0; i < runs; i++) {
             Game game = new BattleshipGame();
-//            GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshippBoatPlacementPlayer::new);
-//            GameController controller = new GameController(game, BattleshipRandomPlayer::new, new BattleshipPlayerFactory());
-            GameController controller = new GameController(game, BattleshipBoatPlacementPlayer::new, new BattleshipPlayerFactory());
+            GameController controller = new GameController(
+                    game,
+                    new BattleshipPlayerFactory(player1Type),
+                    new BattleshipPlayerFactory(player2Type)
+            );
 //            GameSubscriber csv = new BattleshipCsvSubscriber();
 //            controller.registerSubscriber(csv);
             controller.registerSubscriber(new BattleshipCliSubscriber());
@@ -110,7 +137,12 @@ public class Main {
 
     private static void runTttGui() {
         Game game = new TttGame();
-        GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+        GameController controller = new GameController(
+                game,
+                new TttPlayerFactory(TttPlayerType.GUI),
+                new TttPlayerFactory(TttPlayerType.GUI)
+        );
+
         Thread t = new Thread(() -> {
             TttGui.launch(TttGui.class);
         });
@@ -122,9 +154,16 @@ public class Main {
     }
 
     private static void runServerTttGui() {
-        PlayerFactoryBuilder playerFactoryBuilder = Ttt.getPlayerFactoryBuilder();
+        ServerGameController controller = new ServerGameController(
+                TttServerGame::new,
+                "Tic-tac-toe",
+                SERVER_HOST,
+                SERVER_PORT,
+                TEAM_NAME,
+                new TttPlayerFactory(TttPlayerType.GUI),
+                new TttPlayerFactory(TttPlayerType.SERVER)
+        );
 
-        ServerGameController controller = new ServerGameController(TttServerGame::new, "Tic-tac-toe", SERVER_HOST, SERVER_PORT, TEAM_NAME, playerFactoryBuilder.build(LOCAL_PLAYER), ServerPlayer::new);
         Thread t = new Thread(() -> {
             TttGui.launch(TttGui.class);
         });

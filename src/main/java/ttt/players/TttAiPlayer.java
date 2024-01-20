@@ -19,7 +19,7 @@ public class TttAiPlayer implements Player {
 
     @Override
     public PlayerType getPlayerType() {
-        return PlayerType.AI;
+        return TttPlayerType.AI;
     }
 
     @Override

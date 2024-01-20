@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
-public class ServerPlayer implements Player {
+public abstract class ServerPlayer implements Player {
 
     private final char symbol;
 
@@ -18,10 +18,7 @@ public class ServerPlayer implements Player {
         this.symbol = symbol;
     }
 
-    @Override
-    public PlayerType getPlayerType() {
-        return PlayerType.SERVER;
-    }
+    public abstract PlayerType getPlayerType();
 
     @Override
     public char getSymbol() {

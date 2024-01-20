@@ -1,11 +1,11 @@
-package battleship.shipPlacements;
+package battleship.placementsStrategy;
 
 import battleship.Boat;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Corners implements PlacementStrategy {
+public class BattleshipCornersPlacementStrategy implements BattleshipPlacementStrategy {
     @Override
     public ArrayList<Boat> getShips() {
         ArrayList<Boat> ships = new ArrayList<>();

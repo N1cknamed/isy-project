@@ -29,7 +29,7 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     @Override
 
     public PlayerType getPlayerType() {
-        return PlayerType.CLI;
+        return BattleshipPlayerType.CLI;
     }
 
     @Override

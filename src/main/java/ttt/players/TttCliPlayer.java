@@ -19,7 +19,7 @@ public class TttCliPlayer implements Player {
 
     @Override
     public PlayerType getPlayerType() {
-        return PlayerType.CLI;
+        return TttPlayerType.CLI;
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import ttt.TttGame;
-import ttt.Subscribers.TttGuiSubscriber;
+import ttt.subscribers.TttGuiSubscriber;
 
 
 public class HomeGui extends Application {
