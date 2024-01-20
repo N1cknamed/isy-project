@@ -59,11 +59,13 @@ public class BattleshipGame implements Game {
         if (isValidMove(move)) {
             char shot = getOpponentPlayer().shoot(move);
             getCurrentBoard().set(move.x, move.y, shot);
-            if (shot == 'm') {
-                currentPlayer = currentPlayer == '1' ? '2' : '1';
-            }
             return false;
         } else return true;
+    }
+
+    @Override
+    public void nextPlayer() {
+        currentPlayer = currentPlayer == '1' ? '2' : '1';
     }
 
     @Override

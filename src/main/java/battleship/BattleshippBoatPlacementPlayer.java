@@ -5,16 +5,14 @@ import framework.Game;
 import framework.PlayerType;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
     private final char symbol;
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
     private final Set<Point> alreadyHit = new HashSet<>();
+    private Collection<Boat> boats = new ArrayList<>();
 
     // for the ai
     private int boatsRemaining = 0;
@@ -59,8 +57,10 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
 
             for (int x = 0; x < board.getBoardWidth(); x++) {
                 for (int y = 0; y < board.getBoardHeight(); y++) {
-                    if (isValidBoatPlacement(new Point(x, y), entry.getValue(), 0)) {
-                        int size = entry.getValue();
+                    int direction = 0;
+                    Point cords = new Point(x, y);
+                    int size = entry.getValue();
+                    if (isValidBoatPlacement(cords, size, direction)) {
                         char boatType = entry.getKey();
                         for (int i = x-1; i < x + size + 1; i++) {
                             for (int j = y-1; j <= y+1; j++) {
@@ -75,6 +75,8 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
                             }
                         }
                         placed = true;
+                        Boat boat = new Boat(cords, direction, size);
+                        boats.add(boat);
                         break;
                     }
                 }
@@ -115,8 +117,13 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
     }
 
     @Override
+    public Collection<Boat> getPlacedBoats() {
+        return boats;
+    }
+
+    @Override
     public PlayerType getPlayerType() {
-        return null;
+        return PlayerType.AI;
     }
 
     @Override

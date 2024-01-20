@@ -14,6 +14,7 @@ public interface Game {
      * @return True if something went wrong, false if otherwise.
      */
     public boolean doMove(Point move);
+    public void nextPlayer();
     public boolean isValidMove(Point move);
     public Player getWinner();
 

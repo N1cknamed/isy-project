@@ -74,10 +74,14 @@ public class TttGame implements Game {
         }
         if (board.get(move.x, move.y) == 0) { // check if index is empty, idk why this works
             board.set(move.x, move.y, currentPlayer);
-            currentPlayer = currentPlayer == 'x' ? 'o' : 'x';
             return false;
         }
         return true; // index is already full
+    }
+
+    @Override
+    public void nextPlayer() {
+        currentPlayer = currentPlayer == 'x' ? 'o' : 'x';
     }
 
     @Override

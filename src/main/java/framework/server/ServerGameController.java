@@ -10,34 +10,33 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ServerGameController {
     private final ArrayList<GameSubscriber> subscribers = new ArrayList<>();
-    private final Supplier<ServerGame> gameSupplier;
+    private final Function<ServerGameController, ServerGame> gameSupplier;
     private final String gameType;
     private final String host;
     private final int port;
     private final String teamName;
-    private final PlayerFactory playerFactory;
-
+    private final PlayerFactory localPlayerFactory;
+    private final PlayerFactory serverPlayerFactory;
     private ServerController serverController;
     private ServerGame game;
-
     private final BlockingQueue<Response> yourTurnQueue = new SynchronousQueue<>();
     private final BlockingQueue<Response> matchResponseQueue = new SynchronousQueue<>();
-
     private Thread gameThread;
-
     private ServerChallengeHandler serverChallengeHandler;
 
-    public ServerGameController(Supplier<ServerGame> gameSupplier, String gameType, String host, int port, String teamName, PlayerFactory playerFactory) {
+    public ServerGameController(Function<ServerGameController, ServerGame> gameSupplier, String gameType, String host, int port, String teamName, PlayerFactory playerFactory, PlayerFactory serverPlayerFactory) {
         this.gameSupplier = gameSupplier;
         this.gameType = gameType;
         this.host = host;
         this.port = port;
         this.teamName = teamName;
-        this.playerFactory = playerFactory;
+        this.localPlayerFactory = playerFactory;
+        this.serverPlayerFactory = serverPlayerFactory;
     }
 
     private void serverLoop() {
@@ -112,7 +111,7 @@ public class ServerGameController {
             throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + gameType + "'. Ignoring MATCH response.");
         }
 
-        game = gameSupplier.get();
+        game = gameSupplier.apply(this);
 
         String opponentName = matchResponse.getStringValue("OPPONENT");
         String playerToMove = matchResponse.getStringValue("PLAYERTOMOVE");
@@ -122,10 +121,10 @@ public class ServerGameController {
         // Check who is starting
         if (playerToMove.equals(opponentName)) {
             System.out.println("Opponent is starting");
-            game.start(ServerPlayer::new, playerFactory);
+            game.start(serverPlayerFactory, localPlayerFactory);
         } else {
             System.out.println("We are starting");
-            game.start(playerFactory, ServerPlayer::new);
+            game.start(localPlayerFactory, serverPlayerFactory);
         }
 
         for (GameSubscriber i : subscribers) {
@@ -151,26 +150,32 @@ public class ServerGameController {
                 System.out.println("It's our turn!");
             }
 
-            Point move;
-            try {
-                move = currentPlayer.doMove(game);
-            } catch (InterruptedException e) {
-                System.out.println("Received an interrupt while waiting for player's move. Exiting game loop.");
-                break;
-            }
+            boolean doMove = game.prePlayerMove(currentPlayer);
+            if (doMove) {
+                Point move;
+                try {
+                    move = currentPlayer.doMove(game);
+                } catch (InterruptedException e) {
+                    System.out.println("Received an interrupt while waiting for player's move. Exiting game loop.");
+                    break;
+                }
 
-            if (game.doMove(move)) {
-                throw new RuntimeException("illegal move (" + move.toString() + ")");
-            }
+                if (game.doMove(move)) {
+                    throw new RuntimeException("illegal move (" + move.toString() + ")");
+                }
 
-            if (currentPlayer.getPlayerType().isLocal()) {
-                int moveIndex = move.y * game.getBoard().getBoardWidth() + move.x;
-                serverController.sendMessage("MOVE " + moveIndex);
+                if (currentPlayer.getPlayerType().isLocal()) {
+                    int moveIndex = pointToIndex(move);
+                    serverController.sendMessage("MOVE " + moveIndex);
+                }
+                for (GameSubscriber i : subscribers) {
+                    i.onPlayerMove(currentPlayer, move);
+                }
             }
+            game.nextPlayer();
 
             for (GameSubscriber i : subscribers) {
                 i.onGameUpdated(game);
-                i.onPlayerMove(currentPlayer, move);
             }
         }
 
@@ -225,5 +230,13 @@ public class ServerGameController {
         if (game == null) {
             throw new IllegalStateException("Expected game to be running, but no game object found.");
         }
+    }
+
+    public int pointToIndex(Point cord) {
+        return cord.y * game.getBoard().getBoardWidth() + cord.x;
+    }
+
+    public ServerController getServerController() {
+        return serverController;
     }
 }
