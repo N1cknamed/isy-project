@@ -1,6 +1,7 @@
 package battleship;
 
 import battleship.ai.BattleshipAi;
+import battleship.ai.BattleshipRandomAi;
 import battleship.ai.BattleshipSequentialAi;
 import framework.Game;
 import framework.Board;
@@ -17,7 +18,7 @@ public class BattleshipRandomPlayer implements BattleshipPlayer{
     private Collection<Boat> boats = new ArrayList<>();
 
     // for the ai
-    private BattleshipAi algorithm = new BattleshipSequentialAi();
+    private BattleshipAi algorithm = new BattleshipRandomAi();
     private int boatsRemaining = 0;
 
     public BattleshipRandomPlayer(char symbol) {

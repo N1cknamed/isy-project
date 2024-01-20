@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ServerGameController {
     private final ArrayList<GameSubscriber> subscribers = new ArrayList<>();
@@ -20,6 +19,7 @@ public class ServerGameController {
     private final String host;
     private final int port;
     private final String teamName;
+    private String opponentName;
     private final PlayerFactory localPlayerFactory;
     private final PlayerFactory serverPlayerFactory;
     private ServerController serverController;
@@ -42,6 +42,11 @@ public class ServerGameController {
     private void serverLoop() {
         while (true) {
             Response response = serverController.getMessage().pop();
+
+            if (game != null) {
+                game.handleServerResponse(response);
+            }
+
             switch (response.getCommand()) {
                 case CHALLENGE:
                     String challenger = response.getStringValue("CHALLENGER");
@@ -79,7 +84,7 @@ public class ServerGameController {
                 case MOVE:
                     assertGameStarted();
                     if (!response.getStringValue("PLAYER").equals(teamName)) {
-                        Point move = calculatePoint(response.getIntValue("MOVE"));
+                        Point move = indexToPoint(response.getIntValue("MOVE"));
                         game.getServerPlayer().setNextMove(move);
                     }
                     break;
@@ -98,9 +103,6 @@ public class ServerGameController {
                     game.forceWin(null);
                     gameThread.interrupt();
                     break;
-                default:
-                    assertGameStarted();
-                    game.handleServerResponse(response);
             }
         }
     }
@@ -111,19 +113,20 @@ public class ServerGameController {
             throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + gameType + "'. Ignoring MATCH response.");
         }
 
-        game = gameSupplier.apply(this);
-
-        String opponentName = matchResponse.getStringValue("OPPONENT");
+        opponentName = matchResponse.getStringValue("OPPONENT");
         String playerToMove = matchResponse.getStringValue("PLAYERTOMOVE");
 
-        System.out.println("opponentName = " + opponentName);
+        game = gameSupplier.apply(this);
+
+        System.out.println("Our name: " + teamName);
+        System.out.println("Opponent name: " + opponentName);
 
         // Check who is starting
         if (playerToMove.equals(opponentName)) {
-            System.out.println("Opponent is starting");
+            System.out.println("Opponent is starting (" + opponentName + " v.s. " + teamName + ")");
             game.start(serverPlayerFactory, localPlayerFactory);
         } else {
-            System.out.println("We are starting");
+            System.out.println("We are starting (" + teamName + " v.s. " + opponentName + ")");
             game.start(localPlayerFactory, serverPlayerFactory);
         }
 
@@ -160,14 +163,17 @@ public class ServerGameController {
                     break;
                 }
 
-                if (game.doMove(move)) {
-                    throw new RuntimeException("illegal move (" + move.toString() + ")");
+                if (!game.isValidMove(move)) {
+                    throw new RuntimeException("illegal move (" + move + ")");
                 }
 
                 if (currentPlayer.getPlayerType().isLocal()) {
                     int moveIndex = pointToIndex(move);
                     serverController.sendMessage("MOVE " + moveIndex);
                 }
+
+                game.doMove(move);
+
                 for (GameSubscriber i : subscribers) {
                     i.onPlayerMove(currentPlayer, move);
                 }
@@ -219,7 +225,7 @@ public class ServerGameController {
         serverController.sendMessage("challenge accept " + challenge.getChallengeNumber());
     }
 
-    private Point calculatePoint(int input) {
+    public Point indexToPoint(int input) {
         int x = input % game.getBoard().getBoardWidth();
         int y = input / game.getBoard().getBoardWidth();
 
@@ -238,5 +244,13 @@ public class ServerGameController {
 
     public ServerController getServerController() {
         return serverController;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public String getOpponentName() {
+        return opponentName;
     }
 }

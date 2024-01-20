@@ -104,7 +104,7 @@ public class BattleshipRandomAi implements BattleshipAi {
         do {
             // random move
             move = new Point(random.nextInt(board.getBoardWidth()), random.nextInt(board.getBoardHeight()));
-        } while (!game.isValidMove(move) && localBoard.get(move) != 0);
+        } while (!(game.isValidMove(move) && localBoard.get(move) == 0));
 
         lastSHot = move;
         localBoard.set(move, 's');

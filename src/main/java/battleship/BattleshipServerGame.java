@@ -1,10 +1,9 @@
 package battleship;
 
 import framework.Player;
-import framework.PlayerFactory;
 import framework.server.ServerGame;
 import framework.server.ServerGameController;
-import framework.server.ServerPlayer;
+import server.Command;
 import server.Response;
 
 public class BattleshipServerGame extends BattleshipGame implements ServerGame {
@@ -26,7 +25,18 @@ public class BattleshipServerGame extends BattleshipGame implements ServerGame {
 
     @Override
     public void handleServerResponse(Response response) {
+        if (response.getCommand() == Command.MOVE && response.getStringValue("PLAYER").equals(controller.getTeamName())) {
+            BattleshipServerPlayer battleshipServerPlayer = (BattleshipServerPlayer) getServerPlayer();
 
+            String result = response.getStringValue("RESULT");
+            if (result.equals("PLONS")) {
+                battleshipServerPlayer.setShootResult('m');
+            } else if (result.equals("BOEM")) {
+                battleshipServerPlayer.setShootResult('h');
+            } else if (result.equals("GEZONKEN")) {
+                battleshipServerPlayer.setShootResult((char) ('0' + response.getIntValue("LENGTH")));
+            }
+        }
     }
 
     boolean localPlayerFirstMove = true;
