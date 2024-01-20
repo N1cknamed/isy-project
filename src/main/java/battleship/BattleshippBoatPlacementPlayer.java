@@ -123,7 +123,7 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
 
     @Override
     public PlayerType getPlayerType() {
-        return null;
+        return PlayerType.AI;
     }
 
     @Override
