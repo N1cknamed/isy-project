@@ -1,27 +1,27 @@
 package battleship.players;
 
-import battleship.players.BattleshipPlayer;
+import battleship.Boat;
 import battleship.shipPlacements.Corners;
 import battleship.shipPlacements.PlacementStrategy;
-import battleship.shipPlacements.ShipPlacement;
 import framework.Board;
 import framework.Game;
 import framework.PlayerType;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
-public class BattleshippBoatPlacementPlayer implements BattleshipPlayer {
+public class BattleshipBoatPlacementPlayer implements BattleshipPlayer {
     private final char symbol;
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
     private final Set<Point> alreadyHit = new HashSet<>();
 
+    private Collection<Boat> boats = new ArrayList<>();
+
     // for the ai
     private int boatsRemaining = 0;
 
-    public BattleshippBoatPlacementPlayer(char symbol) {
+    public BattleshipBoatPlacementPlayer(char symbol) {
         this.symbol = 's';
         this.board = new Board(8, 8);
     }
@@ -52,11 +52,12 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer {
     @Override
     public void placeBoats() throws RuntimeException {
         PlacementStrategy strategy = new Corners();
-        ArrayList<ShipPlacement> shipsLocations = strategy.getShips();
+        ArrayList<Boat> shipsLocations = strategy.getShips();
+        boats.addAll(shipsLocations);
 
-        for (ShipPlacement ship : shipsLocations) {
-            Point location = ship.getLocation();
-            int direction = ship.getRotation();
+        for (Boat ship : shipsLocations) {
+            Point location = ship.getStartCord();
+            int direction = ship.getDirection();
             int size = ship.getLength();
             char boatType = (char) (ship.getLength() + '0');
 
@@ -139,7 +140,7 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer {
 
     @Override
     public PlayerType getPlayerType() {
-        return null;
+        return PlayerType.AI;
     }
 
     @Override
@@ -150,5 +151,9 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer {
     @Override
     public Point doMove(Game game) {
         return new Point(7, 7);
+    }
+    @Override
+    public Collection<Boat> getPlacedBoats() {
+        return boats;
     }
 }

@@ -10,10 +10,8 @@ public interface Game {
     public Player getCurrentPlayer();
     public Board getBoard();
 
-    /**
-     * @return True if something went wrong, false if otherwise.
-     */
-    public boolean doMove(Point move);
+    public void doMove(Point move);
+    public void nextPlayer();
     public boolean isValidMove(Point move);
     public Player getWinner();
 

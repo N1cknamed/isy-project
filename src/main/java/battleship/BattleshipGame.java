@@ -56,15 +56,18 @@ public class BattleshipGame implements Game {
     }
 
     @Override
-    public boolean doMove(Point move) {
-        if (isValidMove(move)) {
-            char shot = getOpponentPlayer().shoot(move);
-            getCurrentBoard().set(move.x, move.y, shot);
-            if (shot == 'm') {
-                currentPlayer = currentPlayer == '1' ? '2' : '1';
-            }
-            return false;
-        } else return true;
+    public void doMove(Point move) {
+        if (!isValidMove(move)) {
+            throw new IllegalStateException("Called doMove() with an invalid move (" + move + ")");
+        }
+
+        char shot = getOpponentPlayer().shoot(move);
+        getCurrentBoard().set(move.x, move.y, shot);
+    }
+
+    @Override
+    public void nextPlayer() {
+        currentPlayer = currentPlayer == '1' ? '2' : '1';
     }
 
     @Override

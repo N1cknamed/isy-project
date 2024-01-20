@@ -1,25 +1,25 @@
 package battleship.players;
 
-import battleship.players.BattleshipPlayer;
-import battleship.shootingAi.BattleshipsRandom;
+import battleship.Boat;
+import battleship.ai.BattleshipAi;
+import battleship.ai.BattleshipRandomAi;
+import battleship.ai.BattleshipSequentialAi;
 import framework.Game;
 import framework.Board;
 import framework.PlayerType;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BattleshipRandomPlayer implements BattleshipPlayer {
     private final char symbol;
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
     private final Set<Point> alreadyHit = new HashSet<>();
+    private Collection<Boat> boats = new ArrayList<>();
 
     // for the ai
-    private BattleshipsRandom algoithm = new BattleshipsRandom();
+    private BattleshipAi algorithm = new BattleshipRandomAi();
     private int boatsRemaining = 0;
 
     public BattleshipRandomPlayer(char symbol) {
@@ -54,16 +54,18 @@ public class BattleshipRandomPlayer implements BattleshipPlayer {
     public void placeBoats() {
         ships.put('2', 2);
         ships.put('3', 3);
-        //ships.put('4', 4);
-        //ships.put('6', 6);
+        ships.put('4', 4);
+        ships.put('6', 6);
 
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             boolean placed = false;
 
             for (int x = 0; x < board.getBoardWidth(); x++) {
                 for (int y = 0; y < board.getBoardHeight(); y++) {
-                    if (isValidBoatPlacement(new Point(x, y), entry.getValue(), 0)) {
-                        int size = entry.getValue();
+                    Point cords = new Point(x, y);
+                    int size = entry.getValue();
+                    int direction = 0;
+                    if (isValidBoatPlacement(cords, size, direction)) {
                         char boatType = entry.getKey();
                         for (int i = x-1; i < x + size + 1; i++) {
                             for (int j = y-1; j <= y+1; j++) {
@@ -78,6 +80,8 @@ public class BattleshipRandomPlayer implements BattleshipPlayer {
                             }
                         }
                         placed = true;
+                        Boat boat = new Boat(cords, direction, size);
+                        boats.add(boat);
                         break;
                     }
                 }
@@ -118,8 +122,13 @@ public class BattleshipRandomPlayer implements BattleshipPlayer {
     }
 
     @Override
+    public Collection<Boat> getPlacedBoats() {
+        return boats;
+    }
+
+    @Override
     public PlayerType getPlayerType() {
-        return null;
+        return PlayerType.AI;
     }
 
     @Override
@@ -129,6 +138,6 @@ public class BattleshipRandomPlayer implements BattleshipPlayer {
 
     @Override
     public Point doMove(Game game) {
-        return algoithm.getMove(game);
+        return algorithm.getMove(game);
     }
 }

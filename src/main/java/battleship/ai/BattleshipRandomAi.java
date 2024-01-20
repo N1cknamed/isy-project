@@ -1,32 +1,31 @@
-package battleship.shootingAi;
+package battleship.ai;
 
 import framework.Game;
 import framework.Board;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 
-public class BattleshipsRandom {
+public class BattleshipRandomAi implements BattleshipAi {
 
     Boolean foundShip = false;
-    Point lastSHot = new Point(-1,-1);
+    Point lastShot = new Point(-1,-1);
     ArrayList<Point> lastHits = new ArrayList<>();
 
     Board localBoard = new Board(8,8);
 
 
-
+    @Override
     public Point getMove(Game game) {
         Board board = game.getBoard();
         Point move;
 
-        if (board.get(lastSHot) == 'h') {
-            localBoard.set(lastSHot, 'x');
-            lastHits.add(lastSHot);
+        if (board.get(lastShot) == 'h') {
+            localBoard.set(lastShot, 'x');
+            lastHits.add(lastShot);
             foundShip = true;
-        } else if (Character.isDigit(board.get(lastSHot))) {
+        } else if (Character.isDigit(board.get(lastShot))) {
             for (int i = 0; i < lastHits.size(); i++) {
                 Point p = lastHits.get(i);
                 localBoard.set(p, 'x');
@@ -43,25 +42,25 @@ public class BattleshipsRandom {
             if (lastHits.size() == 1){
                 move = new Point(lastHits.get(0).x + 1, lastHits.get(0).y);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                    lastSHot = move;
+                    lastShot = move;
                     localBoard.set(move, 's');
                     return move;
                 }
                 move = new Point(lastHits.get(0).x - 1, lastHits.get(0).y);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                    lastSHot = move;
+                    lastShot = move;
                     localBoard.set(move, 's');
                     return move;
                 }
                 move = new Point(lastHits.get(0).x, lastHits.get(0).y + 1);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                    lastSHot = move;
+                    lastShot = move;
                     localBoard.set(move, 's');
                     return move;
                 }
                 move = new Point(lastHits.get(0).x, lastHits.get(0).y - 1);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                    lastSHot = move;
+                    lastShot = move;
                     localBoard.set(move, 's');
                     return move;
                 }
@@ -71,26 +70,26 @@ public class BattleshipsRandom {
                     if (direction == 0) {
                         move = new Point(lastHits.get(i).x + 1, lastHits.get(i).y);
                         if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                            lastSHot = move;
+                            lastShot = move;
                             localBoard.set(move, 's');
                             return move;
                         }
                         move = new Point(lastHits.get(i).x - 1, lastHits.get(i).y);
                         if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                            lastSHot = move;
+                            lastShot = move;
                             localBoard.set(move, 's');
                             return move;
                         }
                     } else {
                         move = new Point(lastHits.get(i).x, lastHits.get(i).y + 1);
                         if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                            lastSHot = move;
+                            lastShot = move;
                             localBoard.set(move, 's');
                             return move;
                         }
                         move = new Point(lastHits.get(i).x, lastHits.get(i).y - 1);
                         if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                            lastSHot = move;
+                            lastShot = move;
                             localBoard.set(move, 's');
                             return move;
                         }
@@ -105,9 +104,9 @@ public class BattleshipsRandom {
         do {
             // random move
             move = new Point(random.nextInt(board.getBoardWidth()), random.nextInt(board.getBoardHeight()));
-        } while (!game.isValidMove(move) && localBoard.get(move) != 0);
+        } while (!(game.isValidMove(move) && localBoard.get(move) == 0));
 
-        lastSHot = move;
+        lastShot = move;
         localBoard.set(move, 's');
         return move;
     }

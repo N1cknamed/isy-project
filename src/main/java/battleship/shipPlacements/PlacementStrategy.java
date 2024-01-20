@@ -1,7 +1,9 @@
 package battleship.shipPlacements;
 
+import battleship.Boat;
+
 import java.util.ArrayList;
 
 public interface PlacementStrategy {
-    ArrayList<ShipPlacement> getShips();
+    ArrayList<Boat> getShips();
 }

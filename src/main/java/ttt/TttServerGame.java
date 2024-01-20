@@ -2,13 +2,17 @@ package ttt;
 
 import framework.Player;
 import framework.server.ServerGame;
-import framework.server.ServerPlayer;
+import framework.server.ServerGameController;
 import server.Response;
 
 public class TttServerGame extends TttGame implements ServerGame {
 
     private boolean hasEnded = false;
     private Player winner = null;
+
+    public TttServerGame(ServerGameController connection) {
+        super();
+    }
 
     @Override
     public boolean hasEnded() {
@@ -27,24 +31,11 @@ public class TttServerGame extends TttGame implements ServerGame {
     }
 
     @Override
-    public Player getLocalPlayer() {
-        return getAllPlayers().stream()
-                .filter(p -> p.getPlayerType().isLocal())
-                .findAny()
-                .orElseThrow();
-    }
-
-    @Override
-    public ServerPlayer getServerPlayer() {
-        return getAllPlayers().stream()
-                .filter(p -> !p.getPlayerType().isLocal())
-                .map(p -> (ServerPlayer) p)
-                .findAny()
-                .orElseThrow();
-    }
-
-    @Override
     public void handleServerResponse(Response response) {
-        System.out.println("Received and ignoring an unhandled server response (" + response.getCommand() + ")");
+    }
+
+    @Override
+    public boolean prePlayerMove(Player player) {
+        return true;
     }
 }

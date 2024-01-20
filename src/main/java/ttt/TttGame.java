@@ -1,9 +1,9 @@
 package ttt;
 
+import framework.Board;
 import framework.Game;
 import framework.Player;
 import framework.PlayerFactory;
-import framework.Board;
 
 import java.awt.*;
 import java.util.Collection;
@@ -66,18 +66,17 @@ public class TttGame implements Game {
     }
 
     @Override
-    public boolean doMove(Point move) {
-        if (((move.x < 0) ||
-                (move.x >= board.getBoardWidth())) ||
-                ((move.y < 0) || (move.y >= board.getBoardWidth()))) {  // check if x or y are out of bounds
-            return true;
+    public void doMove(Point move) {
+        if (!isValidMove(move)) {
+            throw new IllegalStateException("Called doMove() with an invalid move (" + move + ")");
         }
-        if (board.get(move.x, move.y) == 0) { // check if index is empty, idk why this works
-            board.set(move.x, move.y, currentPlayer);
-            currentPlayer = currentPlayer == 'x' ? 'o' : 'x';
-            return false;
-        }
-        return true; // index is already full
+
+        board.set(move.x, move.y, currentPlayer);
+    }
+
+    @Override
+    public void nextPlayer() {
+        currentPlayer = currentPlayer == 'x' ? 'o' : 'x';
     }
 
     @Override
@@ -85,7 +84,7 @@ public class TttGame implements Game {
         if (((move.x < 0) || (move.x >= board.getBoardWidth())) || ((move.y < 0) || (move.y >= board.getBoardHeight()))) {  // check if x or y are out of bounds
             return false;
         }
-        return board.get(move.x,move.y) == 0;
+        return board.get(move.x, move.y) == 0;
     }
 
     @Override
