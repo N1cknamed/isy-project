@@ -1,5 +1,7 @@
-package battleship;
+package battleship.subscribers;
 
+import battleship.BattleshipGame;
+import battleship.players.BattleshipPlayer;
 import framework.Board;
 import framework.Game;
 import framework.GameSubscriber;

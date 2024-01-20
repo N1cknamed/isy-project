@@ -1,4 +1,4 @@
-package ttt;
+package ttt.players;
 
 import framework.Game;
 import framework.Player;

@@ -1,8 +1,15 @@
 import battleship.*;
+import battleship.players.BattleshippBoatPlacementPlayer;
+import battleship.players.BattleshipRandomPlayer;
+import battleship.subscribers.BattleshipCliSubscriber;
+import battleship.subscribers.BattleshipCsvSubscriber;
 import framework.*;
 import gui.HomeGui;
 import gui.TttGui;
 import ttt.*;
+import ttt.Subscribers.TttCliSubscriber;
+import ttt.Subscribers.TttGuiSubscriber;
+import ttt.players.TttGuiPlayer;
 
 
 public class Main {
@@ -63,13 +70,15 @@ public class Main {
     }
 
     private static void runBattleshipCsv() {
+
         for (int i = 0; i < 1000; i++) {
             Game game = new BattleshipGame();
-            GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshippBoatPlacementPlayer::new);
+//            GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshippBoatPlacementPlayer::new);
 //            GameController controller = new GameController(game, BattleshipRandomPlayer::new, new BattleshipPlayerFactory());
-            GameSubscriber csv = new BattleshipCsvSubscriber();
-            controller.registerSubscriber(csv);
-//            controller.registerSubscriber(new BattleshipCliSubscriber());
+            GameController controller = new GameController(game, BattleshippBoatPlacementPlayer::new, new BattleshipPlayerFactory());
+//            GameSubscriber csv = new BattleshipCsvSubscriber();
+//            controller.registerSubscriber(csv);
+            controller.registerSubscriber(new BattleshipCliSubscriber());
             controller.gameLoop();
         }
     }

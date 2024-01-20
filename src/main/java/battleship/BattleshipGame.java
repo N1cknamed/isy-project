@@ -1,5 +1,6 @@
 package battleship;
 
+import battleship.players.BattleshipPlayer;
 import framework.Game;
 import framework.Player;
 import framework.PlayerFactory;

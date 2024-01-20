@@ -1,4 +1,4 @@
-package ttt;
+package battleship.subscribers;
 
 import framework.Game;
 import framework.GameSubscriber;
@@ -6,28 +6,26 @@ import framework.Player;
 
 import java.awt.*;
 
-public class TttCliSubscriber implements GameSubscriber {
+public class
+BattleshipCliSubscriber implements GameSubscriber {
     @Override
     public void onGameStarted(Game game) {
-        game.getBoard().printBoard();
+        System.out.println("game started");
     }
 
     @Override
     public void onGameUpdated(Game game) {
+        System.out.println("game updated");
         game.getBoard().printBoard();
     }
 
     @Override
     public void onGameEnded(Game game) {
-        if (game.getWinner() == null) {
-            System.out.println("Draw");
-        } else {
-            System.out.println("player " + game.getWinner().getSymbol() + " has won.");
-        }
-        
+        System.out.println("game ended, winner: " + game.getWinner().getSymbol());
     }
 
     @Override
     public void onPlayerMove(Player player, Point move) {
+        System.out.println("player move");
     }
 }

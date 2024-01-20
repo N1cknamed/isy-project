@@ -1,4 +1,4 @@
-package battleship;
+package battleship.shootingAi;
 
 import framework.Game;
 import framework.Board;

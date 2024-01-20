@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ttt.TttGuiPlayer;
+import ttt.players.TttGuiPlayer;
 import ttt.TttGame;
 
 import java.util.ArrayList;

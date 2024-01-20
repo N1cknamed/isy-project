@@ -1,7 +1,9 @@
-package battleship;
+package battleship.players;
 
-import framework.Board;
+import battleship.players.BattleshipPlayer;
+import battleship.shootingAi.BattleshipsRandom;
 import framework.Game;
+import framework.Board;
 import framework.PlayerType;
 
 import java.awt.*;
@@ -10,17 +12,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
+public class BattleshipRandomPlayer implements BattleshipPlayer {
     private final char symbol;
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
     private final Set<Point> alreadyHit = new HashSet<>();
 
     // for the ai
+    private BattleshipsRandom algoithm = new BattleshipsRandom();
     private int boatsRemaining = 0;
 
-    public BattleshippBoatPlacementPlayer(char symbol) {
-        this.symbol = 's';
+    public BattleshipRandomPlayer(char symbol) {
+        this.symbol = 'r';
         this.board = new Board(8, 8);
     }
 
@@ -50,7 +53,7 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
     @Override
     public void placeBoats() {
         ships.put('2', 2);
-        //ships.put('3', 3);
+        ships.put('3', 3);
         //ships.put('4', 4);
         //ships.put('6', 6);
 
@@ -126,6 +129,6 @@ public class BattleshippBoatPlacementPlayer implements BattleshipPlayer{
 
     @Override
     public Point doMove(Game game) {
-        return new Point(7,7);
+        return algoithm.getMove(game);
     }
 }

@@ -2,6 +2,9 @@ package ttt;
 
 import framework.PlayerFactoryBuilder;
 import framework.ServerPlayer;
+import ttt.players.TttAiPlayer;
+import ttt.players.TttCliPlayer;
+import ttt.players.TttGuiPlayer;
 
 public class Ttt {
 

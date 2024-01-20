@@ -11,15 +11,14 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import ttt.TttAiPlayer;
-import ttt.TttGuiPlayer;
+import ttt.players.TttAiPlayer;
+import ttt.players.TttGuiPlayer;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 
 import ttt.TttGame;
-import ttt.TttGuiSubscriber;
+import ttt.Subscribers.TttGuiSubscriber;
 
 
 public class HomeGui extends Application {

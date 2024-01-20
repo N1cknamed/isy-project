@@ -1,5 +1,6 @@
 package battleship;
 
+import battleship.players.BattleshipCliPlayer;
 import framework.PlayerFactoryBuilder;
 
 public class Battleship {

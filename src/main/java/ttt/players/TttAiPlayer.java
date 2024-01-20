@@ -1,10 +1,11 @@
-package ttt;
+package ttt.players;
 
 import java.awt.Point;
 
 import framework.Game;
 import framework.Player;
 import framework.PlayerType;
+import ttt.TttAi;
 
 public class TttAiPlayer implements Player {
 

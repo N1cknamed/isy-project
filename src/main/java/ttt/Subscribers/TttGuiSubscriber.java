@@ -1,31 +1,35 @@
-package battleship;
+package ttt.Subscribers;
 
 import framework.Game;
 import framework.GameSubscriber;
 import framework.Player;
+import gui.TttGui;
+import ttt.TttGame;
 
 import java.awt.*;
 
-public class
-BattleshipCliSubscriber implements GameSubscriber {
+public class TttGuiSubscriber implements GameSubscriber {
+
     @Override
     public void onGameStarted(Game game) {
-        System.out.println("game started");
+        TttGui.updateButtonsFromOutside(game);
     }
 
     @Override
     public void onGameUpdated(Game game) {
-        System.out.println("game updated");
-        game.getBoard().printBoard();
+        TttGui.updateButtonsFromOutside(game);
     }
 
     @Override
     public void onGameEnded(Game game) {
-        System.out.println("game ended, winner: " + game.getWinner().getSymbol());
+        TttGame tttGame = (TttGame) game;
+        if (game.getWinner() != null) {
+            TttGui.winningButtonsFromOutside();
+        }
     }
 
     @Override
     public void onPlayerMove(Player player, Point move) {
-        System.out.println("player move");
+
     }
 }
