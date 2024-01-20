@@ -1,23 +1,30 @@
-import battleship.*;
+import battleship.BattleshipGame;
+import battleship.BattleshipPlayerFactory;
+import battleship.BattleshipServerGame;
 import battleship.players.BattleshipBoatPlacementPlayer;
 import battleship.players.BattleshipRandomPlayer;
 import battleship.players.BattleshipServerPlayer;
 import battleship.subscribers.BattleshipCliSubscriber;
 import battleship.subscribers.BattleshipCsvSubscriber;
 import framework.*;
-import framework.server.*;
+import framework.server.ServerGameController;
+import framework.server.ServerPlayer;
 import gui.HomeGui;
 import gui.TttGui;
-import ttt.*;
 import ttt.Subscribers.TttCliSubscriber;
 import ttt.Subscribers.TttGuiSubscriber;
+import ttt.Ttt;
+import ttt.TttGame;
+import ttt.TttServerGame;
 import ttt.players.TttGuiPlayer;
 
+import java.io.*;
 import java.util.Scanner;
 
 
 public class Main {
-    private static final String TEAM_NAME = "mart";
+
+    private static final String TEAM_NAME = readTeamName(new File("teamname.txt"));
     private static final PlayerType LOCAL_PLAYER = PlayerType.GUI;
     private static final String SERVER_HOST = "home.woutergritter.me";
     private static final int SERVER_PORT = 7789;
@@ -145,5 +152,27 @@ public class Main {
 
     private static void runHomeGui() {
         HomeGui.launch(HomeGui.class);
+    }
+
+    private static String readTeamName(File file) {
+        try {
+            if (!file.exists()) {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write("groep2\n");
+                writer.close();
+
+                System.out.println("Generated file " + file.getName());
+            }
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String teamName = reader.readLine();
+            reader.close();
+
+            System.out.println("Read teamname from file " + file.getName() + ": " + teamName);
+
+            return teamName;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }
