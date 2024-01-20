@@ -13,6 +13,8 @@ import ttt.Subscribers.TttCliSubscriber;
 import ttt.Subscribers.TttGuiSubscriber;
 import ttt.players.TttGuiPlayer;
 
+import java.util.Scanner;
+
 
 public class Main {
     private static final String TEAM_NAME = "mart";
@@ -23,12 +25,12 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
-//        runBattleshipCsv();
+        runBattleshipCsv();
 //        runTttGui();
 //        runHomeGui();
 
 //        runServerTttCli();
-        runServerBattleshipCli();
+//        runServerBattleshipCli();
     }
 
     private static void runServerTttCli() {
@@ -83,8 +85,11 @@ public class Main {
     }
 
     private static void runBattleshipCsv() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("How many runs?");
+        int runs = scanner.nextInt();
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < runs; i++) {
             Game game = new BattleshipGame();
 //            GameController controller = new GameController(game, BattleshipRandomPlayer::new, BattleshippBoatPlacementPlayer::new);
 //            GameController controller = new GameController(game, BattleshipRandomPlayer::new, new BattleshipPlayerFactory());
