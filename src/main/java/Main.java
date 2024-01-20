@@ -30,12 +30,12 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
-//        runBattleshipCsv();
+        runBattleshipCsv();
 //        runTttGui();
 //        runHomeGui();
 
 //        runServerTtt();
-        runServerBattleship();
+//        runServerBattleship();
     }
 
     private static void runServerTtt() {

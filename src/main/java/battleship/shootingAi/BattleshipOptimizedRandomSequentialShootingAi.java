@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class BattleshipOptimizedRandomShootingAi implements BattleshipShootingAi {
+public class BattleshipOptimizedRandomSequentialShootingAi implements BattleshipShootingAi {
 
     Boolean foundShip = false;
     Point lastShot = new Point(-1,-1);
@@ -40,10 +40,11 @@ public class BattleshipOptimizedRandomShootingAi implements BattleshipShootingAi
 
         if (foundShip) {
             if (lastHits.size() == 1){
-                ArrayList<Point> possibleMoves = new ArrayList<>();
                 move = new Point(lastHits.get(0).x + 1, lastHits.get(0).y);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                    possibleMoves.add(move);
+                    lastShot = move;
+                    localBoard.set(move, 's');
+                    return move;
                 }
                 move = new Point(lastHits.get(0).x - 1, lastHits.get(0).y);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
@@ -63,44 +64,31 @@ public class BattleshipOptimizedRandomShootingAi implements BattleshipShootingAi
                     localBoard.set(move, 's');
                     return move;
                 }
-                Random random = new Random();
-                move = possibleMoves.get(random.nextInt(possibleMoves.size()));
-                lastShot = move;
-                localBoard.set(move, 's');
-                return move;
             } else {
                 int direction = lastHits.get(0).x == lastHits.get(1).x ? 1 : 0;
-                for (Point lastHit : lastHits) {
+                for (int i = 0; i < lastHits.size(); i++) {
                     if (direction == 0) {
-                        ArrayList<Point> possibleMoves = new ArrayList<>();
-                        move = new Point(lastHit.x + 1, lastHit.y);
+                        move = new Point(lastHits.get(i).x + 1, lastHits.get(i).y);
                         if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                            possibleMoves.add(move);
+                            lastShot = move;
+                            localBoard.set(move, 's');
+                            return move;
                         }
-                        move = new Point(lastHit.x - 1, lastHit.y);
+                        move = new Point(lastHits.get(i).x - 1, lastHits.get(i).y);
                         if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                            possibleMoves.add(move);
-                        }
-                        if (!possibleMoves.isEmpty()) {
-                            Random random = new Random();
-                            move = possibleMoves.get(random.nextInt(possibleMoves.size()));
                             lastShot = move;
                             localBoard.set(move, 's');
                             return move;
                         }
                     } else {
-                        ArrayList<Point> possibleMoves = new ArrayList<>();
-                        move = new Point(lastHit.x, lastHit.y + 1);
+                        move = new Point(lastHits.get(i).x, lastHits.get(i).y + 1);
                         if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                            possibleMoves.add(move);
+                            lastShot = move;
+                            localBoard.set(move, 's');
+                            return move;
                         }
-                        move = new Point(lastHit.x, lastHit.y - 1);
+                        move = new Point(lastHits.get(i).x, lastHits.get(i).y - 1);
                         if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                            possibleMoves.add(move);
-                        }
-                        if (!possibleMoves.isEmpty()) {
-                            Random random = new Random();
-                            move = possibleMoves.get(random.nextInt(possibleMoves.size()));
                             lastShot = move;
                             localBoard.set(move, 's');
                             return move;

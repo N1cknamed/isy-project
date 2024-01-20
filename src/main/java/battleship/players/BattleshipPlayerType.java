@@ -2,10 +2,7 @@ package battleship.players;
 
 import battleship.placementsStrategy.BattleshipCornersPlacementStrategy;
 import battleship.placementsStrategy.BattleshipPlacementStrategy;
-import battleship.shootingAi.BattleshipOptimizedRandomShootingAi;
-import battleship.shootingAi.BattleshipSequentialShootingAi;
-import battleship.shootingAi.BattleshipShootingAi;
-import battleship.shootingAi.BattleshipTrueRandomShootingAi;
+import battleship.shootingAi.*;
 import framework.PlayerType;
 
 import java.util.function.Supplier;
@@ -19,6 +16,8 @@ public class BattleshipPlayerType extends PlayerType {
             BattleshipSequentialShootingAi::new
     );
 
+
+
     public static BattleshipPlayerType AI_TRUE_RANDOM = new BattleshipPlayerType(
             "AI_TRUE_RANDOM",
             true,
@@ -26,11 +25,18 @@ public class BattleshipPlayerType extends PlayerType {
             BattleshipTrueRandomShootingAi::new
     );
 
+    public static BattleshipPlayerType AI_OPTIMIZED_SEQUENTIAL_RANDOM = new BattleshipPlayerType(
+            "AI_OPTIMIZED_SEQUENTIAL_RANDOM",
+            true,
+            BattleshipCornersPlacementStrategy::new,
+            BattleshipOptimizedRandomShootingAi::new
+    );
+
     public static BattleshipPlayerType AI_OPTIMIZED_RANDOM = new BattleshipPlayerType(
             "AI_OPTIMIZED_RANDOM",
             true,
             BattleshipCornersPlacementStrategy::new,
-            BattleshipOptimizedRandomShootingAi::new
+            BattleshipOptimizedRandomSequentialShootingAi::new
     );
 
     public static BattleshipPlayerType CLI = new BattleshipPlayerType(
@@ -78,6 +84,7 @@ public class BattleshipPlayerType extends PlayerType {
         return new BattleshipPlayerType[] {
                 AI_SEQUENTIAL,
                 AI_TRUE_RANDOM,
+                AI_OPTIMIZED_SEQUENTIAL_RANDOM,
                 AI_OPTIMIZED_RANDOM,
                 CLI,
                 GUI,

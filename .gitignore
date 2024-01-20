@@ -37,4 +37,5 @@ libraries/
 target/
 out/
 /server/
+/data/
 teamname.txt
