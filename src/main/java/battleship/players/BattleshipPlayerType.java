@@ -46,6 +46,20 @@ public class BattleshipPlayerType extends PlayerType {
             BattleshipOptimizedRandomCheckerboardShootingAi::new
     );
 
+    public static BattleshipPlayerType AI_MORE_OPTIMIZED_CHECKERBOARD_RANDOM = new BattleshipPlayerType(
+            "AI_MORE_OPTIMIZED_CHECKERBOARD_RANDOM",
+            true,
+            BattleshipCornersPlacementStrategy::new,
+            BattleshipMoreOptimizedRandomCheckerboardShootingAi::new
+    );
+
+    public static BattleshipPlayerType AI_HEATMAP = new BattleshipPlayerType(
+            "AI_HEATMAP",
+            true,
+            BattleshipCornersPlacementStrategy::new,
+            BattleshipHeatmapShootingAi::new
+    );
+
     public static BattleshipPlayerType CLI = new BattleshipPlayerType(
             "CLI",
             true
@@ -94,6 +108,8 @@ public class BattleshipPlayerType extends PlayerType {
                 AI_OPTIMIZED_SEQUENTIAL_RANDOM,
                 AI_OPTIMIZED_RANDOM,
                 AI_OPTIMIZED_CHECKERBOARD_RANDOM,
+                AI_MORE_OPTIMIZED_CHECKERBOARD_RANDOM,
+                AI_HEATMAP,
                 CLI,
                 GUI,
                 SERVER

@@ -22,6 +22,10 @@ public class BattleshipPlayerFactory implements PlayerFactory {
             return new BattleshipAIPlayer(symbol, type);
         } else if (type == AI_OPTIMIZED_CHECKERBOARD_RANDOM) {
             return new BattleshipAIPlayer(symbol, type);
+        } else if (type == AI_HEATMAP) {
+            return new BattleshipAIPlayer(symbol, type);
+        } else if (type == AI_MORE_OPTIMIZED_CHECKERBOARD_RANDOM) {
+            return new BattleshipAIPlayer(symbol, type);
         } else if (type == AI_OPTIMIZED_SEQUENTIAL_RANDOM) {
             return new BattleshipAIPlayer(symbol, type);
         } else if (type == CLI) {

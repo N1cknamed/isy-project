@@ -31,8 +31,8 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
-        runBattleshipCsv();
-//        runBattleshipStats();
+//        runBattleshipCsv();
+        runBattleshipStats();
 //        runTttGui();
 //        runHomeGui();
 
@@ -98,7 +98,7 @@ public class Main {
         GameController controller = new GameController(
                 game,
                 new BattleshipPlayerFactory(BattleshipPlayerType.CLI),
-                new BattleshipPlayerFactory(BattleshipPlayerType.AI_OPTIMIZED_RANDOM)
+                new BattleshipPlayerFactory(BattleshipPlayerType.AI_HEATMAP)
         );
         controller.registerSubscriber(new BattleshipCliSubscriber());
         controller.gameLoop();
@@ -182,6 +182,7 @@ public class Main {
         int player2LosingMisses = 0;
 
         for (int i = 0; i < runs; i++) {
+
             if (i % (runs / 100) == 0) {
                 System.out.println(i / (runs / 100) + "%");
             }

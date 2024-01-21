@@ -8,13 +8,20 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class BattleshipOptimizedRandomCheckerboardShootingAi implements BattleshipShootingAi {
+public class BattleshipMoreOptimizedRandomCheckerboardShootingAi implements BattleshipShootingAi {
 
     Boolean foundShip = false;
     Point lastShot = new Point(-1,-1);
     ArrayList<Point> lastHits = new ArrayList<>();
-
     Board localBoard = new Board(8,8);
+    ArrayList<Integer> boatsRemaining = new ArrayList<>();
+
+    public BattleshipMoreOptimizedRandomCheckerboardShootingAi() {
+        boatsRemaining.add(2);
+        boatsRemaining.add(3);
+        boatsRemaining.add(4);
+        boatsRemaining.add(6);
+    }
 
     @Override
     public Point getMove(Game game) {
@@ -108,6 +115,7 @@ public class BattleshipOptimizedRandomCheckerboardShootingAi implements Battlesh
 
 
         Random random = new Random();
+
         do {
             // random move
             move = new Point(random.nextInt(board.getBoardWidth()), random.nextInt(board.getBoardHeight()));
