@@ -17,7 +17,6 @@ public class BattleshipPlayerType extends PlayerType {
             BattleshipSequentialShootingAi::new
     );
 
-
     public static BattleshipPlayerType AI_TRUE_RANDOM = new BattleshipPlayerType(
             "AI_TRUE_RANDOM",
             true,
@@ -48,6 +47,22 @@ public class BattleshipPlayerType extends PlayerType {
             true,
             BattleshipCornersPlacementStrategy::new,
             BattleshipOptimizedRandomCheckerboardShootingAi::new
+    );
+
+    public static BattleshipPlayerType AI_MORE_OPTIMIZED_CHECKERBOARD_RANDOM = new BattleshipPlayerType(
+            "AI_MORE_OPTIMIZED_CHECKERBOARD_RANDOM",
+            true,
+            true,
+            BattleshipCornersPlacementStrategy::new,
+            BattleshipMoreOptimizedRandomCheckerboardShootingAi::new
+    );
+
+    public static BattleshipPlayerType AI_HEATMAP = new BattleshipPlayerType(
+            "AI_HEATMAP",
+            true,
+            true,
+            BattleshipCornersPlacementStrategy::new,
+            BattleshipHeatmapShootingAi::new
     );
 
     public static BattleshipPlayerType AI_RECURSIVE_HEATMAP = new BattleshipPlayerType(
@@ -104,12 +119,14 @@ public class BattleshipPlayerType extends PlayerType {
     }
 
     public static BattleshipPlayerType[] getPlayerTypes() {
-        return new BattleshipPlayerType[]{
+        return new BattleshipPlayerType[] {
                 AI_SEQUENTIAL,
                 AI_TRUE_RANDOM,
                 AI_OPTIMIZED_SEQUENTIAL_RANDOM,
                 AI_OPTIMIZED_RANDOM,
                 AI_OPTIMIZED_CHECKERBOARD_RANDOM,
+                AI_MORE_OPTIMIZED_CHECKERBOARD_RANDOM,
+                AI_HEATMAP,
                 AI_RECURSIVE_HEATMAP,
                 CLI,
                 GUI,

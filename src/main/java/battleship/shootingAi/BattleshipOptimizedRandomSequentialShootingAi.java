@@ -26,6 +26,7 @@ public class BattleshipOptimizedRandomSequentialShootingAi implements Battleship
             lastHits.add(lastShot);
             foundShip = true;
         } else if (Character.isDigit(board.get(lastShot))) {
+            lastHits.add(lastShot);
             for (int i = 0; i < lastHits.size(); i++) {
                 Point p = lastHits.get(i);
                 localBoard.set(p, 'x');
