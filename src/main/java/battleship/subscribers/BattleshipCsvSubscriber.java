@@ -79,7 +79,7 @@ public class BattleshipCsvSubscriber implements GameSubscriber {
         try {
             if (!csvFile.exists()) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile));
-                writer.write("winner,loser,winnerHits,winnerMisses,loserHits,loserMisses\n");
+                writer.write("winner,loser,winnerHits,winnerMisses,WinnerShots,loserHits,loserMisses,loserShots\n");
                 writer.close();
 
                 System.out.println("Generated file " + csvFile.getName());
@@ -97,8 +97,10 @@ public class BattleshipCsvSubscriber implements GameSubscriber {
                     .append(String.valueOf(loser)).append(",")
                     .append(String.valueOf(winnerHits)).append(",")
                     .append(String.valueOf(winnerMisses)).append(",")
+                    .append(String.valueOf(winnerHits+winnerMisses)).append(",")
                     .append(String.valueOf(loserHits)).append(",")
-                    .append(String.valueOf(loserMisses)).append("\n");
+                    .append(String.valueOf(loserMisses)).append(",")
+                    .append(String.valueOf(loserHits+loserMisses)).append("\n");
 
         } catch (IOException e) {
             System.err.println("Error writing CSV file: " + e.getMessage());
