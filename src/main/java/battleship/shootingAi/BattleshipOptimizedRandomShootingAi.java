@@ -47,21 +47,15 @@ public class BattleshipOptimizedRandomShootingAi implements BattleshipShootingAi
                 }
                 move = new Point(lastHits.get(0).x - 1, lastHits.get(0).y);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                    lastShot = move;
-                    localBoard.set(move, 's');
-                    return move;
+                    possibleMoves.add(move);
                 }
                 move = new Point(lastHits.get(0).x, lastHits.get(0).y + 1);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                    lastShot = move;
-                    localBoard.set(move, 's');
-                    return move;
+                    possibleMoves.add(move);
                 }
                 move = new Point(lastHits.get(0).x, lastHits.get(0).y - 1);
                 if (board.get(move) == 0 && localBoard.get(move) == 0 && game.isValidMove(move)) {
-                    lastShot = move;
-                    localBoard.set(move, 's');
-                    return move;
+                    possibleMoves.add(move);
                 }
                 Random random = new Random();
                 move = possibleMoves.get(random.nextInt(possibleMoves.size()));
