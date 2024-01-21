@@ -44,6 +44,7 @@ public class BattleshipMoreOptimizedRandomCheckerboardShootingAi implements Batt
             }
             lastHits.clear();
             foundShip = false;
+            boatsRemaining.remove((Integer) (board.get(lastShot) - '0'));
         }
 
         if (foundShip) {
@@ -116,10 +117,15 @@ public class BattleshipMoreOptimizedRandomCheckerboardShootingAi implements Batt
 
         Random random = new Random();
 
+        int minBoatSize = boatsRemaining.stream()
+                .mapToInt(i -> i)
+                .min()
+                .orElseThrow();
+
         do {
             // random move
             move = new Point(random.nextInt(board.getBoardWidth()), random.nextInt(board.getBoardHeight()));
-        } while (!(game.isValidMove(move) && localBoard.get(move) == 0 && (move.x + move.y) % 2 == 0));
+        } while (!(game.isValidMove(move) && localBoard.get(move) == 0 && (move.x + move.y) % minBoatSize == 0));
 
         lastShot = move;
         localBoard.set(move, 's');

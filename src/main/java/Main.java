@@ -189,8 +189,8 @@ public class Main {
             BattleshipGame game = new BattleshipGame();
             GameController controller = new GameController(
                     game,
-                    new BattleshipPlayerFactory(player1Type),
-                    new BattleshipPlayerFactory(player2Type)
+                    new BattleshipPlayerFactory(i % 2 == 0 ? player1Type : player2Type),
+                    new BattleshipPlayerFactory(i % 2 == 1 ? player1Type : player2Type)
             );
             controller.gameLoop();
 
