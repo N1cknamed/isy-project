@@ -57,7 +57,7 @@ public class BattleshipHeatmapShootingAi implements BattleshipShootingAi {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++){
                 Point location = new Point(x, y);
-                if (lastHits.contains(location)) {
+                if (alreadyShot.contains(location)) {
                     continue;
                 }
                 if (heatmap[y][x] > max) {
