@@ -4,6 +4,7 @@ import battleship.players.BattleshipPlayerFactory;
 import battleship.players.BattleshipPlayerType;
 import battleship.subscribers.BattleshipCliSubscriber;
 import battleship.subscribers.BattleshipCsvSubscriber;
+import framework.Board;
 import framework.Game;
 import framework.GameController;
 import framework.GameSubscriber;
@@ -31,6 +32,7 @@ public class Main {
 //        runTttCli();
 //        runBattleshipCli();
         runBattleshipCsv();
+//        runBattleshipStats();
 //        runTttGui();
 //        runHomeGui();
 
@@ -129,6 +131,9 @@ public class Main {
         GameSubscriber csv = new BattleshipCsvSubscriber(csvFileName);
 
         for (int i = 0; i < runs; i++) {
+            if (i % (runs / 100) == 0) {
+                System.out.println(i / (runs / 100) + "%");
+            }
             Game game = new BattleshipGame();
             GameController controller = new GameController(
                     game,
@@ -138,6 +143,118 @@ public class Main {
             controller.registerSubscriber(csv);
             controller.gameLoop();
         }
+    }
+
+    private static void runBattleshipStats() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Available player types:");
+        int counter = 0;
+        for (BattleshipPlayerType type : BattleshipPlayerType.getPlayerTypes()) {
+            System.out.print(counter++);
+            System.out.println(" - " + type);
+        }
+
+        BattleshipPlayerType[] playerTypes = BattleshipPlayerType.getPlayerTypes();
+
+        System.out.print("Player 1 type: ");
+        BattleshipPlayerType player1Type = playerTypes[scanner.nextInt()];
+
+        System.out.print("Player 2 type: ");
+        BattleshipPlayerType player2Type = playerTypes[scanner.nextInt()];
+
+        System.out.print("Number of runs: ");
+        int runs = scanner.nextInt();
+
+        int player1Wins = 0;
+        int player2Wins = 0;
+
+        int player1Winninghits = 0;
+        int player2Winninghits = 0;
+
+        int player1Losinghits = 0;
+        int player2Losinghits = 0;
+
+        int player1WinningMisses = 0;
+        int player2WinningMisses = 0;
+
+        int player1LosingMisses = 0;
+        int player2LosingMisses = 0;
+
+        for (int i = 0; i < runs; i++) {
+            if (i % (runs / 100) == 0) {
+                System.out.println(i / (runs / 100) + "%");
+            }
+
+            BattleshipGame game = new BattleshipGame();
+            GameController controller = new GameController(
+                    game,
+                    new BattleshipPlayerFactory(player1Type),
+                    new BattleshipPlayerFactory(player2Type)
+            );
+            controller.gameLoop();
+
+            Board board = game.getOpponentBoard();
+            // count misses and hits
+            int winnerMisses = 0;
+            int winnerHits = 0;
+
+            for (int x = 0; x < board.getBoardWidth(); x++) {
+                for (int y = 0; y < board.getBoardHeight(); y++) {
+                    if (board.get(x, y) == 'm') {
+                        winnerMisses++;
+                    } else if (board.get(x, y) == 'h' || Character.isDigit(board.get(x, y))) {
+                        winnerHits++;
+                    }
+                }
+            }
+
+            Board loserBoard = game.getCurrentBoard();
+
+            int loserMisses = 0;
+            int loserHits = 0;
+
+            for (int x = 0; x < loserBoard.getBoardWidth(); x++) {
+                for (int y = 0; y < loserBoard.getBoardHeight(); y++) {
+                    if (loserBoard.get(x, y) == 'm') {
+                        loserMisses++;
+                    } else if (loserBoard.get(x, y) == 'h' || Character.isDigit(loserBoard.get(x, y))) {
+                        loserHits++;
+                    }
+                }
+            }
+
+            if (game.getWinner().getPlayerType() == player1Type) {
+                player1Wins++;
+                player1Winninghits += winnerHits;
+                player1WinningMisses += winnerMisses;
+                player2Losinghits += loserHits;
+                player2LosingMisses += loserMisses;
+            } else {
+                player2Wins++;
+                player2Winninghits += winnerHits;
+                player2WinningMisses += winnerMisses;
+                player1Losinghits += loserHits;
+                player1LosingMisses += loserMisses;
+            }
+        }
+
+        System.out.println(player1Type);
+        System.out.println("Total wins: " + player1Wins);
+        System.out.println("Win precentage: " + (double) player1Wins / runs * 100 + "%");
+        System.out.println("Average winning hits: " + (double) player1Winninghits / player1Wins);
+        System.out.println("Average winning misses: " + (double) player1WinningMisses / player1Wins);
+        System.out.println("Average losing hits: " + (double) player1Losinghits / player2Wins);
+        System.out.println("Average losing misses: " + (double) player1LosingMisses / player2Wins);
+        System.out.println();
+
+        System.out.println(player2Type);
+        System.out.println("Total wins: " + player2Wins);
+        System.out.println("Win precentage: " + (double) player2Wins / runs * 100 + "%");
+        System.out.println("Average winning hits: " + (double) player2Winninghits / player2Wins);
+        System.out.println("Average winning misses: " + (double) player2WinningMisses / player2Wins);
+        System.out.println("Average losing hits: " + (double) player2Losinghits / player1Wins);
+        System.out.println("Average losing misses: " + (double) player2LosingMisses / player1Wins);
     }
 
     private static void runTttGui() {
