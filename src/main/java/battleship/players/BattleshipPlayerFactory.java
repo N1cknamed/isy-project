@@ -14,15 +14,7 @@ public class BattleshipPlayerFactory implements PlayerFactory {
 
     @Override
     public BattleshipPlayer build(char symbol) {
-        if (type == AI_SEQUENTIAL) {
-            return new BattleshipAIPlayer(symbol, type);
-        } else if (type == AI_TRUE_RANDOM) {
-            return new BattleshipAIPlayer(symbol, type);
-        } else if (type == AI_OPTIMIZED_RANDOM) {
-            return new BattleshipAIPlayer(symbol, type);
-        } else if (type == AI_OPTIMIZED_CHECKERBOARD_RANDOM) {
-            return new BattleshipAIPlayer(symbol, type);
-        } else if (type == AI_OPTIMIZED_SEQUENTIAL_RANDOM) {
+        if (type.isAi()) {
             return new BattleshipAIPlayer(symbol, type);
         } else if (type == CLI) {
             return new BattleshipCliPlayer(symbol);
