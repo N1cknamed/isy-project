@@ -24,6 +24,8 @@ public class BattleshipPlayerFactory implements PlayerFactory {
             return new BattleshipAIPlayer(symbol, type);
         } else if (type == AI_OPTIMIZED_SEQUENTIAL_RANDOM) {
             return new BattleshipAIPlayer(symbol, type);
+        } else if (type == AI_ALL_AROUND_RANDOM){
+            return new BattleshipAIPlayer(symbol, type);
         } else if (type == CLI) {
             return new BattleshipCliPlayer(symbol);
         } else if (type == GUI) {

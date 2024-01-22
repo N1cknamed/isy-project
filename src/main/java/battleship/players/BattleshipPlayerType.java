@@ -1,5 +1,6 @@
 package battleship.players;
 
+import battleship.placementsStrategy.BattleshipAllAroundPlacementStrategy;
 import battleship.placementsStrategy.BattleshipCornersPlacementStrategy;
 import battleship.placementsStrategy.BattleshipPlacementStrategy;
 import battleship.shootingAi.*;
@@ -44,6 +45,13 @@ public class BattleshipPlayerType extends PlayerType {
             true,
             BattleshipCornersPlacementStrategy::new,
             BattleshipOptimizedRandomCheckerboardShootingAi::new
+    );
+
+    public static BattleshipPlayerType AI_ALL_AROUND_RANDOM = new BattleshipPlayerType(
+            "AI_ALL_AROUND_RANDOM",
+            true,
+            BattleshipAllAroundPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
     );
 
     public static BattleshipPlayerType CLI = new BattleshipPlayerType(
@@ -94,6 +102,7 @@ public class BattleshipPlayerType extends PlayerType {
                 AI_OPTIMIZED_SEQUENTIAL_RANDOM,
                 AI_OPTIMIZED_RANDOM,
                 AI_OPTIMIZED_CHECKERBOARD_RANDOM,
+                AI_ALL_AROUND_RANDOM,
                 CLI,
                 GUI,
                 SERVER
