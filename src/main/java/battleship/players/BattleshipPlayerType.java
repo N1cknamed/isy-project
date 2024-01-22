@@ -1,8 +1,6 @@
 package battleship.players;
 
-import battleship.placementsStrategy.BattleshipAllAroundPlacementStrategy;
-import battleship.placementsStrategy.BattleshipCornersPlacementStrategy;
-import battleship.placementsStrategy.BattleshipPlacementStrategy;
+import battleship.placementsStrategy.*;
 import battleship.shootingAi.*;
 import framework.PlayerType;
 
@@ -75,6 +73,38 @@ public class BattleshipPlayerType extends PlayerType {
             BattleshipRecursiveHeatmapShootingAi::new
     );
 
+    public static BattleshipPlayerType AI_ALL_AROUND_PLACEMENT_STRATEGY = new BattleshipPlayerType(
+            "AI_ALL_AROUND_PLACEMENT_STRATEGY",
+            true,
+            true,
+            BattleshipAllAroundPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
+    );
+
+    public static BattleshipPlayerType AI_VERTICAL_PLACEMENT_STRATEGY = new BattleshipPlayerType(
+            "AI_VERTICAL_PLACEMENT_STRATEGY",
+            true,
+            true,
+            BattleshipVerticalPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
+    );
+
+    public static BattleshipPlayerType AI_HORIZONTAL_PLACEMENT_STRATEGY = new BattleshipPlayerType(
+            "AI_HORIZONTAL_PLACEMENT_STRATEGY",
+            true,
+            true,
+            BattleshipHorizontalPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
+    );
+
+    public static BattleshipPlayerType AI_NO_SIDES_TOUCHING_PLACEMENT_STRATEGY = new BattleshipPlayerType(
+            "AI_NO_SIDES_TOUCHING_STRATEGY",
+            true,
+            true,
+            BattleshipNoSidesTouchingPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
+    );
+
     public static BattleshipPlayerType CLI = new BattleshipPlayerType("CLI", true, false);
 
     public static BattleshipPlayerType GUI = new BattleshipPlayerType("GUI", true, false);
@@ -130,6 +160,10 @@ public class BattleshipPlayerType extends PlayerType {
                 AI_MORE_OPTIMIZED_CHECKERBOARD_RANDOM,
                 AI_HEATMAP,
                 AI_RECURSIVE_HEATMAP,
+                AI_ALL_AROUND_PLACEMENT_STRATEGY,
+                AI_VERTICAL_PLACEMENT_STRATEGY,
+                AI_HORIZONTAL_PLACEMENT_STRATEGY,
+                AI_NO_SIDES_TOUCHING_PLACEMENT_STRATEGY,
                 CLI,
                 GUI,
                 SERVER
