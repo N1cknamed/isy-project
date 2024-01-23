@@ -104,7 +104,34 @@ public class BattleshipPlayerType extends PlayerType {
             BattleshipNoSidesTouchingPlacementStrategy::new,
             BattleshipSequentialShootingAi::new
     );
-
+    public static BattleshipPlayerType AI_SIDES_PlACEMENT_STRATEGY = new BattleshipPlayerType(
+            "AI_SIDES_PlACEMENT_STRATEGY",
+            true,
+            true,
+            BattleshipSidesPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
+    );
+    public static BattleshipPlayerType AI_MIDDLE_HORIZONTAL_PlACEMENT_STRATEGY = new BattleshipPlayerType(
+            "AI_MIDDLE_HORIZONTAL_PlACEMENT_STRATEGY",
+            true,
+            true,
+            BattleshipMiddleHorizontalPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
+    );
+    public static BattleshipPlayerType AI_MIDDLE_VERTICAL_PlACEMENT_STRATEGY = new BattleshipPlayerType(
+            "AI_MIDDLE_VERTICAL_PlACEMENT_STRATEGY",
+            true,
+            true,
+            BattleshipMiddleVerticalPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
+    );
+    public static BattleshipPlayerType AI_BOTTOM_PlACEMENT_STRATEGY = new BattleshipPlayerType(
+            "AI_BOTTOM_PlACEMENT_STRATEGY",
+            true,
+            true,
+            BattleshipBottomPlacementStrategy::new,
+            BattleshipSequentialShootingAi::new
+    );
     public static BattleshipPlayerType CLI = new BattleshipPlayerType("CLI", true, false);
 
     public static BattleshipPlayerType GUI = new BattleshipPlayerType("GUI", true, false);
@@ -164,6 +191,10 @@ public class BattleshipPlayerType extends PlayerType {
                 AI_VERTICAL_PLACEMENT_STRATEGY,
                 AI_HORIZONTAL_PLACEMENT_STRATEGY,
                 AI_NO_SIDES_TOUCHING_PLACEMENT_STRATEGY,
+                AI_SIDES_PlACEMENT_STRATEGY,
+                AI_MIDDLE_HORIZONTAL_PlACEMENT_STRATEGY,
+                AI_MIDDLE_VERTICAL_PlACEMENT_STRATEGY,
+                AI_BOTTOM_PlACEMENT_STRATEGY,
                 CLI,
                 GUI,
                 SERVER
