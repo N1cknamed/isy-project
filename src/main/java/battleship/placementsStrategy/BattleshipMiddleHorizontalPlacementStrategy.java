@@ -13,6 +13,6 @@ public class BattleshipMiddleHorizontalPlacementStrategy implements BattleshipPl
         ships.add(new Boat(new Point(3, 3), 0, 2));
         ships.add(new Boat(new Point(5, 4), 1, 3));
         ships.add(new Boat(new Point(0, 5), 0, 4));
-        return null;
+        return ships;
     }
 }

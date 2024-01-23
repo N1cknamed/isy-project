@@ -11,7 +11,7 @@ public class BattleshipAllAroundPlacementStrategy implements BattleshipPlacement
         ArrayList<Boat> ships = new ArrayList<>();
         ships.add(new Boat(new Point(0, 0), 0, 6));
         ships.add(new Boat(new Point(7, 0), 1, 4));
-        ships.add(new Boat(new Point(0, 0), 1, 2));
+        ships.add(new Boat(new Point(0, 6), 1, 2));
         ships.add(new Boat(new Point(5, 7), 0, 3));
         return ships;
     }

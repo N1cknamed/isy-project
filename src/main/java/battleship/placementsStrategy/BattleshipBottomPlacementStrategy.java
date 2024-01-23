@@ -13,6 +13,6 @@ public class BattleshipBottomPlacementStrategy implements BattleshipPlacementStr
         ships.add(new Boat(new Point(1, 5), 0, 4));
         ships.add(new Boat(new Point(0, 6), 1, 2));
         ships.add(new Boat(new Point(5, 6), 0, 3));
-        return null;
+        return ships;
     }
 }

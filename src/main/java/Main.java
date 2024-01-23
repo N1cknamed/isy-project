@@ -31,8 +31,8 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
-//        runBattleshipCsv();
-        runBattleshipStats();
+        runBattleshipCsv();
+//        runBattleshipStats();
 //        runTttGui();
 //        runHomeGui();
 
