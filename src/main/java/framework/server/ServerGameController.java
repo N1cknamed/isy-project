@@ -217,11 +217,15 @@ public class ServerGameController {
     }
 
     public void challengePlayer(String playerName) {
-        serverController.sendMessage("challenge \"" + playerName + "\" \"" + gameType + "\"");
+        if (serverController != null) {
+            serverController.sendMessage("challenge \"" + playerName + "\" \"" + gameType + "\"");
+        }
     }
 
     public void acceptChallenge(ServerChallenge challenge) {
-        serverController.sendMessage("challenge accept " + challenge.getChallengeNumber());
+        if (serverController != null) {
+            serverController.sendMessage("challenge accept " + challenge.getChallengeNumber());
+        }
     }
 
     public Point indexToPoint(int input) {

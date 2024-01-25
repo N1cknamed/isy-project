@@ -1,7 +1,11 @@
 import battleship.BattleshipGame;
 import battleship.BattleshipServerGame;
+import framework.Heatmap;
+import battleship.placementsStrategy.*;
 import battleship.players.BattleshipPlayerFactory;
 import battleship.players.BattleshipPlayerType;
+import battleship.shootingAi.BattleshipMoreOptimizedRandomCheckerboardShootingAi;
+import battleship.shootingAi.BattleshipShootingAi;
 import battleship.subscribers.BattleshipCliSubscriber;
 import battleship.subscribers.BattleshipCsvSubscriber;
 import framework.Board;
@@ -19,8 +23,9 @@ import ttt.subscribers.TttCliSubscriber;
 import ttt.subscribers.TttGuiSubscriber;
 
 import java.io.*;
+import java.util.List;
 import java.util.Scanner;
-
+import java.util.function.Supplier;
 
 public class Main {
 
@@ -32,12 +37,77 @@ public class Main {
 //        runTttCli();
 //        runBattleshipCli();
         runBattleshipCsv();
+//        battleshipMatrix();
 //        runBattleshipStats();
 //        runTttGui();
 //        runHomeGui();
 
 //        runServerTtt();
 //        runServerBattleship();
+    }
+
+    private static void battleshipMatrix() {
+        List<Supplier<BattleshipPlacementStrategy>> placementStrategies = List.of(
+                BattleshipAllAroundPlacementStrategy::new,
+                BattleshipBottomPlacementStrategy::new,
+                BattleshipCornersPlacementStrategy::new,
+                BattleshipHorizontalPlacementStrategy::new,
+                BattleshipMiddleHorizontalPlacementStrategy::new,
+                BattleshipMiddleVerticalPlacementStrategy::new,
+                BattleshipNoSidesTouchingPlacementStrategy::new,
+                BattleshipPureRandomPlacementStrategy::new,
+                BattleshipSidesPlacementStrategy::new,
+                BattleshipVerticalPlacementStrategy::new
+        );
+
+        Supplier<BattleshipShootingAi> shootingAi = BattleshipMoreOptimizedRandomCheckerboardShootingAi::new;
+
+        Heatmap matrix = new Heatmap(placementStrategies.size(), placementStrategies.size());
+
+        int runs = 100;
+
+        for (int i = 0; i < placementStrategies.size(); i++) {
+            BattleshipPlayerType player1Type = new BattleshipPlayerType("player1", true, true, placementStrategies.get(i), shootingAi);
+            for (int j = 0; j < placementStrategies.size(); j++) {
+                BattleshipPlayerType player2Type = new BattleshipPlayerType("player2", true, true, placementStrategies.get(j), shootingAi);
+
+                for (int k = 0; k < runs; k++) {
+                    Game game = new BattleshipGame();
+                    GameController controller = new GameController(game, new BattleshipPlayerFactory(player1Type), new BattleshipPlayerFactory(player2Type));
+                    controller.gameLoop();
+
+                    if (game.getWinner().getPlayerType().getName().equals("player1")) {
+                        matrix.increase(i, j);
+                    } else {
+                        matrix.decrease(i, j);
+                    }
+                }
+            }
+        }
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("data/matrix.csv"));
+            writer.write("X");
+            for (int i = 0; i < placementStrategies.size(); i++) {
+                writer.write("," + placementStrategies.get(i).get().getClass().getSimpleName().replace("Battleship", "").replace("PlacementStrategy", ""));
+            }
+            writer.write("\n");
+
+            for (int j = 0; j < placementStrategies.size(); j++) {
+                writer.write(placementStrategies.get(j).get().getClass().getSimpleName().replace("Battleship", "").replace("PlacementStrategy", ""));
+                for (int i = 0; i < placementStrategies.size(); i++) {
+                    writer.write(",");
+                    writer.write(String.valueOf(matrix.getValue(i, j)));
+                }
+
+                writer.write("\n");
+            }
+
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private static void runServerTtt() {
