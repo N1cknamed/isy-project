@@ -29,6 +29,10 @@ public class Heatmap {
         return values[x + y * width].get();
     }
 
+    public void setValue(int x, int y, int value) {
+        values[x + y * width].set(value);
+    }
+
     public void increase(int x, int y) {
         values[x + y * width].incrementAndGet();
     }

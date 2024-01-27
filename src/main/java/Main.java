@@ -1,11 +1,10 @@
 import battleship.BattleshipGame;
 import battleship.BattleshipServerGame;
+import battleship.shootingAi.*;
 import framework.Heatmap;
 import battleship.placementsStrategy.*;
 import battleship.players.BattleshipPlayerFactory;
 import battleship.players.BattleshipPlayerType;
-import battleship.shootingAi.BattleshipMoreOptimizedRandomCheckerboardShootingAi;
-import battleship.shootingAi.BattleshipShootingAi;
 import battleship.subscribers.BattleshipCliSubscriber;
 import battleship.subscribers.BattleshipCsvSubscriber;
 import framework.Board;
@@ -36,8 +35,8 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
-        runBattleshipCsv();
-//        battleshipMatrix();
+//        runBattleshipCsv();
+        battleshipMatrix();
 //        runBattleshipStats();
 //        runTttGui();
 //        runHomeGui();
@@ -60,42 +59,64 @@ public class Main {
                 BattleshipVerticalPlacementStrategy::new
         );
 
-        Supplier<BattleshipShootingAi> shootingAi = BattleshipMoreOptimizedRandomCheckerboardShootingAi::new;
+        List<Supplier<BattleshipShootingAi>> shootingAis = List.of(
+                BattleshipTrueRandomShootingAi::new,
+                BattleshipHeatmapShootingAi::new,
+                BattleshipMoreOptimizedRandomCheckerboardShootingAi::new
+        );
 
         Heatmap matrix = new Heatmap(placementStrategies.size(), placementStrategies.size());
 
-        int runs = 100;
+        int runs = 1000000;
 
         for (int i = 0; i < placementStrategies.size(); i++) {
-            BattleshipPlayerType player1Type = new BattleshipPlayerType("player1", true, true, placementStrategies.get(i), shootingAi);
-            for (int j = 0; j < placementStrategies.size(); j++) {
-                BattleshipPlayerType player2Type = new BattleshipPlayerType("player2", true, true, placementStrategies.get(j), shootingAi);
+            BattleshipPlayerType player1Type = new BattleshipPlayerType("player1", true, true, placementStrategies.get(i), BattleshipSequentialShootingAi::new);
+            for (int j = 0; j < shootingAis.size(); j++) {
+                BattleshipPlayerType player2Type = new BattleshipPlayerType("player2", true, true, BattleshipCornersPlacementStrategy::new, shootingAis.get(j));
+
+                int player1WinningShots = 0;
 
                 for (int k = 0; k < runs; k++) {
-                    Game game = new BattleshipGame();
+                    BattleshipGame game = new BattleshipGame();
                     GameController controller = new GameController(game, new BattleshipPlayerFactory(player1Type), new BattleshipPlayerFactory(player2Type));
                     controller.gameLoop();
 
-                    if (game.getWinner().getPlayerType().getName().equals("player1")) {
-                        matrix.increase(i, j);
-                    } else {
-                        matrix.decrease(i, j);
+                    Board board = game.getOpponentBoard();
+
+                    if (game.getWinner().getPlayerType() == player1Type) {
+//                        System.out.println("Player 2 won");
+//                        System.out.println(shootingAis.get(j).get().getClass());
+//                        System.out.println(placementStrategies.get(j).get().getClass());
+                        k--;
+                        continue;
+                    }
+
+                    for (int x = 0; x < board.getBoardWidth(); x++) {
+                        for (int y = 0; y < board.getBoardHeight(); y++) {
+                            if (board.get(x, y) == 'm') {
+                                player1WinningShots++;
+                            } else if (board.get(x, y) == 'h' || Character.isDigit(board.get(x, y))) {
+                                player1WinningShots++;
+                            }
+                        }
                     }
                 }
+
+                matrix.setValue(j, i, player1WinningShots / runs);
             }
         }
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("data/matrix.csv"));
             writer.write("X");
-            for (int i = 0; i < placementStrategies.size(); i++) {
-                writer.write("," + placementStrategies.get(i).get().getClass().getSimpleName().replace("Battleship", "").replace("PlacementStrategy", ""));
+            for (int i = 0; i < shootingAis.size(); i++) {
+                writer.write("," + shootingAis.get(i).get().getClass().getSimpleName().replace("Battleship", "").replace("ShootingAi", ""));
             }
             writer.write("\n");
 
             for (int j = 0; j < placementStrategies.size(); j++) {
                 writer.write(placementStrategies.get(j).get().getClass().getSimpleName().replace("Battleship", "").replace("PlacementStrategy", ""));
-                for (int i = 0; i < placementStrategies.size(); i++) {
+                for (int i = 0; i < shootingAis.size(); i++) {
                     writer.write(",");
                     writer.write(String.valueOf(matrix.getValue(i, j)));
                 }
