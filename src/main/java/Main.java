@@ -42,10 +42,10 @@ public class Main {
 //        runHomeGui();
 
 //        runServerTtt();
-//        runServerBattleship();
+        runServerBattleship();
 
-        new Thread(() -> runServerBattleship("p1", BattleshipPlayerType.AI_HEATMAP)).start();
-        new Thread(() -> runServerBattleship("p2", BattleshipPlayerType.AI_RECURSIVE_HEATMAP)).start();
+//        new Thread(() -> runServerBattleship("p1", BattleshipPlayerType.AI_HEATMAP)).start();
+//        new Thread(() -> runServerBattleship("p2", BattleshipPlayerType.AI_RECURSIVE_HEATMAP)).start();
     }
 
     private static void battleshipMatrix() {
