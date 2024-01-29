@@ -1,7 +1,11 @@
 package gui;
 
 import battleship.BattleshipGame;
+import framework.Board;
+import framework.Game;
+import framework.Player;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,13 +13,30 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import ttt.TttGame;
 
 
 public class BattleShipsGui extends Application {
-    private final BattleshipGame game = new BattleshipGame();
-    private final Button[][] buttons = new Button[10][10];
+    private static final Button[][] buttons = new Button[10][10];
     private boolean gameOver = false;
     private boolean againstAI = false;
+
+    public static void updateButtonsFromOutside(Game game) {
+        Platform.runLater(() -> updateButtons((BattleshipGame) game));
+    }
+
+    private static void updateButtons(BattleshipGame game) {
+        //print test 10 times
+
+        Board board = game.getBoard();
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                if (buttons[row][col] != null) {
+                    buttons[row][col].setText(String.valueOf(board.get(col, row)));
+                }
+            }
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) {

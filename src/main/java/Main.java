@@ -4,11 +4,13 @@ import battleship.players.BattleshipPlayerFactory;
 import battleship.players.BattleshipPlayerType;
 import battleship.subscribers.BattleshipCliSubscriber;
 import battleship.subscribers.BattleshipCsvSubscriber;
+import battleship.subscribers.BattleshipGuiSubscriber;
 import framework.Board;
 import framework.Game;
 import framework.GameController;
 import framework.GameSubscriber;
 import framework.server.ServerGameController;
+import gui.BattleShipsGui;
 import gui.HomeGui;
 import gui.TttGui;
 import ttt.TttGame;
@@ -34,10 +36,11 @@ public class Main {
 //        runBattleshipCsv();
 //        runBattleshipStats();
 //        runTttGui();
-        runHomeGui();
+//        runBattleshipGui();
+//        runHomeGui();
 
 //        runServerTtt();
-//        runServerBattleship();
+        runServerBattleship();
     }
 
     private static void runServerTtt() {
@@ -66,10 +69,17 @@ public class Main {
                 SERVER_HOST,
                 SERVER_PORT,
                 TEAM_NAME,
-                new BattleshipPlayerFactory(BattleshipPlayerType.AI_OPTIMIZED_CHECKERBOARD_RANDOM),
+                new BattleshipPlayerFactory(BattleshipPlayerType.AI),
                 new BattleshipPlayerFactory(BattleshipPlayerType.SERVER)
         );
         controller.registerSubscriber(new BattleshipCliSubscriber());
+        controller.registerSubscriber(new BattleshipGuiSubscriber());
+
+        Thread t = new Thread(() -> {
+            BattleShipsGui.launch(BattleShipsGui.class);
+        });
+        t.start();
+
 
         // Start the game
         controller.gameLoop();
@@ -93,6 +103,30 @@ public class Main {
         controller.gameLoop();
     }
 
+    private static void runBattleshipGui() {
+        // Change the player types according to what the user wants (GUI buttons)
+        BattleshipPlayerType player1Type = BattleshipPlayerType.CLI;
+        BattleshipPlayerType player2Type = BattleshipPlayerType.CLI;
+
+        // Build the game classes and use the player types to create PlayerFactory objects
+        Game game = new BattleshipGame();
+        GameController controller = new GameController(
+                game,
+                new BattleshipPlayerFactory(player1Type),
+                new BattleshipPlayerFactory(player2Type)
+        );
+        controller.registerSubscriber(new BattleshipCliSubscriber());
+        controller.registerSubscriber(new BattleshipGuiSubscriber());
+
+        Thread t = new Thread(() -> {
+            BattleShipsGui.launch(BattleShipsGui.class);
+        });
+        t.start();
+
+        // Start the game
+        controller.gameLoop();
+    }
+
     private static void runBattleshipCli() {
         Game game = new BattleshipGame();
         GameController controller = new GameController(
@@ -101,6 +135,7 @@ public class Main {
                 new BattleshipPlayerFactory(BattleshipPlayerType.AI_OPTIMIZED_RANDOM)
         );
         controller.registerSubscriber(new BattleshipCliSubscriber());
+        controller.registerSubscriber(new BattleshipGuiSubscriber());
         controller.gameLoop();
     }
 
