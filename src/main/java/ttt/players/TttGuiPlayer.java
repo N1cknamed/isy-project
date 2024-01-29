@@ -15,7 +15,6 @@ public class TttGuiPlayer implements Player {
 
     public TttGuiPlayer(char symbol) {
         this.symbol = symbol;
-        TttGui.registerPlayer(this);
     }
 
     @Override
