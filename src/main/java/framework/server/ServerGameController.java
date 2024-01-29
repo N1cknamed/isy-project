@@ -67,7 +67,16 @@ public class ServerGameController {
                     }
                     break;
                 case MATCH:
-                    createGame(response);
+                    String gameType = response.getStringValue("GAMETYPE");
+                    if (!gameType.equals(this.gameType)) {
+                        System.out.println("Ignoring MATCH for invalid game type '" + gameType + "'");
+                        break;
+                    }
+
+                    String opponent = response.getStringValue("OPPONENT");
+                    String playerToMove = response.getStringValue("PLAYERTOMOVE");
+
+                    createGame(opponent, playerToMove);
                     try {
                         matchResponseQueue.put(response);
                     } catch (InterruptedException e) {
@@ -75,6 +84,11 @@ public class ServerGameController {
                     }
                     break;
                 case YOURTURN:
+                    if (game == null) {
+                        System.out.println("Ignoring YOURTURN: No game started.");
+                        break;
+                    }
+
                     try {
                         yourTurnQueue.put(response);
                     } catch (InterruptedException e) {
@@ -82,24 +96,40 @@ public class ServerGameController {
                     }
                     break;
                 case MOVE:
-                    assertGameStarted();
+                    if (game == null) {
+                        System.out.println("Ignoring MOVE: No game started.");
+                        break;
+                    }
+
                     if (!response.getStringValue("PLAYER").equals(teamName)) {
                         Point move = indexToPoint(response.getIntValue("MOVE"));
                         game.getServerPlayer().setNextMove(move);
                     }
                     break;
                 case LOSS:
-                    assertGameStarted();
+                    if (game == null) {
+                        System.out.println("Ignoring LOSS: No game started.");
+                        break;
+                    }
+
                     game.forceWin(game.getServerPlayer());
                     gameThread.interrupt();
                     break;
                 case WIN:
-                    assertGameStarted();
+                    if (game == null) {
+                        System.out.println("Ignoring WIN: No game started.");
+                        break;
+                    }
+
                     game.forceWin(game.getLocalPlayer());
                     gameThread.interrupt();
                     break;
                 case DRAW:
-                    assertGameStarted();
+                    if (game == null) {
+                        System.out.println("Ignoring DRAW: No game started.");
+                        break;
+                    }
+
                     game.forceWin(null);
                     gameThread.interrupt();
                     break;
@@ -107,15 +137,8 @@ public class ServerGameController {
         }
     }
 
-    private void createGame(Response matchResponse) {
-        String serverGameType = matchResponse.getStringValue("GAMETYPE");
-        if (!serverGameType.equals(gameType)) {
-            throw new IllegalStateException("Received game type '" + serverGameType + "' but expected '" + gameType + "'. Ignoring MATCH response.");
-        }
-
-        opponentName = matchResponse.getStringValue("OPPONENT");
-        String playerToMove = matchResponse.getStringValue("PLAYERTOMOVE");
-
+    private void createGame(String opponentName, String playerToMove) {
+        this.opponentName = opponentName;
         game = gameSupplier.apply(this);
 
         System.out.println("Our name: " + teamName);
@@ -187,6 +210,8 @@ public class ServerGameController {
         for (GameSubscriber i : subscribers) {
             i.onGameEnded(game);
         }
+
+        game = null;
     }
 
     public void gameLoop() {
@@ -233,12 +258,6 @@ public class ServerGameController {
         int y = input / game.getBoard().getBoardWidth();
 
         return new Point(x, y);
-    }
-
-    private void assertGameStarted() {
-        if (game == null) {
-            throw new IllegalStateException("Expected game to be running, but no game object found.");
-        }
     }
 
     public int pointToIndex(Point cord) {
