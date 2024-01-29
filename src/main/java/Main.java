@@ -46,7 +46,7 @@ public class Main {
 
 //        runServerTtt();
         runServerBattleship();
-        
+
 //        new Thread(() -> runServerBattleship("p1", BattleshipPlayerType.AI_HEATMAP)).start();
 //        new Thread(() -> runServerBattleship("p2", BattleshipPlayerType.AI_RECURSIVE_HEATMAP)).start();
     }
@@ -156,7 +156,7 @@ public class Main {
     }
 
     private static void runServerBattleship() {
-        runServerBattleship(TEAM_NAME, BattleshipPlayerType.AI_HEATMAP);
+        runServerBattleship(TEAM_NAME, new BattleshipPlayerType("AI", true, true, BattleshipPureRandomPlacementStrategy::new, BattleshipHeatmapShootingAi::new));
     }
 
     private static void runServerBattleship(String teamName, BattleshipPlayerType localPlayerType) {
