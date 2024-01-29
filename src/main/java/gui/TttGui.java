@@ -15,12 +15,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ttt.players.TttAiPlayer;
-import ttt.players.TttGuiPlayer;
 import ttt.TttGame;
+import ttt.players.TttGuiPlayer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class TttGui extends Application {
@@ -47,13 +44,13 @@ public class TttGui extends Application {
      * winningButtons is for highlighting the winning coords in the gui
      */
     private static void winningButtons(TttGame game) {
-//        int[][] winning = TttGame.getWinningCoords();
-//
-//        for(int[] winningCoords: winning){
-//            int wRow = winningCoords[0];
-//            int wCol = winningCoords[1];
-//            buttons[wRow][wCol].getStyleClass().add("winning-button");
-//        }
+        int[][] winning = TttGame.getWinningCoords();
+
+        for(int[] winningCoords: winning){
+            int wRow = winningCoords[0];
+            int wCol = winningCoords[1];
+            buttons[wRow][wCol].getStyleClass().add("winning-button");
+        }
         showGameOverAlert(game);
     }
 
@@ -81,14 +78,16 @@ public class TttGui extends Application {
         }
         //TODO: maybe make seperate function when game has ended that it runs that functon
         if (board.isBoardFull()){
-            System.out.println("The Game is over! " + board.isBoardFull());
+           // System.out.println("The Game is over! " + board.isBoardFull());
             showGameOverAlert(game);}
     }
     private static void showGameOverAlert(Game game){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
         alert.setHeaderText(null);
-        alert.setContentText("The Game is over!\n" + "Winning player = " + game.getWinner().getSymbol());
+        if (game.getWinner()==null){alert.setContentText("It's a draw!");}
+        else {
+        alert.setContentText("The Game is over!\n" + "Winning player = " + game.getWinner().getSymbol());}
 
         ButtonType stopButton = new ButtonType("Stop");
         ButtonType replayButton = new ButtonType("Reset");
@@ -98,7 +97,8 @@ public class TttGui extends Application {
 
         if (result == stopButton) {
             Platform.exit();
-        } else if (result == replayButton) {
+        }
+        if (result == replayButton) {
             updateButtons((TttGame) game);
 //            HomeGui.launch(HomeGui.class);
         }

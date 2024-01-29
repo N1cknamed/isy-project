@@ -45,7 +45,7 @@ public class BattleShipsGui extends Application {
         VBox root = new VBox();
         root.getChildren().addAll(grid, messageBox);
 
-        Scene scene = new Scene(root, 465, 500); // Increased height to accommodate mode selector
+        Scene scene = new Scene(root, 375, 400); // Increased height to accommodate mode selector
 
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
