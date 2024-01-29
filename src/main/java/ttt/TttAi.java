@@ -3,8 +3,8 @@ package ttt;
 import framework.Game;
 
 public class TttAi {
-    private char aiPlayer;
-    private char opponentPlayer;
+    private final char aiPlayer;
+    private final char opponentPlayer;
 
     public TttAi(char aiPlayer, char opponentPlayer) {
         this.aiPlayer = aiPlayer;

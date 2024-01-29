@@ -4,10 +4,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GameController {
-    private ArrayList<GameSubscriber> subscribers = new ArrayList<>();
-    private Game game;
-    private PlayerFactory playerFactory1;
-    private PlayerFactory playerFactory2;
+    private final ArrayList<GameSubscriber> subscribers = new ArrayList<>();
+    private final Game game;
+    private final PlayerFactory playerFactory1;
+    private final PlayerFactory playerFactory2;
 
     public GameController(Game game, PlayerFactory playerFactory1, PlayerFactory playerFactory2) {
         this.game = game;

@@ -8,5 +8,5 @@ public enum Command {
     WIN,
     LOSS,
     DRAW,
-    CHALLENGE;
+    CHALLENGE
 }

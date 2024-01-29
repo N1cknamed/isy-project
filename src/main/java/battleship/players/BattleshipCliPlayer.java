@@ -16,7 +16,7 @@ public class BattleshipCliPlayer implements BattleshipPlayer {
     private final Board board;
     private final HashMap<Character, Integer> ships = new HashMap<Character, Integer>();
 
-    private Set<Point> alreadyHit = new HashSet<>();
+    private final Set<Point> alreadyHit = new HashSet<>();
     private int boatsRemaining = 0;
     private final Collection<Boat> boats = new ArrayList<>();
 

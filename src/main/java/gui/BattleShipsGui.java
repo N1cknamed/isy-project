@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 public class BattleShipsGui extends Application {
     private final BattleshipGame game = new BattleshipGame();
     private final Button[][] buttons = new Button[10][10];
-    private boolean gameOver = false;
-    private boolean againstAI = false;
+    private final boolean gameOver = false;
+    private final boolean againstAI = false;
 
     @Override
     public void start(Stage primaryStage) {

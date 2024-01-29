@@ -131,7 +131,7 @@ public class TttGame implements Game {
                 }
             }
             if (won) {
-                this.winningCoords = winningCoords;
+                TttGame.winningCoords = winningCoords;
                 return true;
             }
         }
@@ -150,7 +150,7 @@ public class TttGame implements Game {
 
             }
             if (won) {
-                this.winningCoords = winningCoords;
+                TttGame.winningCoords = winningCoords;
                 return true;
             }
         }
@@ -167,7 +167,7 @@ public class TttGame implements Game {
             }
         }
         if (won) {
-            this.winningCoords = winningCoords;
+            TttGame.winningCoords = winningCoords;
             return true;
         }
 
@@ -184,7 +184,7 @@ public class TttGame implements Game {
             }
         }
         if (won) {
-            this.winningCoords = winningCoords;
+            TttGame.winningCoords = winningCoords;
             return true;
         }
 

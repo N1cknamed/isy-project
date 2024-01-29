@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 
 public class Sender implements Runnable{
 
-    private PrintWriter out;
+    private final PrintWriter out;
 
     public Sender(PrintWriter out) {
         this.out = out;

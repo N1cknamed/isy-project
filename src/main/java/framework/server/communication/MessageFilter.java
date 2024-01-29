@@ -12,7 +12,7 @@ public class MessageFilter {
 
     public static Response filterMessage(String message) {
         String rawCommand = message.substring(9, message.indexOf("{")-1);
-        String rawMessage = message.substring(message.indexOf("{"), message.length());
+        String rawMessage = message.substring(message.indexOf("{"));
 
         return new Response(getCommandType(rawCommand), decodeJson(rawMessage));
     }

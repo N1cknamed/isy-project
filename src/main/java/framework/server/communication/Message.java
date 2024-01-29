@@ -5,7 +5,7 @@ import java.util.concurrent.SynchronousQueue;
 
 public class Message {
 
-    private BlockingQueue<Response> queue = new SynchronousQueue<>();
+    private final BlockingQueue<Response> queue = new SynchronousQueue<>();
 
     public Message() {
     }

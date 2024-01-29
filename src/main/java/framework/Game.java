@@ -5,17 +5,17 @@ import java.util.Collection;
 
 public interface Game {
 
-    public void start(PlayerFactory playerFactory1, PlayerFactory playerFactory2);
-    public boolean hasEnded();
-    public Player getCurrentPlayer();
-    public Board getBoard();
+    void start(PlayerFactory playerFactory1, PlayerFactory playerFactory2);
+    boolean hasEnded();
+    Player getCurrentPlayer();
+    Board getBoard();
 
-    public void doMove(Point move);
-    public void nextPlayer();
-    public boolean isValidMove(Point move);
-    public Player getWinner();
-    public Player getLoser();
+    void doMove(Point move);
+    void nextPlayer();
+    boolean isValidMove(Point move);
+    Player getWinner();
+    Player getLoser();
 
-    public Collection<Player> getAllPlayers();
+    Collection<Player> getAllPlayers();
 
 }

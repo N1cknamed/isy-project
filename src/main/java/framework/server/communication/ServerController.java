@@ -2,10 +2,10 @@ package framework.server.communication;
 
 public class ServerController {
 
-    private Message message;
-    private Object waitForOut;
-    private Client client;
-    private Sender sender;
+    private final Message message;
+    private final Object waitForOut;
+    private final Client client;
+    private final Sender sender;
 
     public ServerController(String host, int port) {
         this.message = new Message();

@@ -4,6 +4,6 @@ import java.awt.*;
 
 public interface Player {
     PlayerType getPlayerType();
-    public char getSymbol();
+    char getSymbol();
     Point doMove(Game game) throws InterruptedException;
 }

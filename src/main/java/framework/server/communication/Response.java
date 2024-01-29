@@ -4,8 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Response {
-    private Command command;
-    private JSONObject content;
+    private final Command command;
+    private final JSONObject content;
 
     public Response(Command command, JSONObject content) {
         this.command = command;

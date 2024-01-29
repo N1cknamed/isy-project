@@ -9,8 +9,8 @@ public class Client implements Runnable{
 
     String host;
     int port;
-    private Message message;
-    private Object waitForOut;
+    private final Message message;
+    private final Object waitForOut;
     private PrintWriter outStream;
 
     public Client(Message message, Object waitForOut, String host, int port) {
