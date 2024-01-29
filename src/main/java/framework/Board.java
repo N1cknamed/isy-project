@@ -1,31 +1,26 @@
 package framework;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Board {
     final int boardWidth;
     final int boardHeight;
-    private char[][] board;
+    private char[] board;
 
     public Board(int boardWidth, int boardHeight) {
         this.boardWidth = boardWidth; // this is so you can easily check if board width and height and if later we want to change board size
         this.boardHeight = boardHeight;
-        this.board = new char[boardHeight][boardWidth];
-    }
-    public Board(char[][] board) {
-        // for creating a new board with existig board
-        this.boardWidth = board.length; // this is so you can easily check if board width and height and if later we want to change board size
-        this.boardHeight = board[0].length;
-        this.board = board;
+        this.board = new char[boardHeight * boardWidth];
     }
 
     public Board copy() {
         Board copy = new Board(boardWidth, boardHeight);
-        for (int y = 0; y < boardHeight; y++) {
-            for (int x = 0; x < boardWidth; x++) {
-                copy.set(x, y, this.get(x, y));
-            }
-        }
+
+        char[] copyArray = new char[board.length];
+        System.arraycopy(board, 0, copyArray, 0, board.length);
+        copy.board = copyArray;
 
         return copy;
     }
@@ -34,7 +29,7 @@ public class Board {
         if (x < 0 || x >= boardWidth || y < 0 || y >= boardHeight) {
             return;
         }
-        this.board[y][x] = c;
+        this.board[x + y * boardWidth] = c;
     }
     public void set(Point p, char c) {
         set(p.x, p.y, c);
@@ -43,23 +38,15 @@ public class Board {
         if (x < 0 || x >= boardWidth || y < 0 || y >= boardHeight) {
             return 0;
         }
-        return this.board[y][x];
+        return this.board[x + y * boardWidth];
     }
     public char get(Point p) {
         return get(p.x, p.y);
     }
-    public char[][] getBoard() {
-        return board;
-    }
-    public void setBoard(char[][] board) {
-        this.board = board;
-    }
     public boolean isBoardFull() {
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[row].length; col++) {
-                if (board[row][col] == 0) {
-                    return false;
-                }
+        for (char c : board) {
+            if (c == 0) {
+                return false;
             }
         }
         return true;
@@ -73,14 +60,14 @@ public class Board {
         }
 
         System.out.println();
-        for (int i = 0; i < boardHeight; i++){
-            System.out.print(i);
+        for (int y = 0; y < boardHeight; y++){
+            System.out.print(y);
             System.out.print("|");
-            for (int j = 0; j < boardWidth; j++){
-                if (board[i][j] == 0){
+            for (int x = 0; x < boardWidth; x++){
+                if (get(x, y) == 0){
                     System.out.print("   ");
                 } else {
-                    System.out.print(" "+board[i][j]+" ");
+                    System.out.print(" "+get(x,y)+" ");
                 }
                 System.out.print("|");
             }
@@ -95,5 +82,20 @@ public class Board {
 
     public int getBoardHeight() {
         return boardHeight;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board1 = (Board) o;
+        return boardWidth == board1.boardWidth && boardHeight == board1.boardHeight && Arrays.equals(board, board1.board);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(boardWidth, boardHeight);
+        result = 31 * result + Arrays.hashCode(board);
+        return result;
     }
 }

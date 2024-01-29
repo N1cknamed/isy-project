@@ -1,6 +1,7 @@
 package battleship;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Boat {
 
@@ -37,5 +38,18 @@ public class Boat {
 
     public Point getStartCord() {
         return startCord;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Boat boat = (Boat) o;
+        return direction == boat.direction && length == boat.length && Objects.equals(startCord, boat.startCord);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startCord, direction, length);
     }
 }
