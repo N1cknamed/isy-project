@@ -31,10 +31,10 @@ public class Main {
     public static void main(String[] args) {
 //        runTttCli();
 //        runBattleshipCli();
-        runBattleshipCsv();
+//        runBattleshipCsv();
 //        runBattleshipStats();
 //        runTttGui();
-//        runHomeGui();
+        runHomeGui();
 
 //        runServerTtt();
 //        runServerBattleship();

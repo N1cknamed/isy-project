@@ -68,13 +68,6 @@ public class TttGui extends Application {
         }
 
         //TODO: maybe make separate function when game has ended that it runs that function
-//        if (game.winner) {
-//            for (int i = 0; i < game.winningCoords.length; i++) {
-//                int wRow = game.winningCoords[i][0];
-//                int wCol = game.winningCoords[i][1];
-//                buttons[wRow][wCol].getStyleClass().add("winning-button");
-//            }
-//        }
 
         Player player1 = game.getPlayer1();
         Player player2 = game.getPlayer2();
@@ -106,7 +99,8 @@ public class TttGui extends Application {
         if (result == stopButton) {
             Platform.exit();
         } else if (result == replayButton) {
-            TttGui.launch(TttGui.class);
+            updateButtons((TttGame) game);
+//            HomeGui.launch(HomeGui.class);
         }
     }
 
