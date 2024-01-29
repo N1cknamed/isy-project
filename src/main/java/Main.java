@@ -46,6 +46,9 @@ public class Main {
 
 //        runServerTtt();
         runServerBattleship();
+        
+//        new Thread(() -> runServerBattleship("p1", BattleshipPlayerType.AI_HEATMAP)).start();
+//        new Thread(() -> runServerBattleship("p2", BattleshipPlayerType.AI_RECURSIVE_HEATMAP)).start();
     }
 
     private static void battleshipMatrix() {
@@ -153,14 +156,18 @@ public class Main {
     }
 
     private static void runServerBattleship() {
+        runServerBattleship(TEAM_NAME, BattleshipPlayerType.AI_HEATMAP);
+    }
+
+    private static void runServerBattleship(String teamName, BattleshipPlayerType localPlayerType) {
         // Build the game classes and use the player types to create PlayerFactory objects
         ServerGameController controller = new ServerGameController(
                 BattleshipServerGame::new,
                 "Battleship",
                 SERVER_HOST,
                 SERVER_PORT,
-                TEAM_NAME,
-                new BattleshipPlayerFactory(BattleshipPlayerType.AI_RECURSIVE_HEATMAP),
+                teamName,
+                new BattleshipPlayerFactory(localPlayerType),
                 new BattleshipPlayerFactory(BattleshipPlayerType.SERVER)
         );
         controller.registerSubscriber(new BattleshipCliSubscriber());
