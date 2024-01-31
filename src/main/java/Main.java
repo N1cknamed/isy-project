@@ -36,8 +36,8 @@ public class Main {
 //        runTttCli();
 //        runBattleshipCli();
 //        runBattleshipCsv();
-        battleshipMatrix();
-//        runBattleshipStats();
+//        battleshipMatrix();
+        runBattleshipStats();
 //        runTttGui();
 //        runHomeGui();
 
