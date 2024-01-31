@@ -7,11 +7,13 @@ import battleship.players.BattleshipPlayerFactory;
 import battleship.players.BattleshipPlayerType;
 import battleship.subscribers.BattleshipCliSubscriber;
 import battleship.subscribers.BattleshipCsvSubscriber;
+import battleship.subscribers.BattleshipGuiSubscriber;
 import framework.Board;
 import framework.Game;
 import framework.GameController;
 import framework.GameSubscriber;
 import framework.server.ServerGameController;
+import gui.BattleShipsGui;
 import gui.HomeGui;
 import gui.TttGui;
 import ttt.TttGame;
@@ -37,12 +39,20 @@ public class Main {
 //        runBattleshipCli();
 //        runBattleshipCsv();
 //        battleshipMatrix();
+<<<<<<< HEAD
         runBattleshipStats();
+=======
+//        runBattleshipStats();
+>>>>>>> 353434cf34c21214317b6f877fcad870c699030a
 //        runTttGui();
+//        runBattleshipGui();
 //        runHomeGui();
 
 //        runServerTtt();
-//        runServerBattleship();
+        runServerBattleship();
+
+//        new Thread(() -> runServerBattleship("p1", BattleshipPlayerType.AI_HEATMAP)).start();
+//        new Thread(() -> runServerBattleship("p2", BattleshipPlayerType.AI_RECURSIVE_HEATMAP)).start();
     }
 
     private static void battleshipMatrix() {
@@ -150,17 +160,28 @@ public class Main {
     }
 
     private static void runServerBattleship() {
+        runServerBattleship(TEAM_NAME, new BattleshipPlayerType("AI", true, true, BattleshipPureRandomPlacementStrategy::new, BattleshipHeatmapShootingAi::new));
+    }
+
+    private static void runServerBattleship(String teamName, BattleshipPlayerType localPlayerType) {
         // Build the game classes and use the player types to create PlayerFactory objects
         ServerGameController controller = new ServerGameController(
                 BattleshipServerGame::new,
                 "Battleship",
                 SERVER_HOST,
                 SERVER_PORT,
-                TEAM_NAME,
-                new BattleshipPlayerFactory(BattleshipPlayerType.AI_OPTIMIZED_CHECKERBOARD_RANDOM),
+                teamName,
+                new BattleshipPlayerFactory(localPlayerType),
                 new BattleshipPlayerFactory(BattleshipPlayerType.SERVER)
         );
         controller.registerSubscriber(new BattleshipCliSubscriber());
+        controller.registerSubscriber(new BattleshipGuiSubscriber());
+
+        Thread t = new Thread(() -> {
+            BattleShipsGui.launch(BattleShipsGui.class);
+        });
+        t.start();
+
 
         // Start the game
         controller.gameLoop();
@@ -184,6 +205,30 @@ public class Main {
         controller.gameLoop();
     }
 
+    private static void runBattleshipGui() {
+        // Change the player types according to what the user wants (GUI buttons)
+        BattleshipPlayerType player1Type = BattleshipPlayerType.CLI;
+        BattleshipPlayerType player2Type = BattleshipPlayerType.CLI;
+
+        // Build the game classes and use the player types to create PlayerFactory objects
+        Game game = new BattleshipGame();
+        GameController controller = new GameController(
+                game,
+                new BattleshipPlayerFactory(player1Type),
+                new BattleshipPlayerFactory(player2Type)
+        );
+        controller.registerSubscriber(new BattleshipCliSubscriber());
+        controller.registerSubscriber(new BattleshipGuiSubscriber());
+
+        Thread t = new Thread(() -> {
+            BattleShipsGui.launch(BattleShipsGui.class);
+        });
+        t.start();
+
+        // Start the game
+        controller.gameLoop();
+    }
+
     private static void runBattleshipCli() {
         Game game = new BattleshipGame();
         GameController controller = new GameController(
@@ -192,6 +237,7 @@ public class Main {
                 new BattleshipPlayerFactory(BattleshipPlayerType.AI_HEATMAP)
         );
         controller.registerSubscriber(new BattleshipCliSubscriber());
+        controller.registerSubscriber(new BattleshipGuiSubscriber());
         controller.gameLoop();
     }
 

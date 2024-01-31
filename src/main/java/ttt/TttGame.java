@@ -109,6 +109,14 @@ public class TttGame implements Game {
         }
     }
 
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
     @Override
     public Collection<Player> getAllPlayers() {
         return List.of(player1, player2);
