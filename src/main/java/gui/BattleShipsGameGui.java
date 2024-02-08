@@ -14,12 +14,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
-public class BattleShipsGui extends Application {
-    private final BattleshipGame game = new BattleshipGame();
+public class BattleShipsGameGui extends Application {
     private static final Button[][] buttons = new Button[10][10];
     private boolean gameOver = false;
     private boolean againstAI = false;
+
+
+
+
 
     public static void updateButtonsFromOutside(Game game) {
         Platform.runLater(() -> updateButtons((BattleshipGame) game));
@@ -40,7 +42,7 @@ public class BattleShipsGui extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Place your boats");
+        primaryStage.setTitle("Battleships Game");
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -64,7 +66,7 @@ public class BattleShipsGui extends Application {
         HBox messageBox = new HBox();
         messageBox.setPadding(new Insets(10, 10, 10, 10));
         Label titleLabel = new Label();
-        titleLabel.setText("Place your boats");
+        titleLabel.setText("Battleships Game");
         titleLabel.getStyleClass().add("title");
         messageBox.getChildren().addAll(titleLabel);
 
@@ -81,22 +83,17 @@ public class BattleShipsGui extends Application {
         VBox root = new VBox();
         root.getChildren().addAll(messageBox, grid, exitButton, confirmButton);
 
-        Scene scene = new Scene(root, 375, 465); // Increased height to accommodate mode selector
+        Scene scene = new Scene(root, 375, 470); // Increased height to accommodate mode selector
 
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public void ConfirmButton(){
-
-    }
-
-
 
     private void handleButtonClick(int row, int col) {
-
+//        for (BattleshipCliPlayer player : players) {
+//            player.setMove(row, col);
+//        }
     }
 }
-
-

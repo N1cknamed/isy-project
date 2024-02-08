@@ -1,5 +1,7 @@
 package gui;
 
+import battleship.BattleshipGame;
+import battleship.subscribers.BattleshipGuiSubscriber;
 import framework.Game;
 import framework.GameController;
 import javafx.application.Application;
@@ -17,7 +19,6 @@ import ttt.TttGame;
 import ttt.players.TttAiPlayer;
 import ttt.players.TttGuiPlayer;
 import ttt.subscribers.TttGuiSubscriber;
-
 import java.io.IOException;
 import java.net.URL;
 
@@ -27,7 +28,6 @@ public class HomeGui extends Application {
     private RadioButton tictactoe;
     @FXML
     private RadioButton battleship;
-
     @FXML
     private ToggleGroup toggleGroup;
     @FXML
@@ -84,10 +84,33 @@ public class HomeGui extends Application {
             });
             t.start();
 
-        } else if (toggleGroup.getSelectedToggle() == battleship) {             //Battleship PVP
+        } else if (toggleGroup.getSelectedToggle() == battleship && modeSelector.getValue().equals("PVP")) {             //Battleship PVP
+            Game game = new BattleshipGame();
+            GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+
             BattleShipsGui battleShipsGui = new BattleShipsGui();
             battleShipsGui.start(stage);
+            controller.registerSubscriber(new BattleshipGuiSubscriber());
+            Thread t = new Thread(() -> {
+                controller.gameLoop();
+                // TODO return to home screen
+            });
+            t.start();
         }
+        else if (toggleGroup.getSelectedToggle() == battleship && modeSelector.getValue().equals("AI")) {             //Battleship PVP
+            Game game = new BattleshipGame();
+            GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+
+            BattleShipsGui battleShipsGui = new BattleShipsGui();
+            battleShipsGui.start(stage);
+            controller.registerSubscriber(new BattleshipGuiSubscriber());
+            Thread t = new Thread(() -> {
+                controller.gameLoop();
+                // TODO return to home screen
+            });
+            t.start();
+        }
+
         else if (toggleGroup.getSelectedToggle() == tictactoe && modeSelector.getValue().equals("AI")) {        //TTT AI
             Game game = new TttGame();
 
@@ -108,10 +131,6 @@ public class HomeGui extends Application {
             stage.show();
 
     }}
-
-    public void modeSelector(ActionEvent actionEvent) {
-
-    }
 
 
     public void btnCancel(ActionEvent actionEvent) {
