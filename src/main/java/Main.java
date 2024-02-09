@@ -157,7 +157,16 @@ public class Main {
     }
 
     private static void runServerBattleship() {
-        runServerBattleship(TEAM_NAME, new BattleshipPlayerType("AI", true, true, BattleshipPureRandomPlacementStrategy::new, BattleshipHeatmapShootingAi::new));
+        runServerBattleship(
+                TEAM_NAME,
+                new BattleshipPlayerType(
+                        "AI",
+                        true,
+                        true,
+                        BattleshipAllAroundPlacementStrategy::new,
+                        BattleshipHeatmapShootingAi::new
+                )
+        );
     }
 
     private static void runServerBattleship(String teamName, BattleshipPlayerType localPlayerType) {
