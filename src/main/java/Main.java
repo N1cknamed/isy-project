@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 public class Main {
 
     private static final String TEAM_NAME = readTeamName(new File("teamname.txt"));
-    private static final String SERVER_HOST = "home.woutergritter.me";
+    private static final String SERVER_HOST = "172.201.112.199";
     private static final int SERVER_PORT = 7789;
 
     public static void main(String[] args) {
