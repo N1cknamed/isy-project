@@ -1,6 +1,7 @@
 package gui;
 
 import battleship.BattleshipGame;
+import battleship.players.BattleshipGuiPlayer;
 import framework.Board;
 import framework.Game;
 import javafx.application.Application;
@@ -92,8 +93,8 @@ public class BattleShipsGameGui extends Application {
 
 
     private void handleButtonClick(int row, int col) {
-//        for (BattleshipCliPlayer player : players) {
-//            player.setMove(row, col);
-//        }
+        //for (BattleshipGuiPlayer player : players) {
+        //    BattleshipGuiPlayer.setMove(row, col);
+        //}
     }
 }
