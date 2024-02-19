@@ -1,5 +1,7 @@
 package gui;
 
+import battleship.BattleshipGame;
+import battleship.subscribers.BattleshipGuiSubscriber;
 import framework.Game;
 import framework.GameController;
 import javafx.application.Application;
@@ -9,16 +11,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import ttt.TttGame;
 import ttt.players.TttAiPlayer;
 import ttt.players.TttGuiPlayer;
-
+import ttt.subscribers.TttGuiSubscriber;
 import java.io.IOException;
 import java.net.URL;
-
-import ttt.TttGame;
-import ttt.subscribers.TttGuiSubscriber;
 
 
 public class HomeGui extends Application {
@@ -26,7 +28,6 @@ public class HomeGui extends Application {
     private RadioButton tictactoe;
     @FXML
     private RadioButton battleship;
-
     @FXML
     private ToggleGroup toggleGroup;
     @FXML
@@ -69,9 +70,9 @@ public class HomeGui extends Application {
             return;
         }
 
-        if (toggleGroup.getSelectedToggle() == tictactoe && modeSelector.getValue().equals("PVP")) {
+        if (toggleGroup.getSelectedToggle() == tictactoe && modeSelector.getValue().equals("PVP")) {        //TTT PVP
             Game game = new TttGame();
-            // TODO add player selection
+
             GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
 
             TttGui tttGui = new TttGui();
@@ -83,13 +84,37 @@ public class HomeGui extends Application {
             });
             t.start();
 
-        } else if (toggleGroup.getSelectedToggle() == battleship) {
+        } else if (toggleGroup.getSelectedToggle() == battleship && modeSelector.getValue().equals("PVP")) {             //Battleship PVP
+            Game game = new BattleshipGame();
+            GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+
             BattleShipsGui battleShipsGui = new BattleShipsGui();
             battleShipsGui.start(stage);
+            controller.registerSubscriber(new BattleshipGuiSubscriber());
+            Thread t = new Thread(() -> {
+                controller.gameLoop();
+                // TODO return to home screen
+            });
+            t.start();
         }
-        else if (toggleGroup.getSelectedToggle() == tictactoe && modeSelector.getValue().equals("AI")) {
+        else if (toggleGroup.getSelectedToggle() == battleship && modeSelector.getValue().equals("AI")) {             //Battleship PVP
+            Game game = new BattleshipGame();
+            GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+
+            BattleShipsGui battleShipsGui = new BattleShipsGui();
+            battleShipsGui.start(stage);
+            controller.registerSubscriber(new BattleshipGuiSubscriber());
+            Thread t = new Thread(() -> {
+                controller.gameLoop();
+                // TODO return to home screen
+            });
+            t.start();
+        }
+
+        else if (toggleGroup.getSelectedToggle() == tictactoe && modeSelector.getValue().equals("AI")) {        //TTT AI
             Game game = new TttGame();
-            // TODO add player selection
+
+            // Player selection
             GameController controller = new GameController(game, TttAiPlayer::new, TttGuiPlayer::new);
 
             TttGui tttGui = new TttGui();
@@ -106,10 +131,6 @@ public class HomeGui extends Application {
             stage.show();
 
     }}
-
-    public void modeSelector(ActionEvent actionEvent) {
-
-    }
 
 
     public void btnCancel(ActionEvent actionEvent) {
