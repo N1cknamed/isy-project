@@ -8,13 +8,20 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class BattleshipOptimizedRandomCheckerboardShootingAi implements BattleshipShootingAi {
+public class BattleshipMoreOptimizedRandomCheckerboardShootingAi implements BattleshipShootingAi {
 
     Boolean foundShip = false;
     Point lastShot = new Point(-1,-1);
     ArrayList<Point> lastHits = new ArrayList<>();
-
     Board localBoard = new Board(8,8);
+    ArrayList<Integer> boatsRemaining = new ArrayList<>();
+
+    public BattleshipMoreOptimizedRandomCheckerboardShootingAi() {
+        boatsRemaining.add(2);
+        boatsRemaining.add(3);
+        boatsRemaining.add(4);
+        boatsRemaining.add(6);
+    }
 
     @Override
     public Point getMove(Game game) {
@@ -37,6 +44,7 @@ public class BattleshipOptimizedRandomCheckerboardShootingAi implements Battlesh
             }
             lastHits.clear();
             foundShip = false;
+            boatsRemaining.remove((Integer) (board.get(lastShot) - '0'));
         }
 
         if (foundShip) {
@@ -108,10 +116,16 @@ public class BattleshipOptimizedRandomCheckerboardShootingAi implements Battlesh
 
 
         Random random = new Random();
+
+        int minBoatSize = boatsRemaining.stream()
+                .mapToInt(i -> i)
+                .min()
+                .orElseThrow();
+
         do {
             // random move
             move = new Point(random.nextInt(board.getBoardWidth()), random.nextInt(board.getBoardHeight()));
-        } while (!(game.isValidMove(move) && localBoard.get(move) == 0 && (move.x + move.y) % 2 == 0));
+        } while (!(game.isValidMove(move) && localBoard.get(move) == 0 && (move.x + move.y) % minBoatSize == 0));
 
         lastShot = move;
         localBoard.set(move, 's');

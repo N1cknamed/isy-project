@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 
 public class BattleShipsGui extends Application {
+
     private final BattleshipGame game = new BattleshipGame();
     private static final Button[][] buttons = new Button[10][10];
     private boolean gameOver = false;
@@ -26,6 +27,7 @@ public class BattleShipsGui extends Application {
     }
 
     private static void updateButtons(BattleshipGame game) {
+
         //print test 10 times
 
         Board board = game.getBoard();
@@ -40,7 +42,9 @@ public class BattleShipsGui extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
         primaryStage.setTitle("Place your boats");
+
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
