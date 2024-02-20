@@ -1,6 +1,7 @@
 package gui;
 
 import battleship.BattleshipGame;
+import battleship.players.BattleshipGuiPlayer;
 import framework.Board;
 import framework.Game;
 import javafx.application.Application;

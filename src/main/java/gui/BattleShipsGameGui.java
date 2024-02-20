@@ -93,8 +93,6 @@ public class BattleShipsGameGui extends Application {
 
 
     private void handleButtonClick(int row, int col) {
-        //for (BattleshipGuiPlayer player : players) {
-        //    BattleshipGuiPlayer.setMove(row, col);
-        //}
+        BattleshipGuiPlayer.setMove(row, col);
     }
 }
