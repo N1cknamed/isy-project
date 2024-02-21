@@ -7,7 +7,6 @@ import battleship.Boat;
 import framework.Board;
 import framework.Game;
 import framework.PlayerType;
-import ttt.players.TttGuiPlayer;
 
 public class BattleshipGuiPlayer implements BattleshipPlayer {
 
@@ -20,7 +19,11 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
     private final Collection<Boat> boats = new ArrayList<>();
 
     private static int x = -1;
+    private static int x2 = -1;
     private static int y = -1;
+    private static int y2 = -1;
+
+    private static String state = "placing";
 
     public BattleshipGuiPlayer(char symbol) {
         this.symbol = symbol;
@@ -55,6 +58,9 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
         if (move.x < 0 || move.y < 0) {
             return false;
         }
+        if (direction == 2) {
+            return false;
+        }
         if (direction == 0) {
             if (move.x + size > 8) {
                 return false;
@@ -77,6 +83,14 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
         return true;
     }
 
+    public int getDirection(int x, int y, int x2, int y2) {
+        if (x == x2 && y != y2) {
+            return 0;
+        } else if (x != x2 && y == y2) {
+            return 1;
+        } else return 2;
+    }
+
     @Override
     public void placeBoats() {
         // TODO Logic for placing boats
@@ -84,29 +98,40 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
         ships.put('3', 3);
         ships.put('4', 4);
         ships.put('6', 6);
-        System.out.println("test");
         for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
             Character boatType = entry.getKey();
             Integer size = entry.getValue();
-            int direction;
+            int direction = 2;
             boolean valid = false;
-            direction = 0;
             do {
-                // logic from button press to placing boats
 
-                // find way to get 2 button presses
-            
-                valid = isValidMove(new Point(x, y), size, direction);
-            
+                //TODO Code does not seem to execute
+
+                if (x != -1 && x2 != -1 && y != -1 && y2 != -1) {
+                    direction = getDirection(x, y, x2, y2);
+                    if (direction == 0) {
+                        valid = isValidMove(new Point(Math.min(x, x2), y), size, direction);
+                        //System.out.println(valid);
+                    } else if (direction == 1) {
+                        valid = isValidMove(new Point(x, Math.min(y, y2)), size, direction);
+                        //System.out.println(valid);
+                    } else {
+                        valid = false;
+                        x = -1; y = -1; x2 = -1; y2 = -1;
+                    }
+                } else {
+                    valid = false;
+                }
+
             } while (!valid);
-
-            Boat boat = new Boat(new Point(x, y), direction, size);
-            boats.add(boat);
 
             // TODO remove code repeat
             if (direction == 0) { 
                 // x
                 // place boat and surround with spaces
+                Boat boat = new Boat(new Point(Math.min(x, x2), y), direction, size);
+                boats.add(boat);
+
                 for (int i = x; i < x + size; i++) {
                     board.set(i, y, boatType);
                     //if suroungding 4 spaces are 0 place a ' '
@@ -126,6 +151,8 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
                 }
             } else { 
                 // y
+                Boat boat = new Boat(new Point(x, Math.min(y, y2)), direction, size);
+                boats.add(boat);
                 for (int i = y; i < y + size; i++) {
                     board.set(x, i, boatType);
                     //if suroungding 4 spaces are 0 place a ' '
@@ -145,10 +172,10 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
                 }
             }
             boatsRemaining++;
-            //System.out.println(board.get(x, y));
+            x = -1; y = -1; x2 = -1; y2 = -1;
+            valid = false;
         }
-        //board.printBoard();
-        //System.out.printf("Player %s has placed all their boats\n", symbol);
+        state = "shooting";
     }
 
     @Override
@@ -189,7 +216,13 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
     }
 
     public static void setMove(int x, int y) {
-        BattleshipGuiPlayer.x = x;
-        BattleshipGuiPlayer.y = y;
+        if (state == "placing" && BattleshipGuiPlayer.x != -1 && BattleshipGuiPlayer.y != -1) {
+            BattleshipGuiPlayer.x2 = x;
+            BattleshipGuiPlayer.y2 = y;
+        } else {
+            BattleshipGuiPlayer.x = x;
+            BattleshipGuiPlayer.y = y;
+        }
+        
     }
 }

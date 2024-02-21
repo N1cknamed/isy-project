@@ -96,8 +96,6 @@ public class BattleShipsGui extends Application {
 
     }
 
-
-
     private void handleButtonClick(int row, int col) {
         BattleshipGuiPlayer.setMove(row, col);
     }
