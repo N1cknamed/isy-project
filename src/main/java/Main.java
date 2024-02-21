@@ -204,8 +204,8 @@ public class Main {
 
     private static void runBattleshipGui() {
         // Change the player types according to what the user wants (GUI buttons)
-        BattleshipPlayerType player1Type = BattleshipPlayerType.CLI;
-        BattleshipPlayerType player2Type = BattleshipPlayerType.CLI;
+        BattleshipPlayerType player1Type = BattleshipPlayerType.AI_HEATMAP;
+        BattleshipPlayerType player2Type = BattleshipPlayerType.GUI;
 
         // Build the game classes and use the player types to create PlayerFactory objects
         Game game = new BattleshipGame();

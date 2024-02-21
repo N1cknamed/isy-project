@@ -46,7 +46,6 @@ public class BattleShipsGui extends Application {
 
         primaryStage.setTitle("Place your boats");
 
-
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setHgap(5);
@@ -100,7 +99,7 @@ public class BattleShipsGui extends Application {
 
 
     private void handleButtonClick(int row, int col) {
-
+        BattleshipGuiPlayer.setMove(row, col);
     }
 }
 

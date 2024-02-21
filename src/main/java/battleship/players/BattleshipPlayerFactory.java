@@ -19,7 +19,7 @@ public class BattleshipPlayerFactory implements PlayerFactory {
         } else if (type == CLI) {
             return new BattleshipCliPlayer(symbol);
         } else if (type == GUI) {
-            throw new UnsupportedOperationException("Not implemented yet.");
+            return new BattleshipGuiPlayer(symbol);
         } else if (type == SERVER) {
             return new BattleshipServerPlayer(symbol);
         } else {

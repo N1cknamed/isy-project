@@ -19,8 +19,8 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
     private int boatsRemaining = 0;
     private final Collection<Boat> boats = new ArrayList<>();
 
-    private static int row = -1;
-    private static int col = -1;
+    private static int x = -1;
+    private static int y = -1;
 
     public BattleshipGuiPlayer(char symbol) {
         this.symbol = symbol;
@@ -39,87 +39,116 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
 
     @Override
     public Point doMove(Game game) throws InterruptedException {
-        // TODO
-        // Get shooting position
-        return new Point(row, col);
+        x = -1;
+        y = -1;
+        while ((x == -1 || y == -1) || !game.isValidMove(new Point(y, x))) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return new Point(y, x);
+    }
+
+    private boolean isValidMove(Point move, int size, int direction) {
+        if (move.x < 0 || move.y < 0) {
+            return false;
+        }
+        if (direction == 0) {
+            if (move.x + size > 8) {
+                return false;
+            }
+            for (int i = move.x; i < move.x + size; i++) {
+                if (board.get(i,move.y) != 0) {
+                    return false;
+                }
+            }
+        } else {
+            if (move.y + size > 8) {
+                return false;
+            }
+            for (int i = move.y; i < move.y + size; i++) {
+                if (board.get(move.x, i) != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
     public void placeBoats() {
-        // TODO
-        // Logic for placing boats
-//        ships.put('2', 2);
-//        ships.put('3', 3);
-//        ships.put('4', 4);
-//        ships.put('6', 6);
-//        for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
-//            //board.printBoard();
-//            Character boatType = entry.getKey();
-//            Integer size = entry.getValue();
-//            int x, y, direction;
-//            boolean valid = true;
-//            do {
-//                if (valid) {
-//                    //System.out.println("Place boat of size " + size);
-//                } else {
-//                    //System.out.println("Invalid move, place boat of size " + size + " again");
-//                }
-//                //System.out.println("Enter x coordinate");
-//                //x = scanner.nextInt();
-//                //System.out.println("Enter y coordinate");
-//                //y = scanner.nextInt();
-//                //System.out.println("Enter direction (0 = horizontal, 1 = vertical)");
-//                //direction = scanner.nextInt();
-//                //valid = isValidMove(new Point(x, y), size, direction);
-//            } while (!valid);
-//
-//            Boat boat = new Boat(new Point(x, y), direction, size);
-//            boats.add(boat);
-//
-//            // TODO remove code repeat
-//            if (direction == 0) {
-//                // place boat and surround with spaces
-//                for (int i = x; i < x + size; i++) {
-//                    board.set(i, y, boatType);
-//                    //if suroungding 4 spaces are 0 place a ' '
-//                    if (board.get(i-1, y) == 0) {
-//                        board.set(i-1, y, ' ');
-//                    }
-//                    if (board.get(i+1, y) == 0) {
-//                        board.set(i+1, y, ' ');
-//                    }
-//                    if (board.get(i, y+1) == 0) {
-//                        board.set(i, y+1, ' ');
-//                    }
-//                    if (board.get(i, y-1) == 0) {
-//                        board.set(i, y-1, ' ');
-//                    }
-//
-//                }
-//            } else {
-//                for (int i = y; i < y + size; i++) {
-//                    board.set(x, i, boatType);
-//                    //if suroungding 4 spaces are 0 place a ' '
-//                    if (board.get(x-1, i) == 0) {
-//                        board.set(x-1, i, ' ');
-//                    }
-//                    if (board.get(x+1, i) == 0) {
-//                        board.set(x+1, i, ' ');
-//                    }
-//                    if (board.get(x, i+1) == 0) {
-//                        board.set(x, i+1, ' ');
-//                    }
-//                    if (board.get(x, i-1) == 0) {
-//                        board.set(x, i-1, ' ');
-//                    }
-//
-//                }
-//            }
-//            boatsRemaining++;
-//            //System.out.println(board.get(x, y));
-//        }
-//        //board.printBoard();
-//        //System.out.printf("Player %s has placed all their boats\n", symbol);
+        // TODO Logic for placing boats
+        ships.put('2', 2);
+        ships.put('3', 3);
+        ships.put('4', 4);
+        ships.put('6', 6);
+        System.out.println("test");
+        for (Map.Entry<Character, Integer> entry : ships.entrySet()) {
+            Character boatType = entry.getKey();
+            Integer size = entry.getValue();
+            int direction;
+            boolean valid = false;
+            direction = 0;
+            do {
+                // logic from button press to placing boats
+
+                // find way to get 2 button presses
+            
+                valid = isValidMove(new Point(x, y), size, direction);
+            
+            } while (!valid);
+
+            Boat boat = new Boat(new Point(x, y), direction, size);
+            boats.add(boat);
+
+            // TODO remove code repeat
+            if (direction == 0) { 
+                // x
+                // place boat and surround with spaces
+                for (int i = x; i < x + size; i++) {
+                    board.set(i, y, boatType);
+                    //if suroungding 4 spaces are 0 place a ' '
+                    if (board.get(i-1, y) == 0) {
+                        board.set(i-1, y, ' ');
+                    }
+                    if (board.get(i+1, y) == 0) {
+                        board.set(i+1, y, ' ');
+                    }
+                    if (board.get(i, y+1) == 0) {
+                        board.set(i, y+1, ' ');
+                    }
+                    if (board.get(i, y-1) == 0) {
+                        board.set(i, y-1, ' ');
+                    }
+
+                }
+            } else { 
+                // y
+                for (int i = y; i < y + size; i++) {
+                    board.set(x, i, boatType);
+                    //if suroungding 4 spaces are 0 place a ' '
+                    if (board.get(x-1, i) == 0) {
+                        board.set(x-1, i, ' ');
+                    }
+                    if (board.get(x+1, i) == 0) {
+                        board.set(x+1, i, ' ');
+                    }
+                    if (board.get(x, i+1) == 0) {
+                        board.set(x, i+1, ' ');
+                    }
+                    if (board.get(x, i-1) == 0) {
+                        board.set(x, i-1, ' ');
+                    }
+
+                }
+            }
+            boatsRemaining++;
+            //System.out.println(board.get(x, y));
+        }
+        //board.printBoard();
+        //System.out.printf("Player %s has placed all their boats\n", symbol);
     }
 
     @Override
@@ -159,9 +188,8 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
         return boats;
     }
 
-    public static void setMove(int row, int col) {
-        BattleshipGuiPlayer.row = row;
-        BattleshipGuiPlayer.col = col;
+    public static void setMove(int x, int y) {
+        BattleshipGuiPlayer.x = x;
+        BattleshipGuiPlayer.y = y;
     }
-    
 }
