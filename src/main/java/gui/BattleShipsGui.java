@@ -35,7 +35,7 @@ public class BattleShipsGui extends Application {
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
                 if (buttons[row][col] != null) {
-                    buttons[row][col].setText(String.valueOf(board.get(col, row)));
+                    buttons[row][col].setText(String.valueOf(board.get(row, col)));
                 }
             }
         }
