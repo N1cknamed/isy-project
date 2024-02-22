@@ -61,7 +61,7 @@ public class BattleShipsGui extends Application {
                 int finalRow = row;
                 int finalCol = col;
                 button.setOnAction(e -> handleButtonClick(finalRow, finalCol));
-                grid.add(button, col, row);
+                grid.add(button, row, col);
             }
         }
 
@@ -71,6 +71,18 @@ public class BattleShipsGui extends Application {
         titleLabel.setText("Place your boats");
         titleLabel.getStyleClass().add("title");
         messageBox.getChildren().addAll(titleLabel);
+
+        Button horizontalButton = new Button();
+        horizontalButton.setText("Horizontal");
+        horizontalButton.getStyleClass().add("horizontalButton");
+        messageBox.getChildren().addAll(horizontalButton);
+        horizontalButton.setOnAction(e -> setDirection(0));
+
+        Button verticalButton = new Button();
+        verticalButton.setText("Vertical");
+        verticalButton.getStyleClass().add("verticalButton");
+        messageBox.getChildren().addAll(verticalButton);
+        verticalButton.setOnAction(e -> setDirection(1));
 
         Button confirmButton = new Button();
         confirmButton.setText("Confirm");
@@ -99,6 +111,11 @@ public class BattleShipsGui extends Application {
     private void handleButtonClick(int row, int col) {
         BattleshipGuiPlayer.setMove(row, col);
     }
+
+    private void setDirection(int direction) {
+        BattleshipGuiPlayer.setDirection(direction);
+    }
+
 }
 
 
