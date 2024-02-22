@@ -54,11 +54,7 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
     private boolean isValidMove(Point move, int size, int direction) {
         if (move.x < 0 || move.y < 0) {
             return false;
-        }
-        if (direction == 2) {
-            return false;
-        }
-        if (direction == 0) {
+        } else if (direction == 0) {
             if (move.x + size > 8) {
                 return false;
             }
@@ -80,17 +76,8 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
         return true;
     }
 
-    public int getDirection(int x, int y, int x2, int y2) {
-        if (x == x2 && y != y2) {
-            return 0;
-        } else if (x != x2 && y == y2) {
-            return 1;
-        } else return 2;
-    }
-
     @Override
     public void placeBoats() {
-        // TODO Logic for placing boats
         ships.put('2', 2);
         ships.put('3', 3);
         ships.put('4', 4);
@@ -107,14 +94,13 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
 
             } while (!valid);
 
+            Boat boat = new Boat(new Point(x, y), direction, size);
+            boats.add(boat);
+
             // TODO remove code repeat
             if (direction == 0) { 
                 // x
                 // place boat and surround with spaces
-                Boat boat = new Boat(new Point(x, y), direction, size);
-                boats.add(boat);
-                
-                System.out.println(boat.getStartCord());
 
                 for (int i = x; i < x + size; i++) {
                     board.set(i, y, boatType);
@@ -135,8 +121,6 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
                 }
             } else { 
                 // y
-                Boat boat = new Boat(new Point(x, y), direction, size);
-                boats.add(boat);
                 for (int i = y; i < y + size; i++) {
                     board.set(x, i, boatType);
                     //if suroungding 4 spaces are 0 place a ' '
