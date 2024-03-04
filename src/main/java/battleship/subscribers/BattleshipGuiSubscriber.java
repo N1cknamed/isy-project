@@ -1,5 +1,6 @@
 package battleship.subscribers;
 
+import battleship.BattleshipGame;
 import framework.Game;
 import framework.GameSubscriber;
 import framework.Player;
@@ -31,6 +32,10 @@ public class BattleshipGuiSubscriber implements GameSubscriber {
 
     @Override
     public void onGameEnded(Game game) {
+        BattleshipGame btlshpgm = (battleship.BattleshipGame) game;
+        if(btlshpgm.getWinner() != null){
+            BattleShipsGui.updateWinningBoard(btlshpgm);
+        }
 
     }
 

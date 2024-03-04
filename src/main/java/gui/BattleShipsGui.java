@@ -27,6 +27,38 @@ public class BattleShipsGui extends Application {
         Platform.runLater(() -> updateButtons((BattleshipGame) game));
     }
 
+    public static void updateWinningBoard(Game game){
+        Platform.runLater(() -> winningButtons(game));
+    }
+
+    private static void winningButtons(Game game){
+        Board winning = null;
+        BattleshipGame btlshpgm = (BattleshipGame) game;
+        if(btlshpgm.getWinner()==btlshpgm.getCurrentPlayer()){
+            winning = btlshpgm.getCurrentBoard();
+        } else{
+            winning = btlshpgm.getOpponentBoard();}
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                if (buttons[row][col] != null) {
+                    String value = String.valueOf(winning.get(row, col));
+                    buttons[row][col].setText("");
+                    if (value.charAt(0) == 'm'){buttons[row][col].getStyleClass().add("winning-button");}
+                    else if (value.charAt(0) == 'h' || value.charAt(0) == '2' || value.charAt(0) == '3'
+                    || value.charAt(0) == '4' || value.charAt(0) == '6'){buttons[row][col].getStyleClass().add("winning-button2");}
+                    //else if (buttons[row][col].getText().isEmpty()){buttons[row][col].getStyleClass().add("winning-button3");}
+                    //else {buttons[row][col].getStyleClass().add("winning-button2");
+//                    buttons[row][col].setText(String.valueOf(winning.get(row, col)));
+//                    char m = 'm';
+//                    if(buttons[row][col].getText().charAt(0) == m){
+//                        buttons[row][col].getStyleClass().add("winning-button");
+                     }
+                }
+            }
+        }
+
+
     private static void updateButtons(BattleshipGame game) {
 
         //print test 10 times

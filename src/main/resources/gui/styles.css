@@ -6,3 +6,13 @@
 .game-button {
     -fx-font-size: 50;
 }
+
+.winning-button2 {
+    -fx-background-color: #6C4242; /* Set the background color to a specific color */
+    -fx-text-fill: white;           /* Set the text color to white */
+}
+
+.winning-button3 {
+    -fx-background-color: #901042; /* Set the background color to a specific color */
+    -fx-text-fill: white;           /* Set the text color to white */
+}

@@ -43,7 +43,7 @@ public class Main {
 //        runBattleshipStats();
 //        runTttGui();
         runBattleshipGui();
-//        runHomeGui();
+//       runHomeGui();
 
 //        runServerTtt();
 //        runServerBattleship();
