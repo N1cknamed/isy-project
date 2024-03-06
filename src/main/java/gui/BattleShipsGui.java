@@ -22,6 +22,10 @@ public class BattleShipsGui extends Application {
     private static final Button[][] buttons = new Button[10][10];
     private boolean gameOver = false;
     private boolean againstAI = false;
+    private int direction = 0;
+    private static int shooting = 0;
+    private static int boatsPlaced = 0;
+
 
     public static void updateButtonsFromOutside(Game game) {
         Platform.runLater(() -> updateButtons((BattleshipGame) game));
@@ -92,7 +96,7 @@ public class BattleShipsGui extends Application {
 
                 int finalRow = row;
                 int finalCol = col;
-                button.setOnAction(e -> handleButtonClick(finalRow, finalCol));
+                button.setOnAction(e -> handleButtonClickPlacing(finalRow, finalCol));
                 grid.add(button, row, col);
             }
         }
@@ -136,15 +140,89 @@ public class BattleShipsGui extends Application {
         primaryStage.show();
     }
 
+    private void setToShooting() {
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                int finalRow = row;
+                int finalCol = col;
+                if (buttons[row][col] != null) {
+                    buttons[row][col].setOnAction(e -> handleButtonClickShooting(finalRow, finalCol));
+                }
+            }
+        }
+    }
+    
+    private void placeBoat(int row, int col, int size) {
+        String text = String.valueOf(size);
+        if (direction == 0) {
+            for (int i = row; i < row + size; i++) {
+                buttons[i][col].setText(text);
+            }
+        } else {
+            for (int i = col; i < col + size; i++) {
+                buttons[row][i].setText(text);
+            }
+        }
+        boatsPlaced++;
+    }
+
+    private boolean isValidPlacement(int row, int col, int size) {
+        // TODO Fix on boat size above 2
+
+        if (col < 0 || row < 0) {
+            return false;
+        } else if (direction == 0) {
+            if (col + size > 8) {
+                return false;
+            }
+            for (int i = col; i < col + size; i++) {
+                if (buttons[i][row].getText() == "s") {
+                    return false;
+                }
+            }
+        } else {
+            if (row + size > 8) {
+                return false;
+            }
+            for (int i = row; i < row + size; i++) {
+                if (buttons[col][i].getText() == "s") {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public void ConfirmButton(){
 
     }
 
-    private void handleButtonClick(int row, int col) {
+    private void handleButtonClickPlacing(int row, int col) {
+        int size = 0;
+        if (boatsPlaced == 0) {size = 2;}
+        if (boatsPlaced == 1) {size = 3;}
+        if (boatsPlaced == 2) {size = 4;}
+        if (boatsPlaced == 3) {size = 6;}
+
+        if (boatsPlaced < 4) {
+            // if (isValidPlacement(row, col, size)) {
+                placeBoat(row, col, size);
+                BattleshipGuiPlayer.setMove(row, col);
+            // }
+            
+        }
+        if (boatsPlaced >= 4) {
+            setToShooting();
+        }
+        
+    }
+
+    private void handleButtonClickShooting(int row, int col) {
         BattleshipGuiPlayer.setMove(row, col);
     }
 
     private void setDirection(int direction) {
+        this.direction = direction;
         BattleshipGuiPlayer.setDirection(direction);
     }
 
