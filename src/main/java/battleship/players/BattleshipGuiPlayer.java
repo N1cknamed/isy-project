@@ -88,7 +88,11 @@ public class BattleshipGuiPlayer implements BattleshipPlayer {
             boolean valid = true;
             do {
 
-                System.out.println(); // needed for code to work?
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 valid = isValidMove(new Point (x, y), size, direction);
 
