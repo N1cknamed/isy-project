@@ -68,8 +68,8 @@ public class BattleShipsGui extends Application {
         //print test 10 times
 
         Board board = game.getBoard();
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 10; col++) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
                 if (buttons[row][col] != null) {
                     buttons[row][col].setText(String.valueOf(board.get(row, col)));
                 }
@@ -141,8 +141,8 @@ public class BattleShipsGui extends Application {
     }
 
     private void setToShooting() {
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 10; col++) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
                 int finalRow = row;
                 int finalCol = col;
                 if (buttons[row][col] != null) {
@@ -169,23 +169,47 @@ public class BattleShipsGui extends Application {
     private boolean isValidPlacement(int row, int col, int size) {
         // TODO Fix on boat size above 2
 
-        if (col < 0 || row < 0) {
+        if (row < 0 || col < 0) {
             return false;
         } else if (direction == 0) {
-            if (col + size > 8) {
-                return false;
-            }
-            for (int i = col; i < col + size; i++) {
-                if (buttons[i][row].getText() == "s") {
-                    return false;
-                }
-            }
-        } else {
             if (row + size > 8) {
                 return false;
             }
             for (int i = row; i < row + size; i++) {
-                if (buttons[col][i].getText() == "s") {
+                if (buttons[i][col].getText() != "") {
+                    return false;
+                }
+                if (i - 1 >= 0 && buttons[i - 1][col].getText() != "") {
+                    return false;
+                }
+                if (col > 0 && buttons[i][col - 1].getText() != "") {
+                    return false;
+                }
+                if (i + 1 < 8 && buttons[i + 1][col].getText() != "") {
+                    return false;
+                }
+                if (col + 1 < 8 && buttons[i][col + 1].getText() != "") {
+                    return false;
+                }
+            }
+        } else {
+            if (col + size > 8) {
+                return false;
+            }
+            for (int i = col; i < col + size; i++) {
+                if (buttons[row][i].getText() == "s") {
+                    return false;
+                }
+                if (row - 1 >= 0 && buttons[row - 1][i].getText() != "") {
+                    return false;
+                }
+                if (i > 0 && buttons[row][i - 1].getText() != "") {
+                    return false;
+                }
+                if (row + 1 < 8 && buttons[row + 1][i].getText() != "") {
+                    return false;
+                }
+                if (i + 1 < 8 && buttons[row][i + 1].getText() != "") {
                     return false;
                 }
             }
@@ -205,10 +229,10 @@ public class BattleShipsGui extends Application {
         if (boatsPlaced == 3) {size = 6;}
 
         if (boatsPlaced < 4) {
-            // if (isValidPlacement(row, col, size)) {
+            if (isValidPlacement(row, col, size)) {
                 placeBoat(row, col, size);
                 BattleshipGuiPlayer.setMove(row, col);
-            // }
+            }
             
         }
         if (boatsPlaced >= 4) {
