@@ -64,9 +64,6 @@ public class BattleShipsGui extends Application {
 
 
     private static void updateButtons(BattleshipGame game) {
-
-        //print test 10 times
-
         Board board = game.getBoard();
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -167,8 +164,6 @@ public class BattleShipsGui extends Application {
     }
 
     private boolean isValidPlacement(int row, int col, int size) {
-        // TODO Fix on boat size above 2
-
         if (row < 0 || col < 0) {
             return false;
         } else if (direction == 0) {
