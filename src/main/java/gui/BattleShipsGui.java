@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class BattleShipsGui extends Application {
 
     private final BattleshipGame game = new BattleshipGame();
-    private static final Button[][] buttons = new Button[10][10];
+    private static final Button[][] buttons = new Button[8][8];
     private boolean gameOver = false;
     private boolean againstAI = false;
     private int direction = 0;
@@ -43,8 +43,8 @@ public class BattleShipsGui extends Application {
         } else{
             winning = btlshpgm.getOpponentBoard();}
 
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 10; col++) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
                 if (buttons[row][col] != null) {
                     String value = String.valueOf(winning.get(row, col));
                     buttons[row][col].setText("");
