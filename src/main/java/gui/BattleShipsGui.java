@@ -2,8 +2,10 @@ package gui;
 
 import battleship.BattleshipGame;
 import battleship.players.BattleshipGuiPlayer;
+import battleship.players.BattleshipPlayerType;
 import framework.Board;
 import framework.Game;
+import framework.PlayerType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -46,17 +48,21 @@ public class BattleShipsGui extends Application {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 if (buttons[row][col] != null) {
+                    //buttons[row][col].getStyleClass().add("game-button");
+                    buttons[row][col].getStyleClass().remove("winning-button");
+                    buttons[row][col].getStyleClass().remove("winning-button2");
+                }
+            }
+        }
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (buttons[row][col] != null) {
                     String value = String.valueOf(winning.get(row, col));
                     buttons[row][col].setText("");
                     if (value.charAt(0) == 'm'){buttons[row][col].getStyleClass().add("winning-button");}
                     else if (value.charAt(0) == 'h' || value.charAt(0) == '2' || value.charAt(0) == '3'
                     || value.charAt(0) == '4' || value.charAt(0) == '6'){buttons[row][col].getStyleClass().add("winning-button2");}
-                    //else if (buttons[row][col].getText().isEmpty()){buttons[row][col].getStyleClass().add("winning-button3");}
-                    //else {buttons[row][col].getStyleClass().add("winning-button2");
-//                    buttons[row][col].setText(String.valueOf(winning.get(row, col)));
-//                    char m = 'm';
-//                    if(buttons[row][col].getText().charAt(0) == m){
-//                        buttons[row][col].getStyleClass().add("winning-button");
                      }
                 }
             }
@@ -64,11 +70,49 @@ public class BattleShipsGui extends Application {
 
 
     private static void updateButtons(BattleshipGame game) {
-        Board board = game.getBoard();
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                if (buttons[row][col] != null) {
-                    buttons[row][col].setText(String.valueOf(board.get(row, col)));
+//        Board board = game.getBoard();
+//        for (int row = 0; row < 8; row++) {
+//            for (int col = 0; col < 8; col++) {
+//                if (buttons[row][col] != null) {
+//                    buttons[row][col].setText(String.valueOf(board.get(row, col)));
+//                }
+//            }
+//        }
+
+        BattleshipGame btlshpgm = (BattleshipGame) game;
+//        if(btlshpgm.getCurrentPlayer().getPlayerType().isLocal()){
+//            guiboard = btlshpgm.getCurrentBoard();
+//        }
+//        else{
+//            guiboard = null;}
+        Board guiboard = btlshpgm.getCurrentBoard();
+        if (btlshpgm.getCurrentPlayer().getPlayerType() == BattleshipPlayerType.GUI) {
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if (buttons[row][col] != null) {
+                        //buttons[row][col].getStyleClass().add("game-button");
+                        buttons[row][col].getStyleClass().remove("winning-button");
+                        buttons[row][col].getStyleClass().remove("winning-button2");
+                    }
+                }
+            }
+
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if (buttons[row][col] != null) {
+                        String value = String.valueOf(guiboard.get(row, col));
+                        buttons[row][col].setText("");
+                        if (value.charAt(0) == 'm') {
+                            buttons[row][col].getStyleClass().add("winning-button");
+                        }
+                        if (value.charAt(0) == 'h') {
+                            buttons[row][col].getStyleClass().add("winning-button2");
+                        }
+                        else if (value.charAt(0) == '2' || value.charAt(0) == '3'
+                                || value.charAt(0) == '4' || value.charAt(0) == '6') {
+                            buttons[row][col].getStyleClass().add("winning-button3");
+                        }
+                    }
                 }
             }
         }
@@ -143,6 +187,7 @@ public class BattleShipsGui extends Application {
                 int finalRow = row;
                 int finalCol = col;
                 if (buttons[row][col] != null) {
+                    buttons[row][col].getStyleClass().remove("winning-button2");
                     buttons[row][col].setOnAction(e -> handleButtonClickShooting(finalRow, finalCol));
                 }
             }
@@ -153,11 +198,13 @@ public class BattleShipsGui extends Application {
         String text = String.valueOf(size);
         if (direction == 0) {
             for (int i = row; i < row + size; i++) {
-                buttons[i][col].setText(text);
+//                buttons[i][col].setText(text);
+                buttons[i][col].getStyleClass().add("winning-button2");
             }
         } else {
             for (int i = col; i < col + size; i++) {
-                buttons[row][i].setText(text);
+//                buttons[row][i].setText(text);
+                buttons[i][col].getStyleClass().add("winning-button2");
             }
         }
         boatsPlaced++;
