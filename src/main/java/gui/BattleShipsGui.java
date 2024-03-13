@@ -51,6 +51,7 @@ public class BattleShipsGui extends Application {
                     //buttons[row][col].getStyleClass().add("game-button");
                     buttons[row][col].getStyleClass().remove("winning-button");
                     buttons[row][col].getStyleClass().remove("winning-button2");
+                    buttons[row][col].getStyleClass().remove("winning-button3");
                 }
             }
         }
@@ -93,6 +94,7 @@ public class BattleShipsGui extends Application {
                         //buttons[row][col].getStyleClass().add("game-button");
                         buttons[row][col].getStyleClass().remove("winning-button");
                         buttons[row][col].getStyleClass().remove("winning-button2");
+                        buttons[row][col].getStyleClass().remove("winning-button3");
                     }
                 }
             }
