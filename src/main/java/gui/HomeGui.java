@@ -1,6 +1,8 @@
 package gui;
 
 import battleship.BattleshipGame;
+import battleship.players.BattleshipAIPlayer;
+import battleship.players.BattleshipGuiPlayer;
 import battleship.subscribers.BattleshipGuiSubscriber;
 import framework.Game;
 import framework.GameController;
@@ -86,7 +88,7 @@ public class HomeGui extends Application {
 
         } else if (toggleGroup.getSelectedToggle() == battleship && modeSelector.getValue().equals("PVP")) {             //Battleship PVP
             Game game = new BattleshipGame();
-            GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+            GameController controller = new GameController(game, BattleshipGuiPlayer::new, BattleshipGuiPlayer::new);
 
             BattleShipsGui battleShipsGui = new BattleShipsGui();
             battleShipsGui.start(stage);
@@ -97,9 +99,9 @@ public class HomeGui extends Application {
             });
             t.start();
         }
-        else if (toggleGroup.getSelectedToggle() == battleship && modeSelector.getValue().equals("AI")) {             //Battleship PVP
+        else if (toggleGroup.getSelectedToggle() == battleship && modeSelector.getValue().equals("AI")) {             //Battleship AI
             Game game = new BattleshipGame();
-            GameController controller = new GameController(game, TttGuiPlayer::new, TttGuiPlayer::new);
+            GameController controller = new GameController(game, BattleshipAIPlayer::new, BattleshipGuiPlayer::new);
 
             BattleShipsGui battleShipsGui = new BattleShipsGui();
             battleShipsGui.start(stage);

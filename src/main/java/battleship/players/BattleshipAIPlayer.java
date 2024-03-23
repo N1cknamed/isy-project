@@ -33,6 +33,14 @@ public class BattleshipAIPlayer implements BattleshipPlayer {
         this.board = new Board(8, 8);
     }
 
+    public BattleshipAIPlayer(char symbol) {
+        this.symbol = symbol;
+        this.playerType = BattleshipPlayerType.AI_HEATMAP;
+        this.placementStrategy = playerType.createPlacementStrategy();
+        this.shootingAi = playerType.createShootingAi();
+
+        this.board = new Board(8, 8);
+    }
 
     private boolean isValidBoatPlacement(Point move, int size, int direction) {
         if (direction == 0) {
