@@ -206,7 +206,7 @@ public class BattleShipsGui extends Application {
         } else {
             for (int i = col; i < col + size; i++) {
 //                buttons[row][i].setText(text);
-                buttons[i][col].getStyleClass().add("winning-button2");
+                buttons[row][i].getStyleClass().add("winning-button2");
             }
         }
         boatsPlaced++;
