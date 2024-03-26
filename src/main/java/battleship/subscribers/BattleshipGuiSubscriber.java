@@ -19,9 +19,9 @@ public class BattleshipGuiSubscriber implements GameSubscriber {
 
     @Override
     public void onGameUpdated(Game game) {
-        if (game.getCurrentPlayer().getPlayerType().isLocal()) {
+        // if (game.getCurrentPlayer().getPlayerType().isLocal()) {
             BattleShipsGui.updateButtonsFromOutside(game);
-        }
+        // }
     }
 
     public void onShipPlaced(Game game) {
