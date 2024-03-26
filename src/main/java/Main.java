@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 public class Main {
 
     private static final String TEAM_NAME = readTeamName(new File("teamname.txt"));
-    private static final String SERVER_HOST = "home.woutergritter.me";
+    private static final String SERVER_HOST = "94.214.0.206";
     private static final int SERVER_PORT = 7789;
 
     public static void main(String[] args) {
@@ -42,14 +42,14 @@ public class Main {
 //        runBattleshipStats();
 //        runBattleshipStats();
 //        runTttGui();
-       runBattleshipGui();
-//       runHomeGui();
+//        runBattleshipGui();
+//        runHomeGui();
 
 //        runServerTtt();
-//        runServerBattleship();
+       runServerBattleship();
 
-//        new Thread(() -> runServerBattleship("p1", BattleshipPlayerType.AI_HEATMAP)).start();
-//        new Thread(() -> runServerBattleship("p2", BattleshipPlayerType.AI_RECURSIVE_HEATMAP)).start();
+//    new Thread(() -> runServerBattleship("p1", BattleshipPlayerType.AI_HEATMAP)).start();
+//    new Thread(() -> runServerBattleship("p2", BattleshipPlayerType.GUI)).start();
     }
 
     private static void battleshipMatrix() {
@@ -157,7 +157,7 @@ public class Main {
     }
 
     private static void runServerBattleship() {
-        runServerBattleship(TEAM_NAME, new BattleshipPlayerType("AI", true, true, BattleshipPureRandomPlacementStrategy::new, BattleshipHeatmapShootingAi::new));
+        runServerBattleship(TEAM_NAME, BattleshipPlayerType.GUI);
     }
 
     private static void runServerBattleship(String teamName, BattleshipPlayerType localPlayerType) {
